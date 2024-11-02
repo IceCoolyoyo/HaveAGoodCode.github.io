@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @font-face {
+            font-family: MyHelvetica;
+            src: url(font.ttf);
+        }
+
+        .wrap {
+            position: absolute;
+            transform: translateX(-50%) translateY(-50%);
+        }
+
+        .ball,
+        .shadow {
+            border-radius: 100%;
+            margin: auto;
+            position: absolute;
+        }
+
+        .ball {
+            animation: ball 300ms cubic-bezier(0.165, 0.840, 0.440, 1.000) infinite alternate;
+            height: 50px;
+            width: 50px;
+            z-index: 1;
+        }
+
+        .chatpop {
+            width: 300px;
+            height: 150px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            transform: translate(-50%, 0);
+            transition: bottom 0.5s ease;
+            left: 50%;
+            bottom: 80px;
+            z-index: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .diamond {
+            width: 12.5px;
+            height: 12.5px;
+            background-color: transparent;
+            border: 2px solid black;
+            position: absolute;
+            left: 50%;
+            bottom: 8px;
+            transform: translate(-50%, 0) rotate(45deg);
+            z-index: 0;
+        }
+
+        .diamond::before {
+            content: '';
+            z-index: 0;
+            height: 0;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-bottom: 7px solid black;
+            position: absolute;
+            left: 70%;
+            top: 70%;
+            transform: translate(-50%, -50%) rotate(135deg);
+            animation: moveTriangle 5s infinite;
+        }
+
+        .text {
+            user-select: none;
+            font-family: MyHelvetica;
+        }
+
+        .ball {
+            background: linear-gradient(#59e, #04b);
+        }
+
+        .shadow {
+            animation: shadow 300ms cubic-bezier(0.165, 0.840, 0.440, 1.000) infinite alternate;
+            background: #000;
+            bottom: -90px;
+            height: 25px;
+            width: 75px;
+        }
+
+        @keyframes ball {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-150px);
+            }
+        }
+
+        @keyframes shadow {
+            0% {
+                opacity: 0.2;
+                transform: scale(0.75);
+            }
+
+            100% {
+                opacity: 0.05;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body style="background-color: white;">
+    <div class="wrap">
+        <div class="shadow"></div>
+        <div class="ball"></div>
+        <div class="chatpop">
+            <div class="text" id="0">Hello!</div>
+            <div class="diamond"></div>
+        </div>
+    </div>
+    <script>
+        const chatpop = document.querySelector('.chatpop');
+        chatpop.addEventListener('click', () => {
+            const chats = ['Hello!', 'Messange1'];
+            var text = document.querySelector('.text');
+            text.id = (parseInt(text.id, 10) + 1) % chats.length;
+            text.innerHTML = chats[parseInt(text.id, 10)];
+        });
+    </script>
+</body>
+
+</html>
