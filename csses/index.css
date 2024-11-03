@@ -133,3 +133,28 @@
         transform: scale(0.5) translate(calc((-50% / 0.5) + ((-1000% + 50%) * (20 / (25 * 0.5)))), 0);
     }
 }
+
+#Illustrate {
+    user-select: none;
+
+    color: gray;
+    white-space: nowrap;
+
+    font-size: 100%;
+    font-family: "LXGWWenKaiMono";
+
+    position: absolute;
+    bottom: 42%;
+    right: 30%;
+
+    display: none;
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

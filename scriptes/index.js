@@ -88,7 +88,7 @@ async function getDrama() {
             oChats[index - offset] = line.substring(6).replace('{goodMsg}', message);
             chats[index - offset] = oChats[index - offset];
         } else if (line.startsWith('@Function:')) {
-            var method = BallAnimation[line.replace('@Function:', '')];
+            var method = BallAnimation[line.replace('@Function:', '').replace('(', '').replace(')', '').replace(';', '')];
             if (typeof method === 'function') {
                 calls[index] = method;
                 // Prevent the message get from being undefined or null
@@ -100,13 +100,17 @@ async function getDrama() {
 
 async function init() {
     await getDrama();
-    click(true, () => {
-        BallAnimation.hover();
-    });
+    click(true);
     eventHook();
+
+    setTimeout(() => {
+        var obj = document.getElementById('Illustrate');
+        obj.style.animation = 'fade 2s linear 0s';
+        obj.style.display = 'block';
+    }, 8000);
 }
 
-function click(init, run) {
+function click(init) {
     // Update message if time change
     for (var index = 0; index < oChats.length; index++) {
         var chat = oChats[index];
@@ -120,6 +124,10 @@ function click(init, run) {
     if (!init) {
         // Id + 1, and keep it within range
         textElement.id = (parseInt(textElement.id, 10) + 1) % chats.length;
+        var obj = document.getElementById('Illustrate');
+        if (obj) {
+            obj.remove();
+        }
     }
 
     // Set text of the chat
@@ -147,10 +155,9 @@ function click(init, run) {
         if (call) {
             call();
         }
-        run();
     }, ((width / 10) * 1000) + 500);
 }
 
 function eventHook() {
-    document.getElementById('frame').addEventListener('click', () => click(false, () => { }));
+    document.getElementById('frame').addEventListener('click', () => click(false));
 }
