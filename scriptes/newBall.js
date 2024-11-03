@@ -44,30 +44,46 @@ function getHelloMsg() {
 let chats = [
 ];
 
+let oChats = [
+];
+
 async function getDrama() {
     const requestURL = "https://raw.githubusercontent.com/HaveAGoodCode/HaveAGoodCode.github.io/refs/heads/main/dramas/drama.drama";
 
     const response = await fetch(requestURL);
     const drama = await response.text();
-    const lines = drama.split('\n'); 
+    const lines = drama.split('\n');
 
-    var index = 0;
-    lines.forEach(line => {
+    const requestURL1 = "https://api.github.com/zen";
+    const response1 = await fetch(requestURL1);
+    const message = await response1.text();
+
+    for (var index = 0; index < lines.length; index++) {
+        var line = lines[index];
         if (line.startsWith('@Ball:')) {
-            if (line.includes('{time}')) {
-                line.replace('{time}', getHelloMsg());
+            if (line.includes('{goodMsg}')) {
+                line = line.replace('{goodMsg}', message);
             }
+            oChats[index] = line.replace('@Ball:', '');
             chats[index] = line.replace('@Ball:', '');
-            index++;
         }
-    });
+    }
 }
 
-getDrama();
+async function init() {
+    await getDrama();
+    click(true);
+    eventHook();
+}
 
 function click(init) {
     // Update message if time change
-    chats[0] = getHelloMsg();
+    for (var index = 0; index < oChats.length; index++) {
+        var chat = oChats[index];
+        if (chat.includes('{time}')) {
+            chats[index] = chat.replace('{time}', getHelloMsg());
+        }
+    }
 
     const textElement = document.getElementsByClassName('text')[0];
 
