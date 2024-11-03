@@ -65,7 +65,10 @@ async function getDrama() {
                 line = line.replace('{goodMsg}', message);
             }
             oChats[index] = line.replace('@Ball:', '');
-            chats[index] = line.replace('@Ball:', '');
+            chats[index] = oChats[index];
+        } else if (line.startsWith('@Function:')) {
+            console.error('h');
+            Object.getOwnPropertyNames(BallAnimation).forEach(prop => console.error(prop));
         }
     }
 }

@@ -1,2 +1,3 @@
 @Ball:{goodMsg}
 @Ball:您好!，{time}，初次見面，我的名字是Ball。
+@Function:jumpOnce
