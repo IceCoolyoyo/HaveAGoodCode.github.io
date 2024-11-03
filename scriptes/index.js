@@ -39,7 +39,7 @@ class BallAnimation {
 
         obj.style.transition = 'transform 0.5s ease-in-out';
         shadow.style.display = 'none';
-        
+
         const pulse = (count) => {
             if (count <= 0) {
                 obj.style.transition = '';
@@ -50,7 +50,7 @@ class BallAnimation {
             obj.style.transform = count % 2 === 0 ? transform : pulseTransform;
             setTimeout(() => pulse(count - 1), interval);
         };
-    
+
         pulse(pulseCount * 2);
     }
 }
@@ -121,9 +121,10 @@ function click(init) {
 
     const textElement = document.getElementsByClassName('text')[0];
 
+    // Id + 1, and keep it within range
+    textElement.id = (parseInt(textElement.id, 10) + 1) % chats.length;
+
     if (!init) {
-        // Id + 1, and keep it within range
-        textElement.id = (parseInt(textElement.id, 10) + 1) % chats.length;
         var obj = document.getElementById('Illustrate');
         if (obj) {
             obj.remove();
