@@ -56,18 +56,20 @@ async function getDrama() {
     const response1 = await fetch(requestURL1);
     const message = await response1.text();
 
+    var offset = 0;
     for (var index = 0; index < lines.length; index++) {
         var line = lines[index];
         if (line.startsWith('@Ball:')) {
             if (line.includes('{goodMsg}')) {
                 line = line.replace('{goodMsg}', message);
             }
-            oChats[index] = line.replace('@Ball:', '');
-            chats[index] = oChats[index];
+            oChats[index - offset] = line.replace('@Ball:', '');
+            chats[index - offset] = oChats[index - offset];
         } else if (line.startsWith('@Function:')) {
             var method = BallAnimation[line.replace('@Function:', '')];
             if (typeof method === 'function') {
                 calls[index] = method;
+                offset++;
             }
         }
     }
