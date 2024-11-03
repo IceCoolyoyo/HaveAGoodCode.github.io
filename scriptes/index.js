@@ -52,6 +52,7 @@ async function getDrama() {
         fetch("https://api.github.com/zen")
     ]);
     const [drama, message] = await Promise.all([dramaRes.text(), messageRes.text()]);
+    const lines = drama.split('\n');
 
     var offset = 0;
     for (var index = 0; index < lines.length; index++) {
