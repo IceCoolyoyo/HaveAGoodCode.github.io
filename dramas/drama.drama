@@ -2,7 +2,8 @@
 @Ball:您好！，{time}，初次見面，我的名字是小遥。
 @Function:jumpOnce();
 @Ball:歡迎來到 Java 的世界！
-@Function:int();
+@Function:jumpOnce();
 @Ball:讓我來為您介紹一下基本類型。
 @Ball:這是 Integer，Java 當中最常用、最基本的類型。
+@Function:int();
 @Ball:請務必記住它的範圍：-2,147,483,648 ~ 2,147,483,647。

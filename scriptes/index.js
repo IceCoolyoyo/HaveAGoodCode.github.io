@@ -64,18 +64,20 @@ function validateInputInteger(value, input) {
             num.id = type + 'num';
             num.type = 'text';
             num.value = '0';
-            num.oninput = 'validateInputInteger(this.value.trim(), this)';
+            num.oninput = function () {
+                validateInputInteger(this.value.trim(), this);
+            };
             num.addEventListener('keydown', (event) => {
-                        if ((event.key === 'Backspace') || (event.key === 'Delete') ||
-                            (event.key === 'ArrowLeft') || (event.key === 'ArrowRight') || (event.key === 'Enter') ||
-                            (event.key === '-')) {
-                            return;
-                        }
+                if ((event.key === 'Backspace') || (event.key === 'Delete') ||
+                    (event.key === 'ArrowLeft') || (event.key === 'ArrowRight') || (event.key === 'Enter') ||
+                    (event.key === '-')) {
+                    return;
+                }
 
-                        if (!/[0-9]/.test(event.key)) {
-                            event.preventDefault();
-                        }
-                    });
+                if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                }
+            });
 
             var dragBar = document.createElement('input');
             dragBar.id = type;
@@ -83,37 +85,40 @@ function validateInputInteger(value, input) {
             dragBar.value = '0';
             dragBar.min = min;
             dragBar.max = max;
-            dragBar.oninput = dragBarInput.length === 0 ? 'document.getElementById(\'' + num.id + '\').value = this.value' : dragBarInput;
+            dragBar.oninput = dragBarInput.length === 0 ? function () {
+                num.value = this.value;
+            } : dragBarInput;
 
             return [num, dragBar];
         }
 
         static int() {
-            this.createNumAndDragBar('int', '-2147483648', '2147483647', '').forEach(obj => frame.appendChild(obj));
+            TextBook.createNumAndDragBar('int', '-2147483648', '2147483647', '').forEach(obj => frame.appendChild(obj));
         }
 
         static long() {
-            this.createNumAndDragBar('long', '-9223372036854775808', '9223372036854775807', `
+            TextBook.createNumAndDragBar('long', '-9223372036854775808', '9223372036854775807', function () {
                 var val = BigInt(Number(this.value));
-                document.getElementById('longnum').value = val > 0 ? val - 1n : val;`
-            ).forEach(obj => frame.appendChild(obj));
+                document.getElementById('longnum').value = val > 0 ? val - 1n : val;
+            }).forEach(obj => frame.appendChild(obj));
         }
 
         static short() {
-            this.createNumAndDragBar('short', '-32768', '32767', '').forEach(obj => frame.appendChild(obj));
+            TextBook.createNumAndDragBar('short', '-32768', '32767', '').forEach(obj => frame.appendChild(obj));
         }
 
         static byte() {
-            this.createNumAndDragBar('byte', '-128', '127', '').forEach(obj => frame.appendChild(obj));
+            TextBook.createNumAndDragBar('byte', '-128', '127', '').forEach(obj => frame.appendChild(obj));
         }
 
         static bool() {
-            var array = this.createNumAndDragBar('bool', '0', '1', `document.getElementById('boolval').value = this.value == 1 ? 'true' : 'false'`);
-            array[0].oninput = `
-            var value = this.value.toLowerCase();
-            if (!'true'.startsWith(value) && !'false'.startsWith(value)) {
-                this.value = this.value.startsWith('t') ? 'true'.substring(0, this.value.length - 1) : 'false'.substring(0, this.value.length - 1);
-            }`;
+            var array = TextBook.createNumAndDragBar('bool', '0', '1', function () { document.getElementById('boolval').value = this.value == 1 ? 'true' : 'false'; });
+            array[0].oninput = function () {
+                var value = this.value.toLowerCase();
+                if (!'true'.startsWith(value) && !'false'.startsWith(value)) {
+                    this.value = this.value.startsWith('t') ? 'true'.substring(0, this.value.length - 1) : 'false'.substring(0, this.value.length - 1);
+                }
+            };
             array[0].value = 'false';
             array.forEach(obj => frame.appendChild(obj));
         }
