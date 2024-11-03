@@ -1,4 +1,28 @@
 "use strict";
+
+function validateInputInteger(value, input) {
+    var type = input.id.replace('num', '');
+    var obj = document.getElementById(type);
+    let min = parseInt(obj.min, 10);
+    let max = parseInt(obj.max, 10);
+
+    var intValue = parseInt(value, 10);
+    if (value.length > 1 && value.includes('-') && value[0] !== '-') {
+        // 負號在奇怪的位置
+        input.value = value.replace('-', '');
+    } else if ((value.match(/-/g) || []).length > 1 || value === '-0') {
+        // 多個負號 或是 -0 
+        input.value = 0;
+    } else if (intValue < min || intValue > max) {
+        // 值太大或太小
+        input.value = (intValue < min) ? min : max;
+    } else if (value.length > 1 && value[0] === '0') {
+        // 以不必要的0開頭
+        input.value = value.replace(/^0+/, '');
+    }
+    obj.value = input.value;
+}
+
 (function () {
     class BallAnimation {
         static objs = [document.getElementById('ball'), document.getElementById('shadow')];
@@ -29,6 +53,69 @@
         static jumpOnce() {
             BallAnimation.jump();
             setTimeout(() => BallAnimation.normal(), 800 + 10);
+        }
+    }
+
+    class TextBook {
+        static frame = document.getElementById('frame');
+
+        static createNumAndDragBar(type, min, max, dragBarInput) {
+            var num = document.createElement('input');
+            num.id = type + 'num';
+            num.type = 'text';
+            num.value = '0';
+            num.oninput = 'validateInputInteger(this.value.trim(), this)';
+            num.addEventListener('keydown', (event) => {
+                        if ((event.key === 'Backspace') || (event.key === 'Delete') ||
+                            (event.key === 'ArrowLeft') || (event.key === 'ArrowRight') || (event.key === 'Enter') ||
+                            (event.key === '-')) {
+                            return;
+                        }
+
+                        if (!/[0-9]/.test(event.key)) {
+                            event.preventDefault();
+                        }
+                    });
+
+            var dragBar = document.createElement('input');
+            dragBar.id = type;
+            dragBar.type = 'range';
+            dragBar.value = '0';
+            dragBar.min = min;
+            dragBar.max = max;
+            dragBar.oninput = dragBarInput.length === 0 ? 'document.getElementById(\'' + num.id + '\').value = this.value' : dragBarInput;
+
+            return [num, dragBar];
+        }
+
+        static int() {
+            this.createNumAndDragBar('int', '-2147483648', '2147483647', '').forEach(obj => frame.appendChild(obj));
+        }
+
+        static long() {
+            this.createNumAndDragBar('long', '-9223372036854775808', '9223372036854775807', `
+                var val = BigInt(Number(this.value));
+                document.getElementById('longnum').value = val > 0 ? val - 1n : val;`
+            ).forEach(obj => frame.appendChild(obj));
+        }
+
+        static short() {
+            this.createNumAndDragBar('short', '-32768', '32767', '').forEach(obj => frame.appendChild(obj));
+        }
+
+        static byte() {
+            this.createNumAndDragBar('byte', '-128', '127', '').forEach(obj => frame.appendChild(obj));
+        }
+
+        static bool() {
+            var array = this.createNumAndDragBar('bool', '0', '1', `document.getElementById('boolval').value = this.value == 1 ? 'true' : 'false'`);
+            array[0].oninput = `
+            var value = this.value.toLowerCase();
+            if (!'true'.startsWith(value) && !'false'.startsWith(value)) {
+                this.value = this.value.startsWith('t') ? 'true'.substring(0, this.value.length - 1) : 'false'.substring(0, this.value.length - 1);
+            }`;
+            array[0].value = 'false';
+            array.forEach(obj => frame.appendChild(obj));
         }
     }
 
@@ -64,7 +151,11 @@
                 oChats[index] = line.substring(6).replace('{goodMsg}', message);
                 chats[index] = oChats[index];
             } else if (line.startsWith('@Function:')) {
-                var method = BallAnimation[line.replace('@Function:', '').replace('(', '').replace(')', '').replace(';', '')];
+                var name = line.replace('@Function:', '').replace('(', '').replace(')', '').replace(';', '');
+                var method = BallAnimation[name];
+                if (typeof method !== 'function') {
+                    method = TextBook[name];
+                }
                 if (typeof method === 'function') {
                     calls[index] = method;
                     // Prevent the message get from being undefined or null
