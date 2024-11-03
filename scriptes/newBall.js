@@ -41,11 +41,9 @@ function getHelloMsg() {
     }
 }
 
-let chats = [
-];
-
-let oChats = [
-];
+let chats = [];
+let oChats = [];
+let calls = [];
 
 async function getDrama() {
     const requestURL = "https://raw.githubusercontent.com/HaveAGoodCode/HaveAGoodCode.github.io/refs/heads/main/dramas/drama.drama";
@@ -67,8 +65,10 @@ async function getDrama() {
             oChats[index] = line.replace('@Ball:', '');
             chats[index] = oChats[index];
         } else if (line.startsWith('@Function:')) {
-            console.error('h');
-            Object.getOwnPropertyNames(BallAnimation).forEach(prop => console.error(prop));
+            var method = BallAnimation[line.replace('@Function:', '')];
+            if (typeof method === 'function') {
+                calls[index] = method;
+            }
         }
     }
 }
@@ -115,6 +115,10 @@ function click(init) {
     setTimeout(() => {
         textElement.style.animation = '';
         textElement.style.borderRightColor = 'transparent';
+        var call = calls[parseInt(textElement.id, 10) + 1];
+        if (call) {
+            call();
+        }
     }, ((width / 10) * 1000) + 500);
 }
 
