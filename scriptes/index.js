@@ -28,31 +28,6 @@ class BallAnimation {
         BallAnimation.jump();
         setTimeout(() => BallAnimation.normal(), 800 + 10);
     }
-
-    static hover() {
-        const obj = BallAnimation.objs[0];
-        const shadow = BallAnimation.objs[1];
-        const transform = obj.style.transform;
-        const pulseTransform = 'translate(-50%, -50%) scale(1.1, 1.1)';
-        const pulseCount = 3;
-        const interval = 500;
-
-        obj.style.transition = 'transform 0.5s ease-in-out';
-        shadow.style.display = 'none';
-
-        const pulse = (count) => {
-            if (count <= 0) {
-                obj.style.transition = '';
-                obj.style.transform = transform;
-                shadow.style.display = 'block';
-                return;
-            }
-            obj.style.transform = count % 2 === 0 ? transform : pulseTransform;
-            setTimeout(() => pulse(count - 1), interval);
-        };
-
-        pulse(pulseCount * 2);
-    }
 }
 
 function getHelloMsg() {
@@ -79,20 +54,20 @@ async function getDrama() {
     const [drama, message] = await Promise.all([dramaRes.text(), messageRes.text()]);
     const lines = drama.split('\n');
 
-    var offset = 0;
     for (var index = 0; index < lines.length; index++) {
         var line = lines[index];
         if (line.startsWith('@Ball:')) {
             // Since the good message is random and will not change over time, the original message and message are directly replaced
             // The original message removes the beginning of '@ball:' and has a length of 6
-            oChats[index - offset] = line.substring(6).replace('{goodMsg}', message);
-            chats[index - offset] = oChats[index - offset];
+            oChats[index] = line.substring(6).replace('{goodMsg}', message);
+            chats[index] = oChats[index];
         } else if (line.startsWith('@Function:')) {
             var method = BallAnimation[line.replace('@Function:', '').replace('(', '').replace(')', '').replace(';', '')];
             if (typeof method === 'function') {
                 calls[index] = method;
                 // Prevent the message get from being undefined or null
-                offset++;
+                oChats[index] = '';
+                chats[index] = oChats[index];
             }
         }
     }
@@ -105,13 +80,16 @@ async function init() {
 
     setTimeout(() => {
         var obj = document.getElementById('Illustrate');
-        obj.style.animation = 'fade 2s linear 0s';
-        obj.style.display = 'block';
+        // The element may have been deleted before execution
+        if (obj) {
+            obj.style.animation = 'fade 2s linear 0s';
+            obj.style.display = 'block';
+        }
     }, 8000);
 }
 
 function click(init) {
-    // Update message if time change
+    // If the time has changed (not checked)
     for (var index = 0; index < oChats.length; index++) {
         var chat = oChats[index];
         if (chat.includes('{time}')) {
@@ -121,9 +99,8 @@ function click(init) {
 
     const textElement = document.getElementsByClassName('text')[0];
 
-    // Id + 1, and keep it within range
-    textElement.id = (parseInt(textElement.id, 10) + 1) % chats.length;
-
+    // If it is the first click, obj != null, delete the prompt
+    // Otherwise, it is null and no operation is performed
     if (!init) {
         var obj = document.getElementById('Illustrate');
         if (obj) {
@@ -131,6 +108,11 @@ function click(init) {
         }
     }
 
+    // If the next element is '', it is a method call
+    var isCall = false;
+    if (chats[(parseInt(textElement.id, 10) + 1) % chats.length].length === 0) {
+        isCall = true;
+    }
     // Set text of the chat
     textElement.innerHTML = chats[parseInt(textElement.id, 10)];
 
@@ -147,14 +129,19 @@ function click(init) {
     // Appear letter by letter, with a blinking caret
     textElement.style.animation = 'typing ' + (width / 10) + 's steps(' + textElement.innerHTML.length + '), caret 0.8s steps(1) infinite';
 
+    // Id+1，stay in scope, possibly a method call
+    textElement.id = (parseInt(textElement.id, 10) + 1) % chats.length;
+
     setTimeout(() => {
         // Make the caret disappear after typing is complete
         textElement.style.animation = '';
         textElement.style.borderRightColor = 'transparent';
-        // Called if id+1 is a method call (not null or undefined)
-        var call = calls[parseInt(textElement.id, 10) + 1];
-        if (call) {
-            call();
+        // If it is a method call
+        if (isCall) {
+            // Call it!
+            calls[parseInt(textElement.id, 10)]();
+            // Override method id
+            textElement.id = (parseInt(textElement.id, 10) + 1) % chats.length;
         }
     }, ((width / 10) * 1000) + 500);
 }
