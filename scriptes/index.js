@@ -28,6 +28,31 @@ class BallAnimation {
         BallAnimation.jump();
         setTimeout(() => BallAnimation.normal(), 800 + 10);
     }
+
+    static hover() {
+        const obj = BallAnimation.objs[0];
+        const shadow = BallAnimation.objs[1];
+        const transform = obj.style.transform;
+        const pulseTransform = 'translate(-50%, -50%) scale(1.1, 1.1)';
+        const pulseCount = 3;
+        const interval = 500;
+
+        obj.style.transition = 'transform 0.5s ease-in-out';
+        shadow.style.display = 'none';
+        
+        const pulse = (count) => {
+            if (count <= 0) {
+                obj.style.transition = '';
+                obj.style.transform = transform;
+                shadow.style.display = 'block';
+                return;
+            }
+            obj.style.transform = count % 2 === 0 ? transform : pulseTransform;
+            setTimeout(() => pulse(count - 1), interval);
+        };
+    
+        pulse(pulseCount * 2);
+    }
 }
 
 function getHelloMsg() {
@@ -75,11 +100,13 @@ async function getDrama() {
 
 async function init() {
     await getDrama();
-    click(true);
+    click(true, () => {
+        BallAnimation.hover();
+    });
     eventHook();
 }
 
-function click(init) {
+function click(init, run) {
     // Update message if time change
     for (var index = 0; index < oChats.length; index++) {
         var chat = oChats[index];
@@ -120,9 +147,10 @@ function click(init) {
         if (call) {
             call();
         }
+        run();
     }, ((width / 10) * 1000) + 500);
 }
 
 function eventHook() {
-    document.getElementById('frame').addEventListener('click', () => click(false));
+    document.getElementById('frame').addEventListener('click', () => click(false, () => { }));
 }
