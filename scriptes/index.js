@@ -46,29 +46,26 @@ let oChats = [];
 let calls = [];
 
 async function getDrama() {
-    const requestURL = "https://raw.githubusercontent.com/HaveAGoodCode/HaveAGoodCode.github.io/refs/heads/main/dramas/drama.drama";
-
-    const response = await fetch(requestURL);
-    const drama = await response.text();
-    const lines = drama.split('\n');
-
-    const requestURL1 = "https://api.github.com/zen";
-    const response1 = await fetch(requestURL1);
-    const message = await response1.text();
+    // Get the drama and split it into lines and random good sentences
+    const [dramaRes, messageRes] = await Promise.all([
+        fetch("https://raw.githubusercontent.com/HaveAGoodCode/HaveAGoodCode.github.io/refs/heads/main/dramas/drama.drama"),
+        fetch("https://api.github.com/zen")
+    ]);
+    const [drama, message] = await Promise.all([dramaRes.text(), messageRes.text()]);
 
     var offset = 0;
     for (var index = 0; index < lines.length; index++) {
         var line = lines[index];
         if (line.startsWith('@Ball:')) {
-            if (line.includes('{goodMsg}')) {
-                line = line.replace('{goodMsg}', message);
-            }
-            oChats[index - offset] = line.replace('@Ball:', '');
+            // Since the good message is random and will not change over time, the original message and message are directly replaced
+            // The original message removes the beginning of '@ball:' and has a length of 6
+            oChats[index - offset] = line.substring(6).replace('{goodMsg}', message);
             chats[index - offset] = oChats[index - offset];
         } else if (line.startsWith('@Function:')) {
             var method = BallAnimation[line.replace('@Function:', '')];
             if (typeof method === 'function') {
                 calls[index] = method;
+                // Prevent the message get from being undefined or null
                 offset++;
             }
         }
@@ -113,10 +110,11 @@ function click(init) {
     // Appear letter by letter, with a blinking caret
     textElement.style.animation = 'typing ' + (width / 10) + 's steps(' + textElement.innerHTML.length + '), caret 0.8s steps(1) infinite';
 
-    // Make the caret disappear after typing is complete
     setTimeout(() => {
+        // Make the caret disappear after typing is complete
         textElement.style.animation = '';
         textElement.style.borderRightColor = 'transparent';
+        // Called if id+1 is a method call (not null or undefined)
         var call = calls[parseInt(textElement.id, 10) + 1];
         if (call) {
             call();
