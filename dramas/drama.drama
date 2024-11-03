@@ -4,3 +4,5 @@
 @Ball:歡迎來到 Java 的世界！
 @Function:jumpOnce();
 @Ball:讓我來為您介紹一下基本類型。
+@Ball:這是 Integer，Java 當中最常用、最基本的類型。
+@Ball:請務必記住它的範圍：-2,147,483,648 ~ 2,147,483,647。
