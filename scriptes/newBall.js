@@ -41,26 +41,29 @@ function getHelloMsg() {
     }
 }
 
-async function populate() {
-    const requestURL =
-        "https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json";
-    const request = new Request(requestURL);
+let chats = [
+];
 
-    const response = await fetch(request);
-    const superHeroes = await response.json();
+async function getDrama() {
+    const requestURL = "https://raw.githubusercontent.com/HaveAGoodCode/HaveAGoodCode.github.io/refs/heads/main/dramas/drama.drama";
 
-    populateHeader(superHeroes);
-    populateHeroes(superHeroes);
+    const response = await fetch(requestURL);
+    const drama = await response.text();
+    const lines = drama.split('\n'); 
+
+    var index = 0;
+    lines.forEach(line => {
+        if (line.startsWith('@Ball:')) {
+            if (line.includes('{time}')) {
+                line.replace('{time}', getHelloMsg());
+            }
+            chats[index] = line.replace('@Ball:', '');
+            index++;
+        }
+    });
 }
 
-const chats = [
-    getHelloMsg(),
-    `Integer`,
-    '相對論和量子力學的提出給物理學帶來了革命性的變化，它們共同奠定了現代物理學的基礎。',
-    '相對論極大地改變了人類對宇宙和自然的「常識性」觀念，提出了「同時的相對性」、「四維時空」、「彎曲時空」等全新的概念。',
-    '不過近年來，人們對於物理理論的分類有了一種新的認識——以其理論是否是決定論的來劃分古典與非古典的物理學，即「非古典的＝量子的」。',
-    '在這個意義下，相對論仍然是一種古典的理論。'
-];
+getDrama();
 
 function click(init) {
     // Update message if time change
