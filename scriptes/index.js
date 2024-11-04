@@ -60,6 +60,9 @@ function validateInputInteger(value, input) {
         static frame = document.getElementById('frame');
 
         static createNumAndDragBar(type, min, max, dragBarInput) {
+            var div = document.createElement('div');
+            div.style.position = 'relative';
+
             var num = document.createElement('input');
             num.id = type + 'num';
             num.type = 'text';
@@ -89,38 +92,52 @@ function validateInputInteger(value, input) {
                 num.value = this.value;
             } : dragBarInput;
 
-            return [num, dragBar];
+            num.style.position = 'absolute';
+            num.style.left = '50%';
+            num.style.transform = 'translateX(-50%)';
+            num.style.top = '0%';
+            num.style.textAlign = 'center';
+
+            dragBar.style.position = 'absolute';
+            dragBar.style.left = '50%';
+            dragBar.style.transform = 'translateX(-50%)';
+            dragBar.style.marginTop = '10%';
+
+            div.appendChild(num);
+            div.appendChild(dragBar);
+
+            return div;
         }
 
         static int() {
-            TextBook.createNumAndDragBar('int', '-2147483648', '2147483647', '').forEach(obj => frame.appendChild(obj));
+            frame.appendChild(TextBook.createNumAndDragBar('int', '-2147483648', '2147483647', ''));
         }
 
         static long() {
-            TextBook.createNumAndDragBar('long', '-9223372036854775808', '9223372036854775807', function () {
+            frame.appendChild(TextBook.createNumAndDragBar('long', '-9223372036854775808', '9223372036854775807', function () {
                 var val = BigInt(Number(this.value));
                 document.getElementById('longnum').value = val > 0 ? val - 1n : val;
-            }).forEach(obj => frame.appendChild(obj));
+            }));
         }
 
         static short() {
-            TextBook.createNumAndDragBar('short', '-32768', '32767', '').forEach(obj => frame.appendChild(obj));
+            frame.appendChild(TextBook.createNumAndDragBar('short', '-32768', '32767', ''));
         }
 
         static byte() {
-            TextBook.createNumAndDragBar('byte', '-128', '127', '').forEach(obj => frame.appendChild(obj));
+            frame.appendChild(TextBook.createNumAndDragBar('byte', '-128', '127', ''));
         }
 
         static bool() {
-            var array = TextBook.createNumAndDragBar('bool', '0', '1', function () { document.getElementById('boolval').value = this.value == 1 ? 'true' : 'false'; });
-            array[0].oninput = function () {
+            var div = TextBook.createNumAndDragBar('bool', '0', '1', function () { document.getElementById('boolval').value = this.value == 1 ? 'true' : 'false'; });
+            div.firstChild.oninput = function () {
                 var value = this.value.toLowerCase();
                 if (!'true'.startsWith(value) && !'false'.startsWith(value)) {
                     this.value = this.value.startsWith('t') ? 'true'.substring(0, this.value.length - 1) : 'false'.substring(0, this.value.length - 1);
                 }
             };
-            array[0].value = 'false';
-            array.forEach(obj => frame.appendChild(obj));
+            div.firstChild.value = 'false';
+            frame.appendChild(div);
         }
     }
 
