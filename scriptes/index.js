@@ -186,7 +186,12 @@ function validateInputInteger(value, input) {
         }, 8000);
     }
 
+    let canContinue = true;
+
     function click(init) {
+        if (!canContinue) {
+            return;
+        }
         // If the time has changed (not checked)
         for (var index = 0; index < oChats.length; index++) {
             var chat = oChats[index];
@@ -227,6 +232,8 @@ function validateInputInteger(value, input) {
         // Appear letter by letter, with a blinking caret
         textElement.style.animation = 'typing ' + (width / 10) + 's steps(' + textElement.innerHTML.length + '), caret 0.8s steps(1) infinite';
 
+        canContinue = false;
+
         // Id+1，stay in scope, possibly a method call
         textElement.id = (parseInt(textElement.id, 10) + 1) % chats.length;
 
@@ -241,6 +248,7 @@ function validateInputInteger(value, input) {
                 // Override method id
                 textElement.id = (parseInt(textElement.id, 10) + 1) % chats.length;
             }
+            canContinue = true;
         }, ((width / 10) * 1000) + 500);
     }
 
