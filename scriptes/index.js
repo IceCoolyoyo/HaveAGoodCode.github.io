@@ -57,11 +57,17 @@ function validateInputInteger(value, input) {
     }
 
     class TextBook {
-        static frame = document.getElementById('frame');
+        static frame = document.body;
 
         static createNumAndDragBar(type, min, max, dragBarInput) {
             var div = document.createElement('div');
-            div.style.position = 'relative';
+            div.style.position = 'absolute';
+            div.style.top = '50%';
+            div.style.left = '50%';
+            div.style.transform = 'translate(-50%, -50%)'
+            div.style.display = 'flex';
+            div.style.flexDirection = 'column';
+            div.style.alignItems = 'center';
 
             var num = document.createElement('input');
             num.id = type + 'num';
@@ -92,16 +98,7 @@ function validateInputInteger(value, input) {
                 num.value = this.value;
             } : dragBarInput;
 
-            num.style.position = 'absolute';
-            num.style.left = '50%';
-            num.style.transform = 'translateX(-50%)';
-            num.style.top = '0%';
             num.style.textAlign = 'center';
-
-            dragBar.style.position = 'absolute';
-            dragBar.style.left = '50%';
-            dragBar.style.transform = 'translateX(-50%)';
-            dragBar.style.marginTop = '10%';
 
             div.appendChild(num);
             div.appendChild(dragBar);
@@ -110,22 +107,22 @@ function validateInputInteger(value, input) {
         }
 
         static int() {
-            frame.appendChild(TextBook.createNumAndDragBar('int', '-2147483648', '2147483647', ''));
+            TextBook.frame.appendChild(TextBook.createNumAndDragBar('int', '-2147483648', '2147483647', ''));
         }
 
         static long() {
-            frame.appendChild(TextBook.createNumAndDragBar('long', '-9223372036854775808', '9223372036854775807', function () {
+            TextBook.frame.appendChild(TextBook.createNumAndDragBar('long', '-9223372036854775808', '9223372036854775807', function () {
                 var val = BigInt(Number(this.value));
                 document.getElementById('longnum').value = val > 0 ? val - 1n : val;
             }));
         }
 
         static short() {
-            frame.appendChild(TextBook.createNumAndDragBar('short', '-32768', '32767', ''));
+            TextBook.frame.appendChild(TextBook.createNumAndDragBar('short', '-32768', '32767', ''));
         }
 
         static byte() {
-            frame.appendChild(TextBook.createNumAndDragBar('byte', '-128', '127', ''));
+            TextBook.frame.appendChild(TextBook.createNumAndDragBar('byte', '-128', '127', ''));
         }
 
         static bool() {
@@ -137,7 +134,7 @@ function validateInputInteger(value, input) {
                 }
             };
             div.firstChild.value = 'false';
-            frame.appendChild(div);
+            TextBook.frame.appendChild(div);
         }
     }
 
