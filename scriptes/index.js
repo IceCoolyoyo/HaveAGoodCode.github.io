@@ -152,6 +152,7 @@
     let chats = [];
     let oChats = [];
     let calls = [];
+    let prompts = [];
 
     async function getDrama() {
         // Get the drama and split it into lines and random good sentences
@@ -170,17 +171,19 @@
                 oChats[index] = line.substring(6).replace('{goodMsg}', message);
                 chats[index] = oChats[index];
             } else if (line.startsWith('@Function:')) {
-                var name = line.replace('@Function:', '').replace('(', '').replace(')', '').replace(';', '');
+                var name = line.substring(10).replace(/[();]/g, '');
                 var method = BallAnimation[name];
                 if (typeof method !== 'function') {
                     method = TextBook[name];
                 }
                 if (typeof method === 'function') {
                     calls[index] = method;
-                    // Prevent the message get from being undefined or null
-                    oChats[index] = '';
-                    chats[index] = oChats[index];
                 }
+            } else if (line.startsWith('@Prompt:')) {
+                prompts[index] = line;
+                // Prevent the message get from being undefined or null
+                oChats[index] = '';
+                chats[index] = oChats[index];
             }
         }
     }
@@ -197,56 +200,48 @@
                 obj.style.animation = 'fade 2s linear 0s';
                 obj.style.display = 'block';
             }
-        }, 8000);
+        }, 6000);
     }
 
+    function prompt() {
+
+    }
+
+    let currentPrompt;
     let canContinue = true;
 
     function click(init) {
-        if (!canContinue) {
-            return;
-        }
+        if (!canContinue) return;
+
         // If the time has changed (not checked)
-        for (var index = 0; index < oChats.length; index++) {
-            var chat = oChats[index];
-            if (chat.includes('{time}')) {
+        oChats.forEach((chat, index) => {
+            if (chat?.includes('{time}')) {
                 chats[index] = chat.replace('{time}', getHelloMsg());
             }
-        }
+        });
 
         const textElement = document.getElementsByClassName('text')[0];
 
         // If it is the first click, obj != null, delete the prompt
         // Otherwise, it is null and no operation is performed
-        if (!init) {
-            var obj = document.getElementById('Illustrate');
-            if (obj) {
-                obj.remove();
-            }
-        }
-
-        // If the next element is '', it is a method call
-        var isCall = false;
-        if (chats[(parseInt(textElement.id, 10) + 1) % chats.length].length === 0) {
-            isCall = true;
-        }
+        !init && document.getElementById('Illustrate')?.remove();
+        
         // Set text of the chat
         textElement.innerHTML = chats[parseInt(textElement.id, 10)];
 
         // Calc width (chinese char and chinese sige +2, english char and normal sige +1)
-        let width = 0;
-        for (let char of textElement.innerHTML) {
-            width += /[\u4e00-\u9fa5\uff0c\u3002\u3001\u300c\u300d\uff1b\uff1a\uff08\uff09\uff1f\uff01\u3010\u3011\u300a\u300b\u2014\u2026\u2013\u2018\u201c\u201d\uff0e]/.test(char) ? 2 : 1;
-        }
-        textElement.style.width = width + 'ch';
+        let width = [...textElement.innerHTML].reduce((acc, char) => acc + (/[\u4e00-\u9fa5\uff0c\u3002\u3001\u300c\u300d\uff1b\uff1a\uff08\uff09\uff1f\uff01\u3010\u3011\u300a\u300b\u2014\u2026\u2013\u2018\u201c\u201d\uff0e]/.test(char) ? 2 : 1), 0);
+        textElement.style.width = `${width}ch`;
 
         // Show the caret
         textElement.style.borderRightColor = 'rgb(0, 0, 0)';
 
         // Appear letter by letter, with a blinking caret
-        textElement.style.animation = 'typing ' + (width / 10) + 's steps(' + textElement.innerHTML.length + '), caret 0.8s steps(1) infinite';
+        textElement.style.animation = `typing ${width / 10}s steps(${textElement.innerHTML.length}), caret 0.8s steps(1) infinite`;
 
         canContinue = false;
+
+        var isCall = !!calls[(parseInt(textElement.id, 10) + 1)];
 
         // Id+1，stay in scope, possibly a method call
         textElement.id = (parseInt(textElement.id, 10) + 1) % chats.length;
