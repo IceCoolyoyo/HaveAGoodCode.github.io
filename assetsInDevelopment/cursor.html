@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <span id="input" contenteditable="true" oninput="a()">aaaaaawa</span>
+    <script>
+        function a() {
+            var selection = window.getSelection();
+            var range = selection.getRangeAt(0);
+            var start = range.startOffset;
+            var end = range.endOffset;
+            document.getElementById('input').innerHTML = document.getElementById('input').innerHTML + 'aa';
+            range.setStart(document.getElementById('input').firstChild, start);
+            range.setEnd(document.getElementById('input').firstChild, end);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+    </script>
+</body>
+
+</html>

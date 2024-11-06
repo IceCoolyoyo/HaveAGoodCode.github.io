@@ -1,28 +1,5 @@
 "use strict";
 
-function validateInputInteger(value, input) {
-    var type = input.id.replace('num', '');
-    var obj = document.getElementById(type);
-    let min = parseInt(obj.min, 10);
-    let max = parseInt(obj.max, 10);
-
-    var intValue = parseInt(value, 10);
-    if (value.length > 1 && value.includes('-') && value[0] !== '-') {
-        // 負號在奇怪的位置
-        input.value = value.replace('-', '');
-    } else if ((value.match(/-/g) || []).length > 1 || value === '-0') {
-        // 多個負號 或是 -0 
-        input.value = 0;
-    } else if (intValue < min || intValue > max) {
-        // 值太大或太小
-        input.value = (intValue < min) ? min : max;
-    } else if (value.length > 1 && value[0] === '0') {
-        // 以不必要的0開頭
-        input.value = value.replace(/^0+/, '');
-    }
-    obj.value = input.value;
-}
-
 (function () {
     class BallAnimation {
         static objs = [document.getElementById('ball'), document.getElementById('shadow')];
@@ -59,6 +36,29 @@ function validateInputInteger(value, input) {
     class TextBook {
         static frame = document.body;
 
+        static validateInputInteger(value, input) {
+            var type = input.id.replace('num', '');
+            var obj = document.getElementById(type);
+            let min = parseInt(obj.min, 10);
+            let max = parseInt(obj.max, 10);
+
+            var intValue = parseInt(value, 10);
+            if (value.length > 1 && value.includes('-') && value[0] !== '-') {
+                // 負號在奇怪的位置
+                input.value = value.replace('-', '');
+            } else if ((value.match(/-/g) || []).length > 1 || value === '-0') {
+                // 多個負號 或是 -0 
+                input.value = 0;
+            } else if (intValue < min || intValue > max) {
+                // 值太大或太小
+                input.value = (intValue < min) ? min : max;
+            } else if (value.length > 1 && value[0] === '0') {
+                // 以不必要的0開頭
+                input.value = value.replace(/^0+/, '');
+            }
+            obj.value = input.value;
+        }
+
         static createNumAndDragBar(type, min, max, dragBarInput) {
             var div = document.createElement('div');
             div.style.position = 'absolute';
@@ -74,7 +74,7 @@ function validateInputInteger(value, input) {
             num.type = 'text';
             num.value = '0';
             num.oninput = function () {
-                validateInputInteger(this.value.trim(), this);
+                TextBook.validateInputInteger(this.value.trim(), this);
             };
             num.addEventListener('keydown', (event) => {
                 if ((event.key === 'Backspace') || (event.key === 'Delete') ||
