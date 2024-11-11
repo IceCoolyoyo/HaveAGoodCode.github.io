@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <iframe id="java-playground" src="https://dev.java/playground/" frameborder="0"></iframe>
+    <script>
+        document.getElementById("java-playground").onload = function () {
+            const iframeDoc = document.getElementById("java-playground").contentDocument ||
+                document.getElementById("java-playground").contentWindow.document;
+
+            const javaPlayground = iframeDoc.querySelector('java-playground[id="pg1"]');
+            if (javaPlayground) {
+                iframeDoc.body.querySelectorAll('*').forEach(el => el.style.display = 'none');
+                javaPlayground.style.display = 'inline-block';
+                javaPlayground.querySelectorAll('*').forEach(child => child.style.display = 'inline-block');
+            }
+        };
+    </script>
+</body>
+
+</html>
