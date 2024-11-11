@@ -149,46 +149,89 @@
         }
     }
 
-    let chats = [];
-    let oChats = [];
-    let calls = [];
-    let prompts = [];
+    let messages = [];
 
-    async function getDrama() {
-        // Get the drama and split it into lines and random good sentences
-        const [dramaRes, messageRes] = await Promise.all([
-            fetch("https://raw.githubusercontent.com/HaveAGoodCode/HaveAGoodCode.github.io/refs/heads/main/dramas/drama.drama"),
-            fetch("https://api.github.com/zen")
-        ]);
-        const [drama, message] = await Promise.all([dramaRes.text(), messageRes.text()]);
-        const lines = drama.split('\n');
+    const DramaType = Object.freeze({
+        Ball: 'Ball',
+        Function: 'Function',
+        Prompt: 'Prompt'
+    });
 
-        for (var index = 0; index < lines.length; index++) {
-            var line = lines[index];
-            if (line.startsWith('@Ball:')) {
-                // Since the good message is random and will not change over time, the original message and message are directly replaced
-                // The original message removes the beginning of '@ball:' and has a length of 6
-                oChats[index] = line.substring(6).replace('{goodMsg}', message);
-                chats[index] = oChats[index];
-            } else if (line.startsWith('@Function:')) {
-                var name = line.substring(10).replace(/[();]/g, '');
-                var method = BallAnimation[name];
-                if (typeof method !== 'function') {
-                    method = TextBook[name];
+    class Message {
+        constructor(type, obj, originalMessage = null) {
+            this.originalMessage = originalMessage;
+            this.type = type;
+            this.obj = obj;
+        }
+
+        static createObjWithString(string) {
+            for (let type of Object.values(DramaType)) {
+                var prefix = '@' + type + ":";
+                if (string.startsWith(prefix)) {
+                    return Message.processType(type, string.replace(prefix, ''));
                 }
-                if (typeof method === 'function') {
-                    calls[index] = method;
-                }
-            } else if (line.startsWith('@Prompt:')) {
-                prompts[index] = line;
-                // Prevent the message get from being undefined or null
-                oChats[index] = '';
-                chats[index] = oChats[index];
+            }
+            throw new Error(`Unknow type : ${string}`);
+        }
+
+        static processType(type, string) {
+            switch (type) {
+                case DramaType.Ball:
+                    var message = string.replace('{goodMsg}', goodMessage);
+                    return new Message(type, message, message);
+
+                case DramaType.Function:
+                    var name = string.replace(/[();]/g, '');
+                    var method = BallAnimation[name];
+                    if (typeof method !== 'function') {
+                        method = TextBook[name];
+                    }
+                    if (typeof method !== 'function') {
+                        throw new Error(`Unknow function : ${method}, name : ${name}`);
+                    }
+                    return new Message(type, method);
+
+                case DramaType.Prompt:
+                    throw new Error(`Unsupport`);
+
+                default:
+                    throw new Error(`Unknow type : ${type}, string : ${string}`);
             }
         }
     }
 
+    let goodMessage;
+
+    const allLine =`
+        @Ball:{goodMsg}
+        @Ball:您好！，{time}，初次見面，我的名字是小遥。
+        @Function:jumpOnce();
+        @Ball:歡迎來到 Java 的世界！
+        @Function:jumpOnce();
+        @Ball:讓我來為您介紹一下基本類型。
+        @Ball:這是 Integer，Java 當中最常用、最基本的類型。
+        @Function:int();
+        @Ball:請務必記住它的範圍：-2,147,483,648 ~ 2,147,483,647。
+        `;
+
+    async function getGoodMsg() {
+        const messageRes = await fetch("https://api.github.com/zen");
+        goodMessage = await messageRes.text();
+    }
+
+    async function getDrama() {
+        // const dramaRes = await fetch("https://raw.githubusercontent.com/HaveAGoodCode/HaveAGoodCode.github.io/refs/heads/main/dramas/drama.drama");
+        // const drama = await dramaRes.text();
+
+        // const lines = drama.split('\n');
+        var lines = allLine.trim().split('\n');
+        for (var index = 0; index < lines.length; index++) {
+            messages[index] = Message.createObjWithString(lines[index].replace(/^\s+/, ''));
+        }
+    }
+
     async function init() {
+        await getGoodMsg();
         await getDrama();
         click(true);
         eventHook();
@@ -203,59 +246,41 @@
         }, 6000);
     }
 
-    function prompt() {
-
-    }
-
-    let currentPrompt;
     let canContinue = true;
+    let id = 0;
 
     function click(init) {
         if (!canContinue) return;
 
-        // If the time has changed (not checked)
-        oChats.forEach((chat, index) => {
-            if (chat?.includes('{time}')) {
-                chats[index] = chat.replace('{time}', getHelloMsg());
+        messages.forEach((chat, index) => {
+            if (chat.type === DramaType.Ball && chat.originalMessage.includes('{time}')) {
+                messages[index].obj = chat.originalMessage.replace('{time}', getHelloMsg());
             }
         });
 
         const textElement = document.getElementsByClassName('text')[0];
 
-        // If it is the first click, obj != null, delete the prompt
-        // Otherwise, it is null and no operation is performed
         !init && document.getElementById('Illustrate')?.remove();
-        
-        // Set text of the chat
-        textElement.innerHTML = chats[parseInt(textElement.id, 10)];
 
-        // Calc width (chinese char and chinese sige +2, english char and normal sige +1)
+        textElement.innerHTML = messages[id].obj;
+
         let width = [...textElement.innerHTML].reduce((acc, char) => acc + (/[\u4e00-\u9fa5\uff0c\u3002\u3001\u300c\u300d\uff1b\uff1a\uff08\uff09\uff1f\uff01\u3010\u3011\u300a\u300b\u2014\u2026\u2013\u2018\u201c\u201d\uff0e]/.test(char) ? 2 : 1), 0);
         textElement.style.width = `${width}ch`;
-
-        // Show the caret
         textElement.style.borderRightColor = 'rgb(0, 0, 0)';
-
-        // Appear letter by letter, with a blinking caret
         textElement.style.animation = `typing ${width / 10}s steps(${textElement.innerHTML.length}), caret 0.8s steps(1) infinite`;
 
         canContinue = false;
 
-        var isCall = !!calls[(parseInt(textElement.id, 10) + 1)];
+        var isCall = messages[id + 1] && messages[id + 1].type === DramaType.Function;
 
-        // Id+1，stay in scope, possibly a method call
-        textElement.id = (parseInt(textElement.id, 10) + 1) % chats.length;
+        id = (id + 1) % messages.length;
 
         setTimeout(() => {
-            // Make the caret disappear after typing is complete
             textElement.style.animation = '';
             textElement.style.borderRightColor = 'transparent';
-            // If it is a method call
             if (isCall) {
-                // Call it!
-                calls[parseInt(textElement.id, 10)]();
-                // Override method id
-                textElement.id = (parseInt(textElement.id, 10) + 1) % chats.length;
+                messages[id].obj();
+                id = (id + 1) % messages.length;
             }
             canContinue = true;
         }, ((width / 10) * 1000) + 500);
