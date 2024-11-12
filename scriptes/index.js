@@ -269,7 +269,7 @@
 
     const allLine = `
         @Ball:{goodMsg}
-        @Image:a.png
+        @Image:watson.png
         @Ball:您好！，{time}，初次見面，我的名字是小遥。
         @Function:jumpOnce();
         @Ball:歡迎來到 Java 的世界！
