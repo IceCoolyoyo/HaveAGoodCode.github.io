@@ -154,7 +154,11 @@
     const DramaType = Object.freeze({
         Ball: 'Ball',
         Function: 'Function',
-        Prompt: 'Prompt'
+        Image: 'Image'
+    });
+
+    const classList = Object.freeze({
+        BallAnimation, TextBook
     });
 
     class Message {
@@ -182,17 +186,22 @@
 
                 case DramaType.Function:
                     var name = string.replace(/[();]/g, '');
-                    var method = BallAnimation[name];
-                    if (typeof method !== 'function') {
-                        method = TextBook[name];
+                    var method = null;
+                    for (let className in classList) {
+                        method = classList[className][name];
+                        if (typeof method === 'function') {
+                            break;
+                        }
                     }
                     if (typeof method !== 'function') {
                         throw new Error(`Unknow function : ${method}, name : ${name}`);
                     }
                     return new Message(type, method);
 
-                case DramaType.Prompt:
-                    throw new Error(`Unsupport`);
+                case DramaType.Image:
+                    var obj = document.createElement('img');
+                    obj.src = 'images/' + string;
+                    return new Message(type, obj);
 
                 default:
                     throw new Error(`Unknow type : ${type}, string : ${string}`);
@@ -200,10 +209,67 @@
         }
     }
 
+    const AnimationState = Object.freeze({
+        IDLE: 'idle',
+        TYPING: 'typing',
+        EXECUTING_FUNCTION: 'executing_function',
+    });
+
+    let animationState = AnimationState.IDLE;
+
+    class KeyAnimation {
+        static setObjAnimation(string, obj) {
+            var width = KeyAnimation.calcWidth(string);
+            animationState = AnimationState.TYPING;
+            obj.innerHTML = string;
+            obj.style.width = `${width}ch`;
+            obj.style.borderRightColor = 'rgb(0, 0, 0)';
+            obj.style.animation = `typing ${width / 10}s steps(${string.length}), caret 0.8s steps(1) infinite`;
+            setTimeout(() => {
+                KeyAnimation.clearObjAnimation(obj);
+                animationState = AnimationState.IDLE;
+            }, ((width / 10) * 1000) + 500);
+        }
+
+        static clearObjAnimation(obj) {
+            obj.style.borderRightColor = 'transparent';
+            obj.style.animation = ``;
+        }
+
+        static calcWidth(string) {
+            var width = 0;
+            for (var char of string) {
+                if (/[\u4e00-\u9fa5\uff0c\u3002\u3001\u300c\u300d\uff1b\uff1a\uff08\uff09\uff1f\uff01\u3010\u3011\u300a\u300b\u2014\u2026\u2013\u2018\u201c\u201d\uff0e]/.test(char)) {
+                    width += 2;
+                } else {
+                    width += 1;
+                }
+            }
+            return width;
+        }
+    }
+
+    class MessageID {
+        static id = 0;
+
+        static addOne() {
+            MessageID.id = MessageID.getPreAdd(1);
+        }
+
+        static getPreAdd(num) {
+            return (MessageID.id + num) % messages.length;
+        }
+
+        static getID() {
+            return MessageID.id;
+        }
+    }
+
     let goodMessage;
 
-    const allLine =`
+    const allLine = `
         @Ball:{goodMsg}
+        @Image:a.png
         @Ball:您好！，{time}，初次見面，我的名字是小遥。
         @Function:jumpOnce();
         @Ball:歡迎來到 Java 的世界！
@@ -228,6 +294,7 @@
         for (var index = 0; index < lines.length; index++) {
             messages[index] = Message.createObjWithString(lines[index].replace(/^\s+/, ''));
         }
+        console.log(messages);
     }
 
     async function init() {
@@ -246,11 +313,10 @@
         }, 6000);
     }
 
-    let canContinue = true;
-    let id = 0;
-
     function click(init) {
-        if (!canContinue) return;
+        if (animationState !== AnimationState.IDLE) {
+            return;
+        }
 
         messages.forEach((chat, index) => {
             if (chat.type === DramaType.Ball && chat.originalMessage.includes('{time}')) {
@@ -258,32 +324,34 @@
             }
         });
 
-        const textElement = document.getElementsByClassName('text')[0];
-
         !init && document.getElementById('Illustrate')?.remove();
 
-        textElement.innerHTML = messages[id].obj;
+        processMessage(document.getElementsByClassName('text')[0]);
+    }
 
-        let width = [...textElement.innerHTML].reduce((acc, char) => acc + (/[\u4e00-\u9fa5\uff0c\u3002\u3001\u300c\u300d\uff1b\uff1a\uff08\uff09\uff1f\uff01\u3010\u3011\u300a\u300b\u2014\u2026\u2013\u2018\u201c\u201d\uff0e]/.test(char) ? 2 : 1), 0);
-        textElement.style.width = `${width}ch`;
-        textElement.style.borderRightColor = 'rgb(0, 0, 0)';
-        textElement.style.animation = `typing ${width / 10}s steps(${textElement.innerHTML.length}), caret 0.8s steps(1) infinite`;
+    function processMessage(obj) {
+        var message = messages[MessageID.getID()];
+        switch (message.type) {
+            case DramaType.Ball:
+                KeyAnimation.setObjAnimation(message.obj, obj);
+                break;
 
-        canContinue = false;
+            case DramaType.Function:
+                message.obj();
+                break;
 
-        var isCall = messages[id + 1] && messages[id + 1].type === DramaType.Function;
+            case DramaType.Image:
+                document.getElementById('image').appendChild(message.obj);
+                break;
 
-        id = (id + 1) % messages.length;
-
-        setTimeout(() => {
-            textElement.style.animation = '';
-            textElement.style.borderRightColor = 'transparent';
-            if (isCall) {
-                messages[id].obj();
-                id = (id + 1) % messages.length;
-            }
-            canContinue = true;
-        }, ((width / 10) * 1000) + 500);
+            default:
+                throw new Error(`Unknow type : ${message.type}`);
+        }
+        MessageID.addOne();
+        var nextMessage = messages[MessageID.getID()];
+        if (nextMessage.type !== DramaType.Ball) {
+            processMessage(nextMessage, obj);
+        }
     }
 
     function eventHook() {
