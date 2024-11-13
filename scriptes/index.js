@@ -274,16 +274,29 @@
     let goodMessage;
 
     const allLine = `
-        @Ball:{goodMsg}
-        @Image:watson.png
-        @Ball:您好！，{time}，初次見面，我的名字是小遥。
+        @Ball:歡迎來到Java的世界！
         @Function:jumpOnce();
-        @Ball:歡迎來到 Java 的世界！
+        @Ball:首先，我們要先知道基本類型。
+        @Ball:什麼是類型呢? 類型就是用來讓電腦知道我們要儲存甚麼資料。
+        @Ball:很像各種科目。
         @Function:jumpOnce();
-        @Ball:讓我來為您介紹一下基本類型。
-        @Ball:這是 Integer，Java 當中最常用、最基本的類型。
-        @Function:int();
-        @Ball:請務必記住它的範圍：-2,147,483,648 ~ 2,147,483,647。
+        @Ball:「基本類型」就是最基本的「國文與英文」、「數學」
+        @Ball:其中有boolean，這個只能用來儲存false或是true，用來表示「是」或是「否」。
+        @Function:jumpOnce();
+        @Ball:還有byte，這個只能用來儲存-128~127(負2的7次方~2的7次方減一)之間的整數 (含)，用來表示數字。
+        @Function:jumpOnce();
+        @Ball:還有short，這個只能用來儲存-32768~32767(負2的15次方~2的15次方減一)之間的整數 (含)，用來表示數字。
+        @Function:jumpOnce();
+        @Ball:還有int，這個只能用來儲存-2147483648~2147483647(負2的31次方~2的31次方減一)之間的整數 (含)，用來表示數字。
+        @Function:jumpOnce();
+        @Ball:還有long，這個只能用來儲存-9223372036854775808~92233720368547758087(負2的63次方~2的63次方減一)之間的整數 (含)，用來表示數字。
+        @Function:jumpOnce();
+        @Ball:還有float，這個只能用來儲存(2減 (2的負23次方))乘上2的127次方~之間的任何數 (含)，用來表示數字。
+        @Function:jumpOnce();
+        @Ball:還有double，這個只能用來儲存-9223372036854775808~92233720368547758087(負2的63次方~2的63次方減一)之間的任何數 (含)，用來表示數字。
+        @Function:jumpOnce();
+        @Ball:還有char，這個只能用來儲存Unicode的字元，用來表示文字
+        @Function:jumpOnce();
         `;
 
     async function getGoodMsg() {
