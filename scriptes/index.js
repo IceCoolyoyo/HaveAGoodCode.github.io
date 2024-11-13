@@ -22,7 +22,7 @@
             BallAnimation.remove('jump');
         }
 
-        static normal() {
+        static normal() {                        
             BallAnimation.remove('roll');
             BallAnimation.remove('jump');
         }
@@ -188,9 +188,12 @@
                     var name = string.replace(/[();]/g, '');
                     var method = null;
                     for (let className in classList) {
-                        method = classList[className][name];
-                        if (typeof method === 'function') {
-                            break;
+                        var classObj = classList[className];
+                        if (classObj) {
+                            method = classObj[name];
+                            if (typeof method === 'function') {
+                                break;
+                            }
                         }
                     }
                     if (typeof method !== 'function') {
@@ -218,7 +221,7 @@
     let animationState = AnimationState.IDLE;
 
     class KeyAnimation {
-        static setObjAnimation(string, obj) {
+        static setObjAnimation(string, obj, runnable) {
             var width = KeyAnimation.calcWidth(string);
             animationState = AnimationState.TYPING;
             obj.innerHTML = string;
@@ -228,6 +231,9 @@
             setTimeout(() => {
                 KeyAnimation.clearObjAnimation(obj);
                 animationState = AnimationState.IDLE;
+                if (runnable) {
+                    runnable();
+                }
             }, ((width / 10) * 1000) + 500);
         }
 
@@ -300,7 +306,7 @@
     async function init() {
         await getGoodMsg();
         await getDrama();
-        click(true);
+        await click(true);
         eventHook();
 
         setTimeout(() => {
@@ -313,7 +319,7 @@
         }, 6000);
     }
 
-    function click(init) {
+    async function click(init) {
         if (animationState !== AnimationState.IDLE) {
             return;
         }
@@ -324,24 +330,31 @@
             }
         });
 
-        !init && document.getElementById('Illustrate')?.remove();
+        if (!init) {
+            document.getElementById('Illustrate')?.remove();
+        }
 
-        processMessage(document.getElementsByClassName('text')[0]);
+        await processMessage(document.getElementsByClassName('text')[0]);
     }
 
-    function processMessage(obj) {
+    async function processMessage(obj) {
         var message = messages[MessageID.getID()];
         switch (message.type) {
             case DramaType.Ball:
-                KeyAnimation.setObjAnimation(message.obj, obj);
-                break;
+                MessageID.addOne();
+                var nextMessage = messages[MessageID.getID()];
+                var animationCallback = nextMessage.type !== DramaType.Ball
+                    ? async () => await processMessage(nextMessage, obj)
+                    : null;
+                KeyAnimation.setObjAnimation(message.obj, obj, animationCallback);
+                return;
 
             case DramaType.Function:
-                message.obj();
+                await message.obj();
                 break;
 
             case DramaType.Image:
-                document.getElementById('image').appendChild(message.obj);
+                document.getElementById('lesson-media').appendChild(message.obj);
                 break;
 
             default:
@@ -350,12 +363,12 @@
         MessageID.addOne();
         var nextMessage = messages[MessageID.getID()];
         if (nextMessage.type !== DramaType.Ball) {
-            processMessage(nextMessage, obj);
+            await processMessage(nextMessage, obj);
         }
     }
 
     function eventHook() {
-        document.getElementById('frame').addEventListener('click', () => click(false));
+        document.getElementById('frame').addEventListener('click', async () => await click(false));
     }
 
     init();
