@@ -22,7 +22,7 @@
             BallAnimation.remove('jump');
         }
 
-        static normal() {                        
+        static normal() {
             BallAnimation.remove('roll');
             BallAnimation.remove('jump');
         }
@@ -138,6 +138,53 @@
         }
     }
 
+    class Table {
+        static typesTable() {
+            const table = document.createElement("table");
+            table.innerHTML = `
+                <caption>
+                    Front-end web developer course 2021
+                </caption>
+                <thead>
+                    <tr>
+                    <th scope="col">Person</th>
+                    <th scope="col">Most interest in</th>
+                    <th scope="col">Age</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <th scope="row">Chris</th>
+                    <td>HTML tables</td>
+                    <td>22</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">Dennis</th>
+                    <td>Web accessibility</td>
+                    <td>45</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">Sarah</th>
+                    <td>JavaScript frameworks</td>
+                    <td>29</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">Karen</th>
+                    <td>Web performance</td>
+                    <td>36</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                    <th scope="row" colspan="2">Average age</th>
+                    <td>33</td>
+                    </tr>
+                </tfoot>
+            `;
+            document.getElementById('lesson-media').appendChild(table);
+        }
+    }
+
     function getHelloMsg() {
         var hour = new Date().getHours();
         if (hour >= 4 && hour < 12) {
@@ -158,7 +205,7 @@
     });
 
     const classList = Object.freeze({
-        BallAnimation, TextBook
+        BallAnimation, TextBook, Table
     });
 
     class Message {
@@ -226,12 +273,11 @@
             var width = KeyAnimation.calcWidth(string);
             animationState = AnimationState.TYPING;
             obj.innerHTML = string;
-            obj.style.display = 'flex';
             obj.style.width = `${width}ch`;
             obj.style.borderRightColor = 'rgb(0, 0, 0)';
             obj.style.animation = `typing ${width / 10}s steps(${string.length}), caret 0.8s steps(1) infinite`;
             setTimeout(() => {
-                KeyAnimation.deTypingAnimation(width, obj);
+                KeyAnimation.clearObjAnimation(obj);
                 animationState = AnimationState.IDLE;
                 if (runnable) {
                     runnable();
@@ -242,7 +288,6 @@
         static clearObjAnimation(obj) {
             obj.style.borderRightColor = 'transparent';
             obj.style.animation = ``;
-            obj.style.display = 'none';
         }
 
         static deTypingAnimation(width, obj) {
@@ -286,12 +331,11 @@
     const allLine = `
         @Ball:歡迎來到Java的世界！
         @Function:jumpOnce();
-        @Ball:首先，我們要先知道基本類型。
-        @Ball:什麼是類型呢? 類型就是用來讓電腦知道我們要儲存甚麼資料。
-        @Ball:很像各種科目。
-        @Function:jumpOnce();
-        @Ball:「基本類型」就是最基本的「國文與英文」、「數學」
-        @Image:types.png
+        @Ball:首先，請讓我先介紹一下基本類型：
+        @Ball:什麼是類型呢？
+        @Ball:類型就是用來讓電腦知道我們要儲存甚麼資料
+        @Function:typesTable()
+        @Ball:所以其實「基本類型」就是「國文與英文」、「數學」
         `;
 
     async function getGoodMsg() {
