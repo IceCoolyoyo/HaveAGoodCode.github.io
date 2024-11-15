@@ -183,3 +183,8 @@
     max-width: 100vw;
     max-height: 100vh;
 }
+
+.fadeIn {
+    animation: fade 2s linear 0s;
+    display: block;
+}
