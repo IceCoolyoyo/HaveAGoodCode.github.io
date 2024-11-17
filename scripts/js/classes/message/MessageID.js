@@ -1,0 +1,1 @@
+import{messages}from"../constants/Constants.js";class MessageID{static addOne(){MessageID.id=MessageID.getPreAdd(1)}static getPreAdd(s){return(MessageID.id+s)%messages.length}static getID(){return MessageID.id}}MessageID.id=0;export default MessageID;

@@ -1,0 +1,39 @@
+{
+  "name": "have_a_good_code",
+  "version": "1.0.0",
+  "description": "HaveAGoodCode is a supportive community for coding enthusiasts, where our mission is to foster creativity and excellence in programming.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HaveAGoodCode/HaveAGoodCode.github.io.git"
+  },
+  "author": "Lin Wei Jay",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HaveAGoodCode/HaveAGoodCode.github.io/issues"
+  },
+  "homepage": "https://github.com/HaveAGoodCode/HaveAGoodCode.github.io#readme",
+  "devDependencies": {
+    "@types/gulp": "^4.0.17",
+    "@types/gulp-sass": "^5.0.4",
+    "@types/node-sass": "^4.11.8",
+    "del": "^8.0.0",
+    "gulp": "^5.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-sass": "^5.1.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-uglify": "^3.0.2",
+    "gulp-watch": "^5.0.1",
+    "sass": "^1.81.0",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "gulp-htmlmin": "^5.0.1",
+    "merge2": "^1.4.1",
+    "node-sass": "^9.0.0"
+  }
+}
