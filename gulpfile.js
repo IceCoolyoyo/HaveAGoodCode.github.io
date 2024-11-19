@@ -1,6 +1,6 @@
 const gulp = require('gulp');
 
-const sass = require('gulp-sass')(require('node-sass'));
+const sass = require('gulp-sass')(require('dart-sass'));
 
 const ts = require('gulp-typescript');
 const tsProject = ts.createProject('configs/tsconfig.json');

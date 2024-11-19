@@ -34,18 +34,19 @@ import assert from './classes/assert/assert.js';
             document.getElementById(Setting.illustrateID)?.remove();
         }
 
-        await processMessage(document.getElementsByClassName(Setting.ballSaysID)[0]);
+        await processMessage(document.getElementsByClassName(Setting.ballSaysID)[0] as HTMLElement);
     }
 
-    async function processMessage(obj) {
+    async function processMessage(obj?: HTMLElement) {
         var message = messages[MessageID.getID()];
         switch (message.type) {
             case DramaType.Ball:
                 MessageID.addOne();
                 var nextMessage = messages[MessageID.getID()];
                 var animationCallback = nextMessage.type !== DramaType.Ball
-                    ? async () => await processMessage(nextMessage)
+                    ? async () => await processMessage()
                     : null;
+                assert(obj !== undefined);
                 KeyAnimation.setObjAnimation(message.obj, obj, animationCallback);
                 return;
 
@@ -65,7 +66,7 @@ import assert from './classes/assert/assert.js';
         MessageID.addOne();
         var nextMessage = messages[MessageID.getID()];
         if (nextMessage.type !== DramaType.Ball) {
-            await processMessage(nextMessage);
+            await processMessage();
         }
     }
 

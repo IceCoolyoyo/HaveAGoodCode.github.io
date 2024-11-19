@@ -20,6 +20,7 @@
     "@types/gulp": "^4.0.17",
     "@types/gulp-sass": "^5.0.4",
     "@types/node-sass": "^4.11.8",
+    "dart-sass": "^1.25.0",
     "del": "^8.0.0",
     "gulp": "^5.0.0",
     "gulp-clean-css": "^4.3.0",
@@ -33,7 +34,6 @@
   },
   "dependencies": {
     "gulp-htmlmin": "^5.0.1",
-    "merge2": "^1.4.1",
-    "node-sass": "^9.0.0"
+    "merge2": "^1.4.1"
   }
 }
