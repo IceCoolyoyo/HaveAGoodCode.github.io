@@ -1,0 +1,11 @@
+input[type="text"] {
+    font-family: 'LXGWWenKaiMono';
+    transition: all 0.3s ease;
+    border-radius: 15px 255px 15px 225px / 225px 15px 255px 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"]:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 4px 8px rgba(74, 144, 226, 0.5);
+}
