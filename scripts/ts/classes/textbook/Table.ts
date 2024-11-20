@@ -7,31 +7,26 @@ export default class Table {
         table.innerHTML = `
             <thead>
                 <tr>
-                <th scope="col">Java定義 <br>a與b為非boolean且為基本類型實例化之類型</th>
+                <th scope="col">Java定義</th>
                 <th scope="col">數學定義 <br>a和b∈實數</th>
-                <th scope="col">返回值</th>
                 </tr>
             </thead> 
             <tbody>
                 <tr>
                     <th scope="row">a > b</th>
                     <td>a > b</td>
-                    <td>boolean</td>
                 </tr>
                 <tr>
                     <th scope="row">a < b</th>
                     <td>a < b</td>
-                    <td>boolean</td>
                 </tr>
                 <tr>
                     <th scope="row">a >= b</th>
                     <td>a >= b</td>
-                    <td>boolean</td>
                 </tr>
                 <tr>
                     <th scope="row">a <= b</th>
                     <td>a <= b</td>
-                    <td>boolean</td>
                 </tr>
             </tbody>`
         var lessonMedia = document.getElementById(Setting.lessonMediaID);
@@ -44,21 +39,18 @@ export default class Table {
         table.innerHTML = `
             <thead>
                 <tr>
-                <th scope="col">Java定義 <br>a與b非類實例化之含有泛型之類型</th>
+                <th scope="col">Java定義 </th>
                 <th scope="col">數學定義 <br>a和b為任何數</th>
-                <th scope="col">返回值</th>
                 </tr>
             </thead> 
             <tbody>
                 <tr>
                     <th scope="row">a != b</th>
                     <td>a ≠ b</td>
-                    <td>boolean</td>
                 </tr>
                 <tr>
                     <th scope="row">a == b</th>
                     <td>a = b</td>
-                    <td>boolean</td>
                 </tr>
             </tbody>`
         var lessonMedia = document.getElementById(Setting.lessonMediaID);
@@ -71,7 +63,7 @@ export default class Table {
         table.innerHTML = `
             <thead>
                 <tr>
-                <th scope="col">Java定義 <br>令a與b為boolean類型之實例</th>
+                <th scope="col">Java定義</th>
                 <th scope="col">作用</th>
                 <th scope="col">返回值</th>
                 </tr>
@@ -109,7 +101,7 @@ export default class Table {
         table.innerHTML = `
             <thead>
                 <tr>
-                <th scope="col">Java定義 <br>a與b為long或int或byte或short實例化之類型</th>
+                <th scope="col">Java定義</th>
                 <th scope="col">作用</th>
                 <th scope="col">返回值</th>
                 </tr>
@@ -168,7 +160,7 @@ export default class Table {
         table.innerHTML = `
             <thead>
                 <tr>
-                <th scope="col">Java定義 <br>令a與b非boolean<br>且為基本類型實例化之類型</th>
+                <th scope="col">Java定義</th>
                 <th scope="col">作用</th>
                 <th scope="col">返回值</th>
                 <th scope="col">等價寫法</th>
@@ -262,7 +254,6 @@ export default class Table {
                 <th scope="col">範圍</th>
                 <th scope="col">小數支援</th>
                 <th scope="col">位元</th>
-                <th scope="col">小數精度</th>
                 </tr>
             </thead>
             <tbody>
@@ -271,56 +262,48 @@ export default class Table {
                 <td>-(2-2⁻⁵²)×2¹⁰²³<br>~ (2-2⁻⁵²)×2¹⁰²³</td>
                 <td>是</td>
                 <td>64</td>
-                <td>2⁻¹⁰⁴⁷</td>
                 </tr>
                 <tr>
                 <th scope="row">Long<br>(long)</th>
                 <td>-9,223,372,036,854,775,808<br>~ 9,223,372,036,854,775,807</td>
                 <td>否</td>
                 <td>64</td>
-                <td></td>
                 </tr>
                 <tr>
                 <th scope="row">Float<br>(float)</th>
                 <td>-(2-2⁻²³)×2¹²⁷<br>~ (2-2⁻²³)×2¹²⁷</td>
                 <td>是</td>
                 <td>32</td>
-                <td>2⁻⁴⁹</td>
                 </tr>
                 <tr>
                 <th scope="row">Integer<br>(integer)</th>
                 <td>-2,147,483,648<br>~ 2,147,483,647</td>
                 <td>否</td>
                 <td>32</td>
-                <td></td>
                 </tr>
                 <tr>
                 <th scope="row">Short<br>(short)</th>
                 <td>-32,768 ~ 32,767</td>
                 <td>否</td>
                 <td>16</td>
-                <td></td>
                 </tr>
                 <tr>
                 <th scope="row">Char<br>(char)</th>
                 <td>0 ~ 65,536<br>(\'\\u0000\' ~ \'\\uffff\')</td>
                 <td>否</td>
                 <td>16</td>
-                <td></td>
                 </tr>
                 <tr>
                 <th scope="row">Byte<br>(byte)</th>
                 <td>-128 ~ 127</td>
                 <td>否</td>
                 <td>8</td>
-                <td></td>
                 </tr>
                 <tr>
                 <th scope="row">Boolean<br>(byte)</th>
                 <td>0 ~ 1(false ~ true)</td>
                 <td>否</td>
                 <td>1</td>
-                <td></td>
                 </tr>
             </tbody>
         `;
