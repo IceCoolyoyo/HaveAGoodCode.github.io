@@ -1,27 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <iframe id="java-playground" src="https://dev.java/playground/" frameborder="0"></iframe>
-    <script>
-        document.getElementById("java-playground").onload = function () {
-            const iframeDoc = document.getElementById("java-playground").contentDocument ||
-                document.getElementById("java-playground").contentWindow.document;
-
-            const javaPlayground = iframeDoc.querySelector('java-playground[id="pg1"]');
-            if (javaPlayground) {
-                iframeDoc.body.querySelectorAll('*').forEach(el => el.style.display = 'none');
-                javaPlayground.style.display = 'inline-block';
-                javaPlayground.querySelectorAll('*').forEach(child => child.style.display = 'inline-block');
-            }
-        };
-    </script>
-</body>
-
-</html>
+    
+    <link rel="stylesheet" href="../styles/css/orb.css">
+    <div class="container">
+        <div class="blobs">
+            <svg viewbox="0 0 1200 1200">
+                <g class="blob blob-1">
+                    <path />
+                </g>
+                <g class="blob blob-2">
+                    <path />
+                </g>
+                <g class="blob blob-3">
+                    <path />
+                </g>
+                <g class="blob blob-4">
+                    <path />
+                </g>
+                <g class="blob blob-1 alt">
+                    <path />
+                </g>
+                <g class="blob blob-2 alt">
+                    <path />
+                </g>
+                <g class="blob blob-3 alt">
+                    <path />
+                </g>
+                <g class="blob blob-4 alt">
+                    <path />
+                </g>
+            </svg>
+        </div>
+    </div>

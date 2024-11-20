@@ -1,6 +1,10 @@
 import { DramaType, classList } from '../enum/Types.js';
 import Setting from '../setting/Setting.js';
 import { goodMessage } from '../constants/Constants.js';
+import KeyAnimation from '../animation/KeyAnimation.js';
+import MessageID from '../message/MessageID.js';
+import { messages } from '../constants/Constants.js';
+import assert from '../assert/assert.js';
 
 export default class Message {
     type: DramaType;
@@ -69,5 +73,38 @@ export default class Message {
         } else {
             return Setting.goodNight;
         }
+    }
+}
+
+export async function processMessage(obj?: HTMLElement) {
+    var message = messages[MessageID.getID()];
+    switch (message.type) {
+        case DramaType.Ball:
+            assert(obj instanceof HTMLElement);
+            MessageID.addOne();
+            var nextMessage = messages[MessageID.getID()];
+            var animationCallback = nextMessage.type !== DramaType.Ball
+                ? async () => await processMessage()
+                : null;
+            KeyAnimation.setObjAnimation(message.obj, obj, animationCallback);
+            return;
+
+        case DramaType.Function:
+            await message.obj();
+            break;
+
+        case DramaType.Image:
+            var lessonMedia = document.getElementById(Setting.lessonMediaID);
+            assert(lessonMedia !== null);
+            lessonMedia.appendChild(message.obj);
+            break;
+
+        default:
+            throw new Error(`Unknow type : ${message.type}`);
+    }
+    MessageID.addOne();
+    var nextMessage = messages[MessageID.getID()];
+    if (nextMessage.type !== DramaType.Ball) {
+        await processMessage();
     }
 }

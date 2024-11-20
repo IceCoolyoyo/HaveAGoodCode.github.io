@@ -1,9 +1,7 @@
 "use strict";
 
 import Setting from './classes/setting/Setting.js';
-import Message from './classes/message/Message.js';
-import KeyAnimation from './classes/animation/KeyAnimation.js';
-import MessageID from './classes/message/MessageID.js';
+import Message, { processMessage } from './classes/message/Message.js';
 import { DramaType, AnimationState } from './classes/enum/Types.js';
 import { animationStates, messages } from './classes/constants/Constants.js';
 import assert from './classes/assert/assert.js';
@@ -19,7 +17,7 @@ import assert from './classes/assert/assert.js';
         @Function:compareTable();
         `;
 
-    async function click(init) {
+    async function click(init: boolean) {
         if (animationStates[0] !== AnimationState.IDLE) {
             return;
         }
@@ -31,10 +29,14 @@ import assert from './classes/assert/assert.js';
         });
 
         if (!init) {
-            document.getElementById(Setting.illustrateID)?.remove();
+            var illustrate = document.getElementById(Setting.illustrateID);
+            if (illustrate !== null) {
+                illustrate.remove();
+            }
         }
 
         await processMessage(document.getElementsByClassName(Setting.ballSaysID)[0] as HTMLElement);
+<<<<<<< Updated upstream
     }
 
     async function processMessage(obj?: HTMLElement) {
@@ -68,6 +70,8 @@ import assert from './classes/assert/assert.js';
         if (nextMessage.type !== DramaType.Ball) {
             await processMessage();
         }
+=======
+>>>>>>> Stashed changes
     }
 
     const init = (function () {
