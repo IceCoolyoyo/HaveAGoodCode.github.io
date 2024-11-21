@@ -1,10 +1,10 @@
-
-
 .text {
     user-select: none;
 
     font-size: 200%;
-    font-family: 'LXGWWenKaiMono';
+    font-family: 'LXGW WenKai Mono TC';
+    font-weight: 400;
+    font-style: normal;
 
     overflow: hidden;
     border-right: .05em solid;
@@ -33,11 +33,6 @@
     }
 }
 
-@font-face {
-    font-family: LXGWWenKaiMono;
-    src: url(../../assets/fonts/LXGWWenKaiMono-Medium.ttf);
-}
-
 #Illustrate {
     user-select: none;
 
@@ -45,7 +40,9 @@
     white-space: nowrap;
 
     font-size: 100%;
-    font-family: 'LXGWWenKaiMono';
+    font-family: 'LXGW WenKai Mono TC';
+    font-weight: 400;
+    font-style: normal;
 
     position: absolute;
     bottom: 45%;

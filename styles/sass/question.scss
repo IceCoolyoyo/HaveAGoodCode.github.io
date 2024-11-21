@@ -1,5 +1,7 @@
 input[type="text"] {
-    font-family: 'LXGWWenKaiMono';
+    font-family: 'LXGW WenKai Mono TC';
+    font-weight: 400;
+    font-style: normal;
     transition: all 0.3s ease;
     border-radius: 15px 255px 15px 225px / 225px 15px 255px 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -16,7 +18,9 @@ input[type="text"]:focus {
 }
 
 span {
-    font-family: 'LXGWWenKaiMono';
+    font-family: 'LXGW WenKai Mono TC';
+    font-weight: 400;
+    font-style: normal;
     bottom: 35vmin;
     left: 2.5vmin;
     position: absolute;

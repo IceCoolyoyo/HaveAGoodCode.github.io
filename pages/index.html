@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 
 <head>
-    <link href="/assets/fonts/LXGWWenKaiMono-Medium.ttf" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1" >
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka&family=Klee+One&family=LXGW+WenKai+Mono+TC&family=LXGW+WenKai+TC&display=swap"
+        rel="stylesheet">
+
     <title>Have A Good Code!</title>
-    <link rel="stylesheet" href="/styles/css/index.css">
-    <link rel="stylesheet" href="/styles/css/text.css">
-    <link rel="stylesheet" href="/styles/css/ball.css">
-    <link rel="stylesheet" href="/styles/css/table.css">
-    <link rel="stylesheet" href="/styles/css/question.css">
+
+    <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/index.css">
+    <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/text.css">
+    <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/ball.css">
+    <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/table.css">
+    <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/question.css">
 </head>
 
 <body>
@@ -16,7 +24,7 @@
             <span>www</span>
             <input type="text">
         </div>
-        <iframe id="draggable-iframe" src="https://www.dev.java/playground" frameborder="0"></iframe>
+        <iframe id="draggable-iframe" src="https://dev.java/playground" frameborder="0"></iframe>
     </div>
     <div id="frame">
         <div class="text" id="0"></div>
