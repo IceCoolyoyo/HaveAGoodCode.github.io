@@ -7,8 +7,8 @@ body {
 }
 
 #frame {
-    width: min(40vw, 40vh);
-    height: min(40vw, 40vh);
+    width: 40vmin;
+    height: 40vmin;
     position: absolute;
     bottom: 1vh;
     right: 1vw;
@@ -32,4 +32,20 @@ body {
 .fadeIn {
     animation: fade 2s linear 0s;
     display: block;
+}
+
+#draggable-iframe {
+    width: 60vw;
+    height: 75vmin;
+    bottom: 25vmin;
+    right: 0;
+    position: absolute;
+}
+
+#question {
+    width: 40vw;
+    height: 75vmin;
+    bottom: 25vmin;
+    left: 0;
+    position: absolute;
 }
