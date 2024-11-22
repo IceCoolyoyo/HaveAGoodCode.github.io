@@ -37,6 +37,8 @@ export default class Table {
         var lessonMedia = document.getElementById(Setting.lessonMediaID);
         assert(lessonMedia !== null);
         lessonMedia.appendChild(table);
+        document.getElementById('question')?.remove();
+        document.getElementById('draggable-iframe')?.remove();
     }
 
     static equalTable() {

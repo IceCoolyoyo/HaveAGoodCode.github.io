@@ -5,15 +5,16 @@ import Message, { processMessage } from './classes/message/Message.js';
 import { DramaType, AnimationState } from './classes/enum/Types.js';
 import { animationStates, messages } from './classes/constants/Constants.js';
 import assert from './classes/assert/assert.js';
+import { answer } from './classes/textbook/Question.js';
 
 (function () {
     const allLine = `
         @Ball:歡迎來到Java的世界！
-        @Function:jumpOnce();
-        @Ball:首先，請讓我先介紹一下基本類型：
-        @Ball:什麼是類型呢？
-        @Ball:類型就是用來讓電腦知道我們要儲存甚麼資料
-        @Ball:所以其實「基本類型」就是「國文與英文」、「數學」
+        @Ball:Dev Java
+        @Function:q1();
+        @Ball:Question And Dev Java
+        @Function:q2();
+        @Ball:「基本類型」就是「國文與英文」、「數學」
         @Function:compareTable();
         `;
 

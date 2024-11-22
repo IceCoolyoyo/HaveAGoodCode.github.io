@@ -1,0 +1,1 @@
+let answer=[];export default class Question{static q1(){document.getElementById("draggable-iframe").style.width="100%",answer[0]="2"}static q2(){document.getElementById("draggable-iframe").style.width="60%",answer[0]="2"}}export{answer};

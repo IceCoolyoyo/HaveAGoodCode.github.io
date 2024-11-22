@@ -27,7 +27,7 @@ import assert from"../assert/assert.js";import Setting from"../setting/Setting.j
                     <td>a <= b</td>
                     <td>boolean</td>
                 </tr>
-            </tbody>`,document.getElementById(Setting.lessonMediaID));assert(null!==d),d.appendChild(t)}static equalTable(){var t=document.createElement("table"),d=(t.innerHTML=`
+            </tbody>`,document.getElementById(Setting.lessonMediaID));assert(null!==d),d.appendChild(t),null!=(d=document.getElementById("question"))&&d.remove(),null!=(t=document.getElementById("draggable-iframe"))&&t.remove()}static equalTable(){var t=document.createElement("table"),d=(t.innerHTML=`
             <thead>
                 <tr>
                 <th scope="col">Java定義 <br>a與b非類實例化之含有泛型之類型</th>

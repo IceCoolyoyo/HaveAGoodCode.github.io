@@ -19,7 +19,7 @@ body {
     max-height: 100%;
 }
 
-@keyframes fade {
+@keyframes fadeIn {
     from {
         opacity: 0;
     }
@@ -30,7 +30,22 @@ body {
 }
 
 .fadeIn {
-    animation: fade 2s linear 0s;
+    animation: fadeIn 2s linear 0s;
+    display: block;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.fadeOut {
+    animation: fadeOut 2s linear 0s;
     display: block;
 }
 

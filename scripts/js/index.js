@@ -1,9 +1,9 @@
-var __awaiter=this&&this.__awaiter||function(e,o,l,r){return new(l=l||Promise)(function(a,t){function s(e){try{i(r.next(e))}catch(e){t(e)}}function n(e){try{i(r.throw(e))}catch(e){t(e)}}function i(e){var t;e.done?a(e.value):((t=e.value)instanceof l?t:new l(function(e){e(t)})).then(s,n)}i((r=r.apply(e,o||[])).next())})};import Setting from"./classes/setting/Setting.js";import Message,{processMessage}from"./classes/message/Message.js";import{DramaType,AnimationState}from"./classes/enum/Types.js";import{animationStates,messages}from"./classes/constants/Constants.js";import assert from"./classes/assert/assert.js";(()=>{let a=`
+var __awaiter=this&&this.__awaiter||function(e,o,r,l){return new(r=r||Promise)(function(a,t){function s(e){try{i(l.next(e))}catch(e){t(e)}}function n(e){try{i(l.throw(e))}catch(e){t(e)}}function i(e){var t;e.done?a(e.value):((t=e.value)instanceof r?t:new r(function(e){e(t)})).then(s,n)}i((l=l.apply(e,o||[])).next())})};import Setting from"./classes/setting/Setting.js";import Message,{processMessage}from"./classes/message/Message.js";import{DramaType,AnimationState}from"./classes/enum/Types.js";import{animationStates,messages}from"./classes/constants/Constants.js";import assert from"./classes/assert/assert.js";(()=>{let a=`
         @Ball:歡迎來到Java的世界！
-        @Function:jumpOnce();
-        @Ball:首先，請讓我先介紹一下基本類型：
-        @Ball:什麼是類型呢？
-        @Ball:類型就是用來讓電腦知道我們要儲存甚麼資料
-        @Ball:所以其實「基本類型」就是「國文與英文」、「數學」
+        @Ball:Dev Java
+        @Function:q1();
+        @Ball:Question And Dev Java
+        @Function:q2();
+        @Ball:「基本類型」就是「國文與英文」、「數學」
         @Function:compareTable();
         `;function t(t){return __awaiter(this,void 0,void 0,function*(){var e;animationStates[0]===AnimationState.IDLE&&(messages.forEach((e,t)=>{e.type===DramaType.Ball&&null!==e.originalMessage&&e.originalMessage.includes(Setting.drama_time)&&(messages[t].obj=e.originalMessage.replace(Setting.drama_time,Message.getHelloMsg()))}),t||null!==(e=document.getElementById(Setting.illustrateID))&&e.remove(),yield processMessage(document.getElementsByClassName(Setting.ballSaysID)[0]))})}!function(){__awaiter(this,void 0,void 0,function*(){yield function(){return __awaiter(this,void 0,void 0,function*(){for(var e=a.trim().split("\n"),t=0;t<e.length;t++)messages[t]=Message.createObjWithString(e[t].replace(/^\s+/,""))})}(),yield t(!0),function(){var e=document.getElementById(Setting.ballFrameID);assert(null!==e),e.addEventListener("click",()=>__awaiter(this,void 0,void 0,function*(){return yield t(!1)}))}(),setTimeout(()=>{var e=document.getElementById(Setting.illustrateID);e&&(e.style.animation="fade 2s linear 0s",e.style.display="block")},6e3)})}()})();

@@ -1,4 +1,5 @@
 import BallAnimation from '../animation/BallAnimation.js';
+import Question from '../textbook/Question.js';
 import Table from '../textbook/Table.js';
 
 export enum DramaType {
@@ -8,7 +9,7 @@ export enum DramaType {
 };
 
 export const classList = Object.freeze({
-    BallAnimation, Table
+    BallAnimation, Table, Question
 });
 
 export enum AnimationState {
