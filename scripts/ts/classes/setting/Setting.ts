@@ -12,7 +12,6 @@ export default class Setting {
     static rollTag = Object.freeze('roll');
     static fadeInTag = Object.freeze('fadeIn');
     static jumpTag = Object.freeze('jump');
-    static stableSizeTag = Object.freeze('checkSize');
 
     static imageSrcFolder = Object.freeze('images/');
 
