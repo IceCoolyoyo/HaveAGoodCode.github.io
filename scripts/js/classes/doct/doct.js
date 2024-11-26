@@ -1,8 +1,1 @@
-import assert from "../assert/assert.js";
-export default class Doc {
-    static getElementById(elementId) {
-        var obj = document.getElementById(elementId);
-        assert(obj !== null);
-        return obj;
-    }
-}
+import assert from"../assert/assert.js";export default class Doc{static getElementById(t){t=document.getElementById(t);return assert(null!==t),t}}

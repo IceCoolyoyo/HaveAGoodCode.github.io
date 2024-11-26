@@ -1,9 +1,4 @@
-import Doc from "../doct/doct.js";
-import Setting from "../setting/Setting.js";
-export default class Table {
-    static compareTable() {
-        const table = document.createElement("table");
-        table.innerHTML = `
+import Doc from"../doct/doct.js";import Setting from"../setting/Setting.js";export default class Table{static compareTable(){var t=document.createElement("table");t.innerHTML=`
             <thead>
                 <tr>
                 <th scope="col">Java定義 <br>a與b為非boolean且為基本類型實例化之類型</th>
@@ -32,12 +27,7 @@ export default class Table {
                     <td>a <= b</td>
                     <td>boolean</td>
                 </tr>
-            </tbody>`;
-        Doc.getElementById(Setting.lessonMediaID).appendChild(table);
-    }
-    static equalTable() {
-        const table = document.createElement("table");
-        table.innerHTML = `
+            </tbody>`,Doc.getElementById(Setting.lessonMediaID).appendChild(t)}static equalTable(){var t=document.createElement("table");t.innerHTML=`
             <thead>
                 <tr>
                 <th scope="col">Java定義 <br>a與b非類實例化之含有泛型之類型</th>
@@ -56,12 +46,7 @@ export default class Table {
                     <td>a = b</td>
                     <td>boolean</td>
                 </tr>
-            </tbody>`;
-        Doc.getElementById(Setting.lessonMediaID).appendChild(table);
-    }
-    static booleanOperatorTable() {
-        const table = document.createElement("table");
-        table.innerHTML = `
+            </tbody>`,Doc.getElementById(Setting.lessonMediaID).appendChild(t)}static booleanOperatorTable(){var t=document.createElement("table");t.innerHTML=`
             <thead>
                 <tr>
                 <th scope="col">Java定義 <br>令a與b為boolean類型之實例</th>
@@ -91,12 +76,7 @@ export default class Table {
                     若 a與 b為 true，輸出 true
                     </td>
                 </tr>
-            </tbody>`;
-        Doc.getElementById(Setting.lessonMediaID).appendChild(table);
-    }
-    static binaryOperatorTable() {
-        const table = document.createElement("table");
-        table.innerHTML = `
+            </tbody>`,Doc.getElementById(Setting.lessonMediaID).appendChild(t)}static binaryOperatorTable(){var t=document.createElement("table");t.innerHTML=`
             <thead>
                 <tr>
                 <th scope="col">Java定義 <br>a與b為long或int或byte或short實例化之類型</th>
@@ -147,12 +127,7 @@ export default class Table {
                     <br>左邊空位元直接補0，結果為c</td>
                     <td>結果c的十進位。</td>
                 </tr>
-            </tbody>`;
-        Doc.getElementById(Setting.lessonMediaID).appendChild(table);
-    }
-    static syntacticSugarOperatorTable() {
-        const table = document.createElement("table");
-        table.innerHTML = `
+            </tbody>`,Doc.getElementById(Setting.lessonMediaID).appendChild(t)}static syntacticSugarOperatorTable(){var t=document.createElement("table");t.innerHTML=`
             <thead>
                 <tr>
                 <th scope="col">Java定義 <br>令a與b非boolean<br>且為基本類型實例化之類型</th>
@@ -234,12 +209,7 @@ export default class Table {
                     <td>a</td>
                     <td>a = a % b</td>
                 </tr>
-            </tbody>`;
-        Doc.getElementById(Setting.lessonMediaID).appendChild(table);
-    }
-    static typesTable() {
-        const table = document.createElement("table");
-        table.innerHTML = `
+            </tbody>`,Doc.getElementById(Setting.lessonMediaID).appendChild(t)}static typesTable(){var t=document.createElement("table");t.innerHTML=`
             <thead>
                 <tr>
                 <th scope="col"></th>
@@ -287,7 +257,7 @@ export default class Table {
                 </tr>
                 <tr>
                 <th scope="row">Char<br>(char)</th>
-                <td>0 ~ 65,536<br>(\'\\u0000\' ~ \'\\uffff\')</td>
+                <td>0 ~ 65,536<br>('\\u0000' ~ '\\uffff')</td>
                 <td>否</td>
                 <td>16</td>
                 <td></td>
@@ -307,7 +277,4 @@ export default class Table {
                 <td></td>
                 </tr>
             </tbody>
-        `;
-        Doc.getElementById(Setting.lessonMediaID).appendChild(table);
-    }
-}
+        `,Doc.getElementById(Setting.lessonMediaID).appendChild(t)}}
