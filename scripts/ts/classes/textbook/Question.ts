@@ -1,3 +1,6 @@
+import Doc from "../doct/doct.js";
+import Table from "./Table.js";
+
 export let answer: string[] = [];
 
 export default class Question {
@@ -8,7 +11,7 @@ export default class Question {
         //     Illustrate.style.display = 'none';
         // }
         // (document.getElementById('frame') as HTMLElement).style.display = 'none';
-        (document.getElementById('draggable-iframe') as HTMLElement).style.width = '100%';
+        Doc.getElementById('editor-iframe').style.width = '100%';
         answer[0] = '2';
     }
 
@@ -19,7 +22,13 @@ export default class Question {
         //     Illustrate.style.display = 'none';
         // }
         // (document.getElementById('frame') as HTMLElement).style.display = 'none';
-        (document.getElementById('draggable-iframe') as HTMLElement).style.width = '60%';
+        Doc.getElementById('editor-iframe').style.width = '60%';
         answer[0] = '2';
+    }
+
+    static q3() {
+        Doc.getElementById('question').remove();
+        Doc.getElementById('editor-iframe').remove();
+        Table.compareTable();
     }
 }

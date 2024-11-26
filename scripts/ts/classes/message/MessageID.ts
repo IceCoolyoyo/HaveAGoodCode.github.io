@@ -1,7 +1,12 @@
 import { messages } from '../constants/Constants.js';
 
 export default class MessageID {
-    static id = 0;
+    static id: number;
+
+    static {
+        var v = Number(window.localStorage.getItem('messageCount'));
+        MessageID.id = Number.isNaN(v) ? 0 : v;
+    }
 
     static addOne() {
         MessageID.id = MessageID.getPreAdd(1);

@@ -4,7 +4,7 @@ import { goodMessage } from '../constants/Constants.js';
 import KeyAnimation from '../animation/KeyAnimation.js';
 import MessageID from '../message/MessageID.js';
 import { messages } from '../constants/Constants.js';
-import assert from '../assert/assert.js';
+import Doc from '../doct/doct.js';
 
 export default class Message {
     type: DramaType;
@@ -76,28 +76,31 @@ export default class Message {
     }
 }
 
-export async function processMessage(obj?: HTMLElement) {
+export const ballSays = Doc.getElementById(Setting.ballSaysID);
+
+export async function processMessage() {
     var message = messages[MessageID.getID()];
     switch (message.type) {
         case DramaType.Ball:
-            assert(obj instanceof HTMLElement);
             MessageID.addOne();
             var nextMessage = messages[MessageID.getID()];
             var animationCallback = nextMessage.type !== DramaType.Ball
-                ? async () => await processMessage()
+                ? async () => {
+                    await processMessage();
+                }
                 : null;
-            KeyAnimation.setObjAnimation(message.obj, obj, animationCallback);
+            KeyAnimation.setObjAnimation(message.obj, ballSays, animationCallback);
             return;
 
         case DramaType.Function:
             await message.obj();
             break;
 
-        case DramaType.Image:
-            var lessonMedia = document.getElementById(Setting.lessonMediaID);
-            assert(lessonMedia !== null);
-            lessonMedia.appendChild(message.obj);
-            break;
+        // case DramaType.Image:
+        //     var lessonMedia = document.getElementById(Setting.lessonMediaID);
+        //     assert(lessonMedia !== null);
+        //     lessonMedia.appendChild(message.obj);
+        //     break;
 
         default:
             throw new Error(`Unknow type : ${message.type}`);
@@ -107,4 +110,5 @@ export async function processMessage(obj?: HTMLElement) {
     if (nextMessage.type !== DramaType.Ball) {
         await processMessage();
     }
+    return MessageID.getID();
 }

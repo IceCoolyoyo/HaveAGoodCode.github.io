@@ -1,4 +1,4 @@
-import assert from "../assert/assert.js";
+import Doc from "../doct/doct.js";
 import Setting from "../setting/Setting.js";
 
 export default class Table {
@@ -34,11 +34,7 @@ export default class Table {
                     <td>boolean</td>
                 </tr>
             </tbody>`
-        var lessonMedia = document.getElementById(Setting.lessonMediaID);
-        assert(lessonMedia !== null);
-        lessonMedia.appendChild(table);
-        document.getElementById('question')?.remove();
-        document.getElementById('draggable-iframe')?.remove();
+        Doc.getElementById(Setting.lessonMediaID).appendChild(table);
     }
 
     static equalTable() {
@@ -63,9 +59,7 @@ export default class Table {
                     <td>boolean</td>
                 </tr>
             </tbody>`
-        var lessonMedia = document.getElementById(Setting.lessonMediaID);
-        assert(lessonMedia !== null);
-        lessonMedia.appendChild(table);
+        Doc.getElementById(Setting.lessonMediaID).appendChild(table);
     }
 
     static booleanOperatorTable() {
@@ -101,9 +95,7 @@ export default class Table {
                     </td>
                 </tr>
             </tbody>`
-        var lessonMedia = document.getElementById(Setting.lessonMediaID);
-        assert(lessonMedia !== null);
-        lessonMedia.appendChild(table);
+        Doc.getElementById(Setting.lessonMediaID).appendChild(table);
     }
 
     static binaryOperatorTable() {
@@ -160,9 +152,7 @@ export default class Table {
                     <td>結果c的十進位。</td>
                 </tr>
             </tbody>`
-        var lessonMedia = document.getElementById(Setting.lessonMediaID);
-        assert(lessonMedia !== null);
-        lessonMedia.appendChild(table);
+        Doc.getElementById(Setting.lessonMediaID).appendChild(table);
     }
 
     static syntacticSugarOperatorTable() {
@@ -250,9 +240,7 @@ export default class Table {
                     <td>a = a % b</td>
                 </tr>
             </tbody>`
-        var lessonMedia = document.getElementById(Setting.lessonMediaID);
-        assert(lessonMedia !== null);
-        lessonMedia.appendChild(table);
+        Doc.getElementById(Setting.lessonMediaID).appendChild(table);
     }
 
     static typesTable() {
@@ -326,8 +314,6 @@ export default class Table {
                 </tr>
             </tbody>
         `;
-        var lessonMedia = document.getElementById(Setting.lessonMediaID);
-        assert(lessonMedia !== null);
-        lessonMedia.appendChild(table);
+        Doc.getElementById(Setting.lessonMediaID).appendChild(table);
     }
 }

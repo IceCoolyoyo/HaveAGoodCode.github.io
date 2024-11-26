@@ -1,11 +1,12 @@
 "use strict";
 
 import Setting from './classes/setting/Setting.js';
-import Message, { processMessage } from './classes/message/Message.js';
+import Message, { ballSays, processMessage } from './classes/message/Message.js';
 import { DramaType, AnimationState } from './classes/enum/Types.js';
 import { animationStates, messages } from './classes/constants/Constants.js';
-import assert from './classes/assert/assert.js';
-import { answer } from './classes/textbook/Question.js';
+import MessageID from './classes/message/MessageID.js';
+import KeyAnimation from './classes/animation/KeyAnimation.js';
+import Doc from './classes/doct/doct.js';
 
 (function () {
     const allLine = `
@@ -15,7 +16,7 @@ import { answer } from './classes/textbook/Question.js';
         @Ball:Question And Dev Java
         @Function:q2();
         @Ball:「基本類型」就是「國文與英文」、「數學」
-        @Function:compareTable();
+        @Function:q3();
         `;
 
     async function click(init: boolean) {
@@ -36,7 +37,9 @@ import { answer } from './classes/textbook/Question.js';
             }
         }
 
-        await processMessage(document.getElementsByClassName(Setting.ballSaysID)[0] as HTMLElement);
+        await processMessage();
+
+        window.localStorage.setItem('messageCount', MessageID.getID().toString());
     }
 
     const init = (function () {
@@ -49,12 +52,62 @@ import { answer } from './classes/textbook/Question.js';
                 messages[index] = Message.createObjWithString(lines[index].replace(/^\s+/, ''));
             }
         }
-    
+
+        async function restoreState() {
+            const currentIndex = MessageID.getID();
+
+            if (currentIndex === 0) {
+                await processMessage();
+                return;
+            }
+
+            const upIndex = currentIndex - 1;
+            if (upIndex < 0 || upIndex >= messages.length) {
+                throw new Error("Invalid currentMessageID");
+            }
+
+            var message = messages[currentIndex];
+
+            let startIndex = -1;
+            for (let i = upIndex; i >= 0; i--) {
+                if (messages[i].type === DramaType.Ball) {
+                    startIndex = i;
+                    break;
+                }
+            }
+
+            if (startIndex === -1) {
+                throw new Error("No message with type DramaType.Ball found");
+            }
+
+            if (message.type === DramaType.Ball) {
+                for (let i = startIndex; i < currentIndex; i++) {
+                    var currentMessage = messages[i];
+                    if (currentMessage.type === DramaType.Function) {
+                        await currentMessage.obj();
+                    }
+                }
+
+                KeyAnimation.setObjAnimation(message.obj, ballSays);
+            } else {
+                for (let i = startIndex; i < currentIndex; i++) {
+                    var currentMessage = messages[i];
+                    if (currentMessage.type === DramaType.Function) {
+                        await currentMessage.obj();
+                    }
+                }
+
+                KeyAnimation.setObjAnimation(messages[startIndex].obj, ballSays, await message.obj());
+            }
+            MessageID.addOne();
+        }
+
         async function initAll() {
             await getDrama();
-            await click(true);
+            await restoreState();
+
             eventHook();
-    
+
             setTimeout(() => {
                 var obj = document.getElementById(Setting.illustrateID);
                 // The element may have been deleted before execution
@@ -66,9 +119,7 @@ import { answer } from './classes/textbook/Question.js';
         }
 
         function eventHook() {
-            var ballFrame = document.getElementById(Setting.ballFrameID);
-            assert(ballFrame !== null);
-            ballFrame.addEventListener('click', async () => await click(false));
+            Doc.getElementById(Setting.ballFrameID).addEventListener('click', async () => await click(false));
         }
 
         return initAll;

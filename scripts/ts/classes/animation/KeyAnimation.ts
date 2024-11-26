@@ -3,7 +3,7 @@ import { AnimationState } from '../enum/Types.js';
 import { animationStates } from '../constants/Constants.js';
 
 export default class KeyAnimation {
-    static setObjAnimation(string: string, obj: HTMLElement, runnable: (() => Promise<void>) | null) {
+    static setObjAnimation(string: string, obj: HTMLElement, runnable?: (() => Promise<void>) | null) {
         var width = KeyAnimation.calcWidth(string);
         animationStates[0] = AnimationState.TYPING;
         obj.innerHTML = string;
