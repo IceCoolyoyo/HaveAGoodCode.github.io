@@ -4,6 +4,7 @@ body {
     justify-content: center;
     height: 100vh;
     margin: 0;
+    overflow: hidden;
 }
 
 #frame {
@@ -72,4 +73,13 @@ body {
     top: 0;
     left: 0;
     position: absolute;
+}
+
+iframe[src*="spotify.com/embed"] {
+    width: 30vw;
+    height: 25vh;
+    left: 1vw;
+    bottom: -3vh;
+    position: absolute;
+    overflow: visible;
 }
