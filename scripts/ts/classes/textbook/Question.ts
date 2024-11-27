@@ -5,12 +5,6 @@ export let answer: string[] = [];
 
 export default class Question {
     static q1() {
-        // (document.getElementsByClassName('text')[0] as HTMLElement).style.display = 'none';
-        // var Illustrate = document.getElementById('Illustrate');
-        // if (Illustrate !== null) {
-        //     Illustrate.style.display = 'none';
-        // }
-        // (document.getElementById('frame') as HTMLElement).style.display = 'none';
         Doc.getElementById('editor-iframe').style.width = '100%';
         answer[0] = '2';
     }
