@@ -1,5 +1,6 @@
 var __awaiter=this&&this.__awaiter||function(e,o,r,l){return new(r=r||Promise)(function(a,t){function s(e){try{n(l.next(e))}catch(e){t(e)}}function i(e){try{n(l.throw(e))}catch(e){t(e)}}function n(e){var t;e.done?a(e.value):((t=e.value)instanceof r?t:new r(function(e){e(t)})).then(s,i)}n((l=l.apply(e,o||[])).next())})};import Setting from"./classes/setting/Setting.js";import Message,{ballSays,processMessage}from"./classes/message/Message.js";import{DramaType,AnimationState}from"./classes/enum/Types.js";import{animationStates,messages}from"./classes/constants/Constants.js";import MessageID from"./classes/message/MessageID.js";import KeyAnimation from"./classes/animation/KeyAnimation.js";import Doc from"./classes/doct/doct.js";(()=>{let a=`
         @Ball:歡迎來到Java的世界！
+        @Function:jumpOnce();
         @Ball:Dev Java
         @Function:q1();
         @Ball:Question And Dev Java

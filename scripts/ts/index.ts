@@ -11,6 +11,7 @@ import Doc from './classes/doct/doct.js';
 (function () {
     const allLine = `
         @Ball:歡迎來到Java的世界！
+        @Function:jumpOnce();
         @Ball:Dev Java
         @Function:q1();
         @Ball:Question And Dev Java
