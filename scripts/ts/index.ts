@@ -7,8 +7,11 @@ import { animationStates, messages } from './classes/constants/Constants.js';
 import MessageID from './classes/message/MessageID.js';
 import KeyAnimation from './classes/animation/KeyAnimation.js';
 import Doc from './classes/doct/doct.js';
+import LocalStorageApi, { StorageType } from './classes/localStorage/LocalStorageApi.js';
+import assert from './classes/assert/assert.js';
 
 (function () {
+
     const allLine = `
         @Ball:歡迎來到Java的世界！
         @Function:jumpOnce();
@@ -108,6 +111,7 @@ import Doc from './classes/doct/doct.js';
             await restoreState();
 
             eventHook();
+            spotifyInit();
 
             setTimeout(() => {
                 var obj = document.getElementById(Setting.illustrateID);
@@ -121,6 +125,24 @@ import Doc from './classes/doct/doct.js';
 
         function eventHook() {
             Doc.getElementById(Setting.ballFrameID).addEventListener('click', async () => await click(false));
+        }
+
+        function spotifyInit() {
+            (window as any).onSpotifyIframeApiReady = (IFrameAPI: { createController: (arg0: HTMLElement | null, arg1: { uri: string; }, arg2: (EmbedController: any) => void) => void; }) => {
+                const element = document.getElementById('spotify-iframe');
+                const options = { uri: 'spotify:track:5vNRhkKd0yEAg8suGBpjeY' };
+                const callback = (EmbedController: { loadUri: (arg0: string, arg1: boolean, arg2: number) => void; addListener: (arg0: string, arg1: (e: any) => void) => void; play: () => void; }) => {
+                    var a = LocalStorageApi.read<number>(StorageType.MUSIC_TIME);
+                    if (a !== null) {
+                        EmbedController.loadUri(options.uri, false, a);
+                    }
+                    EmbedController.addListener('playback_update', e => {
+                        LocalStorageApi.write(StorageType.MUSIC_TIME, parseInt((e.data.position as string), 10) / 1000);
+                    });
+                    EmbedController.play();
+                };
+                IFrameAPI.createController(element, options, callback);
+            };
         }
 
         return initAll;
