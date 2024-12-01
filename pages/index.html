@@ -3,13 +3,15 @@
 <html lang="en-us">
 
 <head>
-    <meta name="description" content="Have Good Code is a platform dedicated to providing coding tutorials, and resources. Join us to improve your coding skills.">
+    <meta name="description"
+        content="Have Good Code is a platform dedicated to providing coding tutorials, and resources. Join us to improve your coding skills.">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+Mono+TC&display=swap">
+    <link rel="preload" as="style" onload="this.rel = 'stylesheet'"
+        href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+Mono+TC&display=swap">
 
     <title>Have A Good Code!</title>
 
@@ -30,8 +32,16 @@
                 <input id="question-answer">
             </div>
 
-            <iframe id="editor-iframe" src='https://dev.java/playground' frameborder="0"
-                sandbox="allow-scripts"></iframe>
+            <script>
+                (function (d) {
+                    var iframe = d.getElementById("lesson-media").appendChild(d.createElement('iframe')), doc = iframe.contentWindow.document;
+                    iframe.id = "editor-iframe";
+                    iframe.frameBorder = "0";
+                    iframe.sandbox = "allow-scripts";
+                    doc.open().write("<b" + "ody onload=\"window.location.href=\'https://dev.java/playground\'\"></b" + "ody>");
+                    doc.close();
+                })(document);
+            </script>
         </div>
 
         <div id="spotify-iframe"></div>
