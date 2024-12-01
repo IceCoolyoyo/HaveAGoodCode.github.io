@@ -125,7 +125,7 @@ import LocalStorageApi, { StorageType } from './classes/localStorage/LocalStorag
 
         private static spotifyInit(): void {
             (window as any).onSpotifyIframeApiReady = (IFrameAPI: { createController: (arg0: HTMLElement | null, arg1: { uri: string; }, arg2: (EmbedController: any) => void) => void; }) => {
-                const element = document.getElementById('spotify-iframe');
+                const element = document.getElementById('spotify-iframe') as HTMLElement;
                 const options = { uri: 'spotify:track:5vNRhkKd0yEAg8suGBpjeY' };
                 const callback = (EmbedController: { loadUri: (arg0: string, arg1: boolean, arg2: number) => void; addListener: (arg0: string, arg1: (e: any) => void) => void; play: () => void; }) => {
                     var a = LocalStorageApi.read<number>(StorageType.MUSIC_TIME);
