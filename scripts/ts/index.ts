@@ -13,15 +13,6 @@ import LocalStorageApi, { StorageType } from './classes/localStorage/LocalStorag
             this.initAll();
         }
 
-        private static allLine = `@Ball:歡迎來到Java的世界！
-                                    @Function:jumpOnce();
-                                    @Ball:Dev Java
-                                    @Function:q1();
-                                    @Ball:Question And Dev Java
-                                    @Function:q2();
-                                    @Ball:「基本類型」就是「國文與英文」、「數學」
-                                    @Function:q3();`;
-
         private static async click(init: boolean): Promise<void> {
             if (!KeyAnimation.canCountinue) {
                 return;
@@ -49,7 +40,14 @@ import LocalStorageApi, { StorageType } from './classes/localStorage/LocalStorag
             // const dramaRes = await fetch("https://raw.githubusercontent.com/HaveAGoodCode/HaveAGoodCode.github.io/refs/heads/main/dramas/drama.drama");
             // const drama = await dramaRes.text();
             // const lines = drama.split('\n');
-            var lines = this.allLine.trim().split('\n');
+            var lines = `@Ball:歡迎來到Java的世界！
+                            @Function:jumpOnce();
+                            @Ball:Dev Java
+                            @Function:q1();
+                            @Ball:Question And Dev Java
+                            @Function:q2();
+                            @Ball:「基本類型」就是「國文與英文」、「數學」
+                            @Function:q3();`.trim().split('\n');
             for (var index = 0; index < lines.length; index++) {
                 messages[index] = Message.createObjWithString(lines[index].replace(/^\s+/, ''));
             }
