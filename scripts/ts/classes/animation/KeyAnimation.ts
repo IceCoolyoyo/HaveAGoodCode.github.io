@@ -1,45 +1,64 @@
-
-import { AnimationState } from '../enum/Types.js';
-import { animationStates } from '../constants/Constants.js';
+import DebugTool from '../debug/DebugTool.js';
 
 export default class KeyAnimation {
-    static setObjAnimation(string: string, obj: HTMLElement, runnable?: (() => Promise<void>) | null) {
-        var width = KeyAnimation.calcWidth(string);
-        animationStates[0] = AnimationState.TYPING;
+    private static countinue : boolean = true;
+
+    public static get canCountinue() : boolean {
+        return KeyAnimation.countinue;
+    }
+
+    private static toggleCountinue() : void {
+        KeyAnimation.countinue = !KeyAnimation.countinue;
+    }
+ 
+    public static setObjAnimation(string: string, obj: HTMLElement, runnable?: (() => Promise<void>) | null):void {
+        var width : number = KeyAnimation.calcWidth(string);
+        
+        KeyAnimation.toggleCountinue();
+
         obj.innerHTML = string;
         obj.style.width = `${width}ch`;
         obj.style.borderRightColor = 'rgb(0, 0, 0)';
         obj.style.animation = `typing ${width / 10}s steps(${string.length}), caret 0.8s steps(1) infinite`;
+
         setTimeout(() => {
             KeyAnimation.clearObjAnimation(obj);
-            animationStates[0] = AnimationState.IDLE;
+            KeyAnimation.toggleCountinue();
             if (runnable) {
                 runnable();
             }
         }, ((width / 10) * 1000) + 500);
     }
 
-    static clearObjAnimation(obj: HTMLElement) {
+    public static clearObjAnimation(obj: HTMLElement):void {
         obj.style.borderRightColor = 'transparent';
         obj.style.animation = ``;
     }
 
-    static deTypingAnimation(width: number, obj: HTMLElement) {
+    public static deTypingAnimation(width: number, obj: HTMLElement):void {
         obj.style.animation = `deTyping ${width / 10}s steps(${obj.innerHTML.length}), caret 0.8s steps(1) infinite`;
         setTimeout(() => {
             KeyAnimation.clearObjAnimation(obj);
         }, ((width / 10) * 1000));
     }
 
-    static calcWidth(string: string) {
-        var width = 0;
-        for (var char of string) {
-            if (/[\u4e00-\u9fa5\uff0c\u3002\u3001\u300c\u300d\uff1b\uff1a\uff08\uff09\uff1f\uff01\u3010\u3011\u300a\u300b\u2014\u2026\u2013\u2018\u201c\u201d\uff0e]/.test(char)) {
-                width += 2;
-            } else {
-                width += 1;
-            }
+    public static calcWidth(string: string): number {
+        const chineseCharRegex = /[\u4E00-\u9FFF]/;
+        const doubleWidthCharRegex = /[\u3000-\u303F\uFF00-\uFFFF]/;
+
+        const debugArray: Array<{ char: string; width: number }> = [];
+
+        let width = 0;
+
+        for (let char of string) {
+            const charWidth = chineseCharRegex.test(char) || doubleWidthCharRegex.test(char) ? 2 : 1;
+            width += charWidth;
+            DebugTool.ifDebug(() => debugArray.push({ char, width: charWidth }));
         }
+
+        DebugTool.ifDebug(() =>
+            console.debug("%cFunction %ccalcWidth", "color: #CCEEFF;", "color: #FFC8B4; font-weight: bold;", debugArray)
+        );
         return width;
     }
 }

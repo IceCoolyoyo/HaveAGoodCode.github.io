@@ -11,9 +11,3 @@ export enum DramaType {
 export const classList = Object.freeze({
     BallAnimation, Table, Question
 });
-
-export enum AnimationState {
-    IDLE = 'idle',
-    TYPING = 'typing',
-    EXECUTING_FUNCTION = 'executing_function',
-};
