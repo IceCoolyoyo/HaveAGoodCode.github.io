@@ -6,11 +6,6 @@
     font-style: normal;
     transition: all 0.3s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    height: 10%;
-    bottom: 20%;
-    left: 10%;
-    position: absolute;
 }
 
 #question-answer:focus {
@@ -20,14 +15,10 @@
 
 #question-title {
     // padding = 1% (left and right)
-    width: calc(80% + calc(1% * 2));
     font-family: 'LXGW WenKai Mono TC';
     font-size: 5vmin;
     font-weight: 400;
     font-style: normal;
-    bottom: 35%;
-    left: calc(10%);
-    position: absolute;
     word-wrap: break-word;
     overflow-wrap: break-word;
 }

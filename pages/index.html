@@ -34,69 +34,25 @@
 <body>
     <div id="base">
         <div id="lesson-media">
-            <div id="question">
+            <div id="left">
+                <span id="question-title">1+1=?</span>
+                <span id="question-title">1+1=?</span>
                 <span id="question-title">1+1=?</span>
                 <input id="question-answer">
-                <div id="code">
-                    <div id="topBar">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="54" height="14" viewBox="0 0 54 14">
-                            <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
-                                <circle cx="6" cy="6" r="6" fill="#FF5F56" stroke="#E0443E" stroke-width=".5"></circle>
-                                <circle cx="26" cy="6" r="6" fill="#FFBD2E" stroke="#DEA123" stroke-width=".5"></circle>
-                                <circle cx="46" cy="6" r="6" fill="#27C93F" stroke="#1AAB29" stroke-width=".5"></circle>
-                            </g>
-                        </svg>
-                        <span id="content_copy" class="material-icons">content_copy</span>
-                    </div>
-                    <div id="code-lines">
-                        <span>sssssssssssssssssssssssssssss</span>
-                    </div>
-                </div>
-
-                <script>
-                    const codeElement = document.getElementById('code');
-                    const topBar = document.getElementById('topBar');
-
-                    let isDragging = false;
-                    let startX, startY, initialLeft, initialTop;
-
-                    topBar.addEventListener('mousedown', (event) => {
-                        isDragging = true;
-
-                        startX = event.clientX;
-                        startY = event.clientY;
-                        const rect = codeElement.getBoundingClientRect();
-                        initialLeft = rect.left;
-                        initialTop = rect.top;
-
-                        event.preventDefault();
-                    });
-
-                    window.addEventListener('mousemove', (event) => {
-                        if (!isDragging) return;
-
-                        const deltaX = event.clientX - startX;
-                        const deltaY = event.clientY - startY;
-                        codeElement.style.left = `${initialLeft + deltaX}px`;
-                        codeElement.style.top = `${initialTop + deltaY}px`;
-                    });
-
-                    window.addEventListener('mouseup', () => {
-                        isDragging = false;
-                    });
-                </script>
             </div>
 
-            <script>
-                (function (d) {
-                    var iframe = d.getElementById("lesson-media").appendChild(d.createElement('iframe')), doc = iframe.contentWindow.document;
-                    iframe.id = "editor-iframe";
-                    iframe.frameBorder = "0";
-                    iframe.sandbox = "allow-scripts";
-                    doc.open().write("<b" + "ody onload=\"window.location.href=\'https://dev.java/playground\'\"></b" + "ody>");
-                    doc.close();
-                })(document);
-            </script>
+            <div id="right">
+                <script>
+                    (function (d) {
+                        var iframe = d.getElementById("right").appendChild(d.createElement('iframe')), doc = iframe.contentWindow.document;
+                        iframe.id = "editor-iframe";
+                        iframe.frameBorder = "0";
+                        iframe.sandbox = "allow-scripts";
+                        doc.open().write("<b" + "ody onload=\"window.location.href=\'https://dev.java/playground\'\"></b" + "ody>");
+                        doc.close();
+                    })(document);
+                </script>
+            </div>
         </div>
 
         <div id="spotify-iframe" allow="autoplay; fullscreen"></div>

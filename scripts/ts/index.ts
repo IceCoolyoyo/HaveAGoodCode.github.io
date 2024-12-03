@@ -6,6 +6,8 @@ import MessageID from './classes/message/MessageID.js';
 import KeyAnimation from './classes/animation/KeyAnimation.js';
 import Doc from './classes/doct/doct.js';
 import LocalStorageApi, { StorageType } from './classes/localStorage/LocalStorageApi.js';
+import CodeFrame from './classes/code_frame/code.js';
+import Question from './classes/textbook/Question.js';
 
 (function () {
     const _ = class {
@@ -40,14 +42,12 @@ import LocalStorageApi, { StorageType } from './classes/localStorage/LocalStorag
             // const dramaRes = await fetch("https://raw.githubusercontent.com/HaveAGoodCode/HaveAGoodCode.github.io/refs/heads/main/dramas/drama.drama");
             // const drama = await dramaRes.text();
             // const lines = drama.split('\n');
-            var lines = `@Ball:歡迎來到Java的世界！
-                            @Function:jumpOnce();
-                            @Ball:Dev Java
-                            @Function:q1();
-                            @Ball:Question And Dev Java
-                            @Function:q2();
-                            @Ball:「基本類型」就是「國文與英文」、「數學」
-                            @Function:q3();`.trim().split('\n');
+            var lines = `@Ball:true為真，false為假
+                        @Ball:電腦任何地方的真假表示都用這兩個東西替代
+                        @Function:q4
+                        @Ball:rev
+                        @Function:q5
+                            `.trim().split('\n');
             for (var index = 0; index < lines.length; index++) {
                 messages[index] = Message.createObjWithString(lines[index].replace(/^\s+/, ''));
             }
@@ -108,6 +108,7 @@ import LocalStorageApi, { StorageType } from './classes/localStorage/LocalStorag
 
             this.eventHook();
             this.spotifyInit();
+            document.getElementById("left")?.appendChild(CodeFrame.getCodeFrame());
 
             setTimeout(() => {
                 var obj = document.getElementById(Setting.illustrateID);
@@ -121,6 +122,12 @@ import LocalStorageApi, { StorageType } from './classes/localStorage/LocalStorag
 
         private static eventHook(): void {
             Doc.getElementById(Setting.ballFrameID).addEventListener('click', async () => await this.click(false));
+            (document.getElementById("question-answer") as HTMLElement).oninput = function() {
+                if ((this as HTMLInputElement).value === Question.answer) {
+                    Question.q5();
+                    (this as HTMLInputElement).disabled = true;
+                }
+            };            
         }
 
         private static spotifyInit(): void {
