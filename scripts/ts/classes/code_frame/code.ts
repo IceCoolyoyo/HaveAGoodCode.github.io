@@ -5,85 +5,41 @@ export default class CodeFrame {
         const codeDiv = document.createElement('div');
         codeDiv.id = 'code';
 
-        const topBarDiv = document.createElement('div');
-        topBarDiv.id = 'topBar';
-
-        const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svgElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-        svgElement.setAttribute('width', '54');
-        svgElement.setAttribute('height', '14');
-        svgElement.setAttribute('viewBox', '0 0 54 14');
-
-        const gElement = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        gElement.setAttribute('fill', 'none');
-        gElement.setAttribute('fill-rule', 'evenodd');
-        gElement.setAttribute('transform', 'translate(1 1)');
-
-        const circles = [
-            { cx: '6', fill: '#FF5F56', stroke: '#E0443E' },
-            { cx: '26', fill: '#FFBD2E', stroke: '#DEA123' },
-            { cx: '46', fill: '#27C93F', stroke: '#1AAB29' },
-        ];
-
-        circles.forEach(({ cx, fill, stroke }) => {
-            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-            circle.setAttribute('cx', cx);
-            circle.setAttribute('cy', '6');
-            circle.setAttribute('r', '6');
-            circle.setAttribute('fill', fill);
-            circle.setAttribute('stroke', stroke);
-            circle.setAttribute('stroke-width', '.5');
-            gElement.appendChild(circle);
-        });
-
-        svgElement.appendChild(gElement);
-        topBarDiv.appendChild(svgElement);
-
-        const spanIcon = document.createElement('span');
+        const spanIcon = document.createElement('button');
         spanIcon.id = 'content_copy';
-        spanIcon.className = 'material-icons';
-        spanIcon.textContent = 'content_copy';
-        topBarDiv.appendChild(spanIcon);
+        spanIcon.innerHTML = `<svg id="copy-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+        <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z">
+        </path>
+        <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z">
+        </path>
+        </svg>`;
+        spanIcon.onclick = () => {
+            navigator.clipboard.writeText((document.getElementById('code-lines') as HTMLElement).textContent as string);
 
-        const codeLinesDiv = document.createElement('div');
-        codeLinesDiv.id = 'code-lines';
+            const pathColors = new Map();
+            const paths = document.querySelectorAll('#copy-svg path');
+            paths.forEach(path => pathColors.set(path, path.getAttribute('fill')));
+            paths.forEach(path => path.setAttribute('fill', '#27C93F'));
+            setTimeout(() => paths.forEach(path => path.setAttribute('fill', pathColors.get(path))) , 800);
+        };
+        codeDiv.appendChild(spanIcon);
 
-        const codeLineSpan = document.createElement('span');
-        codeLineSpan.textContent = 'sssssssssssssssssssssssssssss';
-        codeLinesDiv.appendChild(codeLineSpan);
+        const codeLines = document.createElement('pre');
+        codeLines.id = 'code-lines';
+        codeLines.textContent = `
+        public final class Main {
+            public static void main(String[] args) {
+                System.out.println("Hello World!");
+            }
+        }`;
+        const lines = codeLines.textContent.split("\n");
+        var leadingSpacesCount = lines[1].match(/^\s*/)?.[0].length || 0;
+        const trimmedLines = lines.slice(1).map(line => line.slice(leadingSpacesCount));
+        codeLines.textContent = trimmedLines.join("\n");
 
-        codeDiv.appendChild(topBarDiv);
-        codeDiv.appendChild(codeLinesDiv);
+        codeDiv.appendChild(codeLines);
 
         CodeFrame.codeFrame = codeDiv;
-
-        // let isDragging = false;
-        // let startX: number, startY: number, initialLeft: number, initialTop: number;
-
-        // topBarDiv.addEventListener('mousedown', (event) => {
-        //     isDragging = true;
-
-        //     startX = event.clientX;
-        //     startY = event.clientY;
-        //     const rect = codeDiv.getBoundingClientRect();
-        //     initialLeft = rect.left;
-        //     initialTop = rect.top;
-
-        //     event.preventDefault();
-        // });
-
-        // window.addEventListener('mousemove', (event) => {
-        //     if (!isDragging) return;
-
-        //     const deltaX = event.clientX - startX;
-        //     const deltaY = event.clientY - startY;
-        //     codeDiv.style.left = `${initialLeft + deltaX}px`;
-        //     codeDiv.style.top = `${initialTop + deltaY}px`;
-        // });
-
-        // window.addEventListener('mouseup', () => {
-        //     isDragging = false;
-        // });
     }
 
     public static getCodeFrame(): HTMLElement {

@@ -8,6 +8,7 @@ import Doc from './classes/doct/doct.js';
 import LocalStorageApi, { StorageType } from './classes/localStorage/LocalStorageApi.js';
 import CodeFrame from './classes/code_frame/code.js';
 import Question from './classes/textbook/Question.js';
+import assert from './classes/assert/assert.js';
 
 (function () {
     const _ = class {
@@ -122,12 +123,12 @@ import Question from './classes/textbook/Question.js';
 
         private static eventHook(): void {
             Doc.getElementById(Setting.ballFrameID).addEventListener('click', async () => await this.click(false));
-            (document.getElementById("question-answer") as HTMLElement).oninput = function() {
+            (document.getElementById("question-answer") as HTMLElement).oninput = function () {
                 if ((this as HTMLInputElement).value === Question.answer) {
                     Question.q5();
                     (this as HTMLInputElement).disabled = true;
                 }
-            };            
+            };
         }
 
         private static spotifyInit(): void {

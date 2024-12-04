@@ -1,8 +1,12 @@
+:root {
+    --font-size: 1.5vw;
+}
+
 #base {
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
     overflow: hidden;
     min-height: 100vh;
     min-width: 100vw;
@@ -19,7 +23,7 @@
 
 #frame {
     width: 5%;
-    aspect-ratio: 1 / 1; 
+    aspect-ratio: 1 / 1;
 
     position: absolute;
     bottom: 3%;
@@ -62,7 +66,7 @@
 }
 
 #right {
-    width: 60%;
+    width: 50%;
     height: 100%;
     bottom: 0;
     right: 0;
@@ -89,7 +93,7 @@
 #left {
     display: flex;
     flex-direction: column;
-    width: 40%;
+    width: 50%;
     height: 100%;
     bottom: 0;
     left: 0;
@@ -97,11 +101,11 @@
     padding: 1%;
     justify-content: center;
     align-items: center;
-    gap: 1%;
+    gap: 5%;
     box-sizing: border-box;
 }
 
-#left > * {
+#left>* {
     width: 100%;
     box-sizing: border-box;
 }
