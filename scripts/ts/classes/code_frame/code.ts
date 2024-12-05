@@ -20,22 +20,27 @@ export default class CodeFrame {
             const paths = document.querySelectorAll('#copy-svg path');
             paths.forEach(path => pathColors.set(path, path.getAttribute('fill')));
             paths.forEach(path => path.setAttribute('fill', '#27C93F'));
-            setTimeout(() => paths.forEach(path => path.setAttribute('fill', pathColors.get(path))) , 800);
+            setTimeout(() => paths.forEach(path => path.setAttribute('fill', pathColors.get(path))), 800);
         };
         codeDiv.appendChild(spanIcon);
 
         const codeLines = document.createElement('pre');
+        codeLines.className = 'java';
         codeLines.id = 'code-lines';
-        codeLines.textContent = `
+        codeLines.innerHTML = `
+        <code>
         public final class Main {
             public static void main(String[] args) {
                 System.out.println("Hello World!");
             }
-        }`;
-        const lines = codeLines.textContent.split("\n");
+        }
+        </code>`;
+        const lines = codeLines.innerHTML.split("\n");
         var leadingSpacesCount = lines[1].match(/^\s*/)?.[0].length || 0;
         const trimmedLines = lines.slice(1).map(line => line.slice(leadingSpacesCount));
-        codeLines.textContent = trimmedLines.join("\n");
+        codeLines.innerHTML = trimmedLines.join("\n");
+        // @ts-ignore
+        hljs.highlightElement(codeLines);
 
         codeDiv.appendChild(codeLines);
 
