@@ -123,12 +123,7 @@ import assert from './classes/assert/assert.js';
 
         private static eventHook(): void {
             Doc.getElementById(Setting.ballFrameID).addEventListener('click', async () => await this.click(false));
-            (document.getElementById("question-answer") as HTMLElement).oninput = function () {
-                if ((this as HTMLInputElement).value === Question.answer) {
-                    Question.q5();
-                    (this as HTMLInputElement).disabled = true;
-                }
-            };
+            document.getElementById("left")?.appendChild(Question.question_answer);
         }
 
         private static spotifyInit(): void {

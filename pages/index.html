@@ -37,10 +37,6 @@
     <div id="base">
         <div id="lesson-media">
             <div id="left">
-                <span id="question-title">1+1=?</span>
-                <span id="question-title">1+1=?</span>
-                <span id="question-title">1+1=?</span>
-                <input id="question-answer">
             </div>
 
             <div id="right">
@@ -50,7 +46,9 @@
                         iframe.id = "editor-iframe";
                         iframe.frameBorder = "0";
                         iframe.sandbox = "allow-scripts";
-                        doc.open().write("<b" + "ody onload=\"window.location.href=\'https://dev.java/playground\'\"></b" + "ody>");
+                        iframe.scrolling = "no";
+                        iframe.contentWindow.scrollTo({top : 0});
+                        doc.open().write("<b" + "ody onload=\"window.location.href=\'https://codapi.org/java/\'\"></b" + "ody>");
                         doc.close();
                     })(document);
                 </script>

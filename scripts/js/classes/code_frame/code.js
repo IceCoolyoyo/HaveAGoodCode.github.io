@@ -3,7 +3,7 @@ class CodeFrame{static getCodeFrame(){return CodeFrame.codeFrame}}(()=>{var e=do
         </path>
         <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z">
         </path>
-        </svg>`,t.onclick=()=>{navigator.clipboard.writeText(document.getElementById("code-lines").textContent);let t=new Map,e=document.querySelectorAll("#copy-svg path");e.forEach(e=>t.set(e,e.getAttribute("fill"))),e.forEach(e=>e.setAttribute("fill","#27C93F")),setTimeout(()=>e.forEach(e=>e.setAttribute("fill",t.get(e))),800)},e.appendChild(t),document.createElement("pre")),a=(t.className="java",t.id="code-lines",t.innerHTML=`
+        </svg>`,t.onclick=()=>{navigator.clipboard.writeText(document.getElementById("code-lines").textContent);let t=new Map,e=document.querySelectorAll("#copy-svg path");e.forEach(e=>t.set(e,e.getAttribute("fill"))),e.forEach(e=>e.setAttribute("fill","#27C93F")),setTimeout(()=>e.forEach(e=>e.setAttribute("fill",t.get(e))),300)},e.appendChild(t),document.createElement("pre")),a=(t.className="java",t.id="code-lines",t.innerHTML=`
         <code>
         public final class Main {
             public static void main(String[] args) {

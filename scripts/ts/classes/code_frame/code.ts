@@ -20,7 +20,7 @@ export default class CodeFrame {
             const paths = document.querySelectorAll('#copy-svg path');
             paths.forEach(path => pathColors.set(path, path.getAttribute('fill')));
             paths.forEach(path => path.setAttribute('fill', '#27C93F'));
-            setTimeout(() => paths.forEach(path => path.setAttribute('fill', pathColors.get(path))), 800);
+            setTimeout(() => paths.forEach(path => path.setAttribute('fill', pathColors.get(path))), 300);
         };
         codeDiv.appendChild(spanIcon);
 

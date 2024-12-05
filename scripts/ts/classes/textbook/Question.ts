@@ -6,6 +6,18 @@ export let answer: string[] = [];
 export default class Question {
     static elementStateMap = new Map<HTMLElement, { filter: string | null, animationPlayState: string | null }>();
     static answer: string;
+    static question_answer: HTMLElement;
+
+    static {
+        var question_answer: HTMLElement = document.createElement("input");
+        question_answer.id = "question-answer";
+        question_answer.oninput = function () {
+            if ((this as HTMLInputElement).value === Question.answer) {
+                Question.q5();
+            }
+        };
+        Question.question_answer = question_answer;
+    }
 
     static q1() {
         Doc.getElementById('right').style.width = '100%';
@@ -61,6 +73,10 @@ export default class Question {
                     element.style.animationPlayState = "";
                 }
             }
+        });
+        
+        Array.from(document.querySelectorAll("#left *")).forEach(element => {
+            element.remove();
         });
     }
 }
