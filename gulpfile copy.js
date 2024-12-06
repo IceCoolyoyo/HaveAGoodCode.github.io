@@ -61,4 +61,10 @@ function minifyScripts() {
 
 const processScripts = gulp.series(buildScripts, minifyScripts);
 
-exports.default = gulp.series(minifyPages, processStyles, processScripts);
+function watchTasks() {
+    gulp.watch(['pages/**/*.html'], minifyPages);
+    gulp.watch(['styles/sass/**/*.scss'], processStyles);
+    gulp.watch(['scripts/ts/**/*.ts'], processScripts);
+}
+
+exports.default = gulp.series(minifyPages, processStyles, processScripts, watchTasks);
