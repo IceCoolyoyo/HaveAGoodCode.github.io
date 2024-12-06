@@ -56,18 +56,10 @@ Welcome to **HaveAGoodCode**! 🚀 In this guide, we'll walk through how to get 
       
       This should show the Gulp version installed on your system.
 
-### Step 3: Create a New Directory
-   First, create a new directory:
-   
-   ```bash
-   mkdir have_a_good_code
-   ```
-
-### Step 4: Clone the Repository
-   After creating the directory, navigate into it and clone the repository:
+### Step 3: Clone the Repository
+   After Install the Gulp CLI Globally, navigate into it and clone the repository:
 
    ```bash
-   cd have_a_good_code
    git clone https://github.com/HaveAGoodCode/HaveAGoodCode.github.io.git
    ```
 
@@ -75,7 +67,7 @@ Welcome to **HaveAGoodCode**! 🚀 In this guide, we'll walk through how to get 
    After installing Gulp, you can now run the Gulp tasks in your project.
    
    ```bash
-   gulp
+   gulp --gulpfile '.\gulpfile_dev.js'
    ````
    This will run the default Gulp task defined in your project’s gulpfile.js.
 
