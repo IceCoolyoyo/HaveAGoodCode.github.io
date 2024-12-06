@@ -7,6 +7,7 @@ export default class Question {
     static elementStateMap = new Map<HTMLElement, { filter: string | null, animationPlayState: string | null }>();
     static answer: string;
     static question_answer: HTMLElement;
+    static timeStop: boolean = false;
 
     static {
         var question_answer: HTMLElement = document.createElement("input");
@@ -54,6 +55,7 @@ export default class Question {
         });
 
         Question.answer = "aaaaaa";
+        Question.timeStop = true;
     }
 
     static q5() {
@@ -78,5 +80,7 @@ export default class Question {
         Array.from(document.querySelectorAll("#left *")).forEach(element => {
             element.remove();
         });
+
+        Question.timeStop = false;
     }
 }

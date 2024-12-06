@@ -105,11 +105,12 @@ import assert from './classes/assert/assert.js';
 
         private static async initAll() {
             await this.getDrama();
-            await this.restoreState();
 
             this.eventHook();
             this.spotifyInit();
-            document.getElementById("left")?.appendChild(CodeFrame.getCodeFrame());
+
+            document.addEventListener('DOMContentLoaded', async () => {
+            });
 
             setTimeout(() => {
                 var obj = document.getElementById(Setting.illustrateID);
@@ -122,12 +123,19 @@ import assert from './classes/assert/assert.js';
         }
 
         private static eventHook(): void {
+            document.body.addEventListener('click', (ev) => {
+                if (Question.timeStop) {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                }
+            }, true);
             Doc.getElementById(Setting.ballFrameID).addEventListener('click', async () => await this.click(false));
             document.getElementById("left")?.appendChild(Question.question_answer);
+            document.getElementById("left")?.appendChild(CodeFrame.getCodeFrame());
         }
 
         private static spotifyInit(): void {
-            (window as any).onSpotifyIframeApiReady = (IFrameAPI: { createController: (arg0: HTMLElement | null, arg1: { uri: string; }, arg2: (EmbedController: any) => void) => void; }) => {
+            (window as any).onSpotifyIframeApiReady = async (IFrameAPI: { createController: (arg0: HTMLElement | null, arg1: { uri: string; }, arg2: (EmbedController: any) => void) => void; }) => {
                 const element = document.getElementById('spotify-iframe') as HTMLElement;
                 const options = { uri: 'spotify:track:5vNRhkKd0yEAg8suGBpjeY' };
                 const callback = (EmbedController: { loadUri: (arg0: string, arg1: boolean, arg2: number) => void; addListener: (arg0: string, arg1: (e: any) => void) => void; play: () => void; }) => {
@@ -141,6 +149,8 @@ import assert from './classes/assert/assert.js';
                     EmbedController.play();
                 };
                 IFrameAPI.createController(element, options, callback);
+                
+                await this.restoreState();
             };
         }
     };
