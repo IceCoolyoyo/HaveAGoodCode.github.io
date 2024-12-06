@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="https://unpkg.com/papercss@1.9.2/dist/paper.min.css" />
     <style>
         body {
             margin: 0;
@@ -36,13 +37,14 @@
             display: none;
             flex-direction: column;
             justify-content: space-between;
+            padding: 20px;
         }
 
         #directory-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 5%;
+            padding: 10px;
             background-color: #f4f4f4;
             border-bottom: 1px solid #ccc;
             font-weight: bold;
@@ -62,14 +64,14 @@
 
         #directory-list {
             list-style-type: none;
-            padding: 5%;
+            padding: 0;
             margin: 0;
             overflow-y: auto;
             flex-grow: 1;
         }
 
         #directory-list li {
-            padding: 2.5%;
+            padding: 10px;
             cursor: pointer;
         }
 
@@ -94,6 +96,38 @@
         #open-directory:hover {
             background-color: #0056b3;
         }
+
+        .collapsible {
+            margin-bottom: 10px;
+        }
+
+        .collapsible input {
+            display: none;
+        }
+
+        .collapsible label {
+            display: block;
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .collapsible input:checked + label {
+            background-color: #e0e0e0;
+        }
+
+        .collapsible-body {
+            display: none;
+            padding: 10px;
+            background-color: #fafafa;
+            margin-top: 5px;
+        }
+
+        .collapsible input:checked + label + .collapsible-body {
+            display: block;
+        }
+
     </style>
 </head>
 
@@ -104,8 +138,9 @@
             <span>目錄</span>
             <button id="close-directory">X</button>
         </div>
-        <ul id="directory-list">
-        </ul>
+        <div id="directory-list">
+            <!-- 目錄項目將會被動態生成 -->
+        </div>
     </div>
     <button id="open-directory">目錄</button>
 
@@ -125,25 +160,38 @@
         ];
 
         function createDirectory(items, parentElement) {
-            items.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = item.name;
+            items.forEach((item, index) => {
+                const collapsible = document.createElement('div');
+                collapsible.classList.add('collapsible');
+                
+                const input = document.createElement('input');
+                input.id = 'collapsible' + index;
+                input.type = 'radio';
+                input.name = 'collapsible-group';
+                const label = document.createElement('label');
+                label.setAttribute('for', input.id);
+                label.textContent = item.name;
 
-                li.addEventListener('click', event => {
-                    event.stopPropagation();
-                    if (item.action) {
-                        item.action();
-                    }
-                });
+                const collapsibleBody = document.createElement('div');
+                collapsibleBody.classList.add('collapsible-body');
 
-                parentElement.appendChild(li);
+                if (item.action) {
+                    const action = document.createElement('span');
+                    action.textContent = item.name + ' - Action';
+                    action.addEventListener('click', () => item.action());
+                    collapsibleBody.appendChild(action);
+                }
 
                 if (item.children) {
-                    const ul = document.createElement('ul');
-                    ul.style.marginLeft = '20px';
-                    parentElement.appendChild(ul);
-                    createDirectory(item.children, ul);
+                    const childList = document.createElement('div');
+                    createDirectory(item.children, childList);
+                    collapsibleBody.appendChild(childList);
                 }
+
+                collapsible.appendChild(input);
+                collapsible.appendChild(label);
+                collapsible.appendChild(collapsibleBody);
+                parentElement.appendChild(collapsible);
             });
         }
 
@@ -165,7 +213,6 @@
         document.getElementById('overlay').addEventListener('click', () => toggleDirectory(false));
 
         createDirectory(menuItems, document.getElementById('directory-list'));
-
     </script>
 </body>
 
