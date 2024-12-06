@@ -1,3 +1,5 @@
+import hljs from "highlight.js";
+
 export default class CodeFrame {
     private static codeFrame: HTMLElement;
 
@@ -39,7 +41,6 @@ export default class CodeFrame {
         var leadingSpacesCount = lines[1].match(/^\s*/)?.[0].length || 0;
         const trimmedLines = lines.slice(1).map(line => line.slice(leadingSpacesCount));
         codeLines.innerHTML = trimmedLines.join("\n");
-        // @ts-ignore
         hljs.highlightElement(codeLines);
 
         codeDiv.appendChild(codeLines);
