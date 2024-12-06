@@ -3,17 +3,169 @@
 
 <head>
     <meta charset="utf-8">
-    <title>菜鸟教程(runoob.com)</title>
-    <script>
-    </script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+            display: none;
+        }
+
+        #directory {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 30%;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        #directory-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5%;
+            background-color: #f4f4f4;
+            border-bottom: 1px solid #ccc;
+            font-weight: bold;
+        }
+
+        #directory-header button {
+            background: none;
+            border: none;
+            font-size: 1.5vw;
+            cursor: pointer;
+            color: #666;
+        }
+
+        #directory-header button:hover {
+            color: #000;
+        }
+
+        #directory-list {
+            list-style-type: none;
+            padding: 5%;
+            margin: 0;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        #directory-list li {
+            padding: 2.5%;
+            cursor: pointer;
+        }
+
+        #directory-list li:hover {
+            background-color: #e0e0e0;
+        }
+
+        #open-directory {
+            position: fixed;
+            top: 2.5%;
+            left: 2.5%;
+            z-index: 0;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 1.25%;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 1.4vw;
+        }
+
+        #open-directory:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
-    <h1 id="111">欢迎来到我的主页</h1>
-    <input type="text" name="" id="ewew" oninput="
-            window.localStorage.setItem('aaa', this.value);">
+    <div id="overlay"></div>
+    <div id="directory">
+        <div id="directory-header">
+            <span>目錄</span>
+            <button id="close-directory">X</button>
+        </div>
+        <ul id="directory-list">
+        </ul>
+    </div>
+    <button id="open-directory">目錄</button>
+
     <script>
-        document.getElementById('111').innerText = window.localStorage.getItem('aaa');
+        const menuItems = [
+            { name: 'Home', action: () => alert('Clicked Home.') },
+            { name: 'About Us', action: () => alert('Clicked About Us') },
+            { name: 'Help', action: () => alert('Clicked Help.') },
+            {
+                name: 'Item',
+                children: [
+                    { name: 'Item1', action: () => alert('Clicked Item1.') },
+                    { name: 'Item2', action: () => alert('Clicked Item2.') },
+                ],
+            },
+            { name: 'Call Us', action: () => alert('Clicked Call Us.') },
+        ];
+
+        function createDirectory(items, parentElement) {
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item.name;
+
+                li.addEventListener('click', event => {
+                    event.stopPropagation();
+                    if (item.action) {
+                        item.action();
+                    }
+                });
+
+                parentElement.appendChild(li);
+
+                if (item.children) {
+                    const ul = document.createElement('ul');
+                    ul.style.marginLeft = '20px';
+                    parentElement.appendChild(ul);
+                    createDirectory(item.children, ul);
+                }
+            });
+        }
+
+        function toggleDirectory(show) {
+            const overlay = document.getElementById('overlay');
+            const directory = document.getElementById('directory');
+
+            if (show) {
+                overlay.style.display = 'block';
+                directory.style.display = 'flex';
+            } else {
+                overlay.style.display = 'none';
+                directory.style.display = 'none';
+            }
+        }
+
+        document.getElementById('open-directory').addEventListener('click', () => toggleDirectory(true));
+        document.getElementById('close-directory').addEventListener('click', () => toggleDirectory(false));
+        document.getElementById('overlay').addEventListener('click', () => toggleDirectory(false));
+
+        createDirectory(menuItems, document.getElementById('directory-list'));
+
     </script>
 </body>
 
