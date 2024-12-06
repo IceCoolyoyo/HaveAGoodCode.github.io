@@ -22,6 +22,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    - name: Actions for Discord
+      uses: Ilshidur/action-discord@0.3.2
+
     - name: Build
       run: |
         npm install
