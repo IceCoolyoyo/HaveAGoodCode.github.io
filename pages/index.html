@@ -27,13 +27,24 @@
     <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/question.css">
     <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/code.css">
     <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/java.css">
+    <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/directory.css">
 
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js" integrity="sha512-6yoqbrcLAHDWAdQmiRlHG4+m0g/CT/V9AGyxabG8j7Jk8j3r3K6due7oqpiRMZqcYe9WM2gPcaNNxnl2ux+3tA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"
+        integrity="sha512-6yoqbrcLAHDWAdQmiRlHG4+m0g/CT/V9AGyxabG8j7Jk8j3r3K6due7oqpiRMZqcYe9WM2gPcaNNxnl2ux+3tA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
+    <div id="overlay"></div>
+    <div id="directory">
+        <button id="close-directory"></button>
+        <ul id="directory-list">
+        </ul>
+    </div>
+    <button id="open-directory">目錄</button>
+
     <div id="base">
         <div id="lesson-media">
             <div id="left">
@@ -47,8 +58,9 @@
                         iframe.frameBorder = "0";
                         iframe.sandbox = "allow-scripts";
                         iframe.scrolling = "no";
-                        iframe.contentWindow.scrollTo({top : 0});
-                        doc.open().write("<b" + "ody onload=\"window.location.href=\'https://codapi.org/java/\'\"></b" + "ody>");
+                        iframe.contentWindow.scrollTo({ top: 0 });
+                        doc.open().write("<b" + "ody onload=\"window.location.href=\'https://google.com/\'\"></b" + "ody>");
+                        // https://codapi.org/java/
                         doc.close();
                     })(document);
                 </script>
@@ -67,7 +79,9 @@
 
         <script type="module" src="/scripts/js/index.js"></script>
         <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/java.min.js" integrity="sha512-Agg+F7FqZxvnzs6U4mjOfn7UrM1yy/acUfaXhWCqzLpKq08LT10aT7k04a2RfaqQE2V26SbtSce6yxFzYayegw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/java.min.js"
+            integrity="sha512-Agg+F7FqZxvnzs6U4mjOfn7UrM1yy/acUfaXhWCqzLpKq08LT10aT7k04a2RfaqQE2V26SbtSce6yxFzYayegw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </div>
 </body>
 

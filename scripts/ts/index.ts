@@ -9,6 +9,7 @@ import LocalStorageApi, { StorageType } from './classes/localStorage/LocalStorag
 import CodeFrame from './classes/code_frame/code.js';
 import Question from './classes/textbook/Question.js';
 import assert from './classes/assert/assert.js';
+import DirectoryManager from './classes/directory/Directory.js';
 
 (function () {
     const _ = class {
@@ -109,8 +110,7 @@ import assert from './classes/assert/assert.js';
             this.eventHook();
             this.spotifyInit();
 
-            document.addEventListener('DOMContentLoaded', async () => {
-            });
+            DirectoryManager.main();
 
             setTimeout(() => {
                 var obj = document.getElementById(Setting.illustrateID);
@@ -130,8 +130,8 @@ import assert from './classes/assert/assert.js';
                 }
             }, true);
             Doc.getElementById(Setting.ballFrameID).addEventListener('click', async () => await this.click(false));
-            document.getElementById("left")?.appendChild(Question.question_answer);
-            document.getElementById("left")?.appendChild(CodeFrame.getCodeFrame());
+            (document.getElementById("left") as HTMLElement).appendChild(Question.question_answer);
+            (document.getElementById("left") as HTMLElement).appendChild(CodeFrame.getCodeFrame());
         }
 
         private static spotifyInit(): void {

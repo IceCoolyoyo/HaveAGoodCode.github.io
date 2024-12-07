@@ -5,215 +5,375 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://unpkg.com/papercss@1.9.2/dist/paper.min.css" />
     <style>
+        html {
+            font-size: 1vmin;
+            background: radial-gradient(#bd243f, #190d23);
+        }
+
+        @media (min-width: 500px) {
+            html {
+                font-size: 5px;
+            }
+        }
+
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            color: #190d23;
+            font-size: 12rem;
+            padding: 1rem;
+            font-family: "Courier New";
+            overflow: hidden;
         }
 
-        #overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1;
-            display: none;
+        screen,
+        screen *,
+        screen *:before,
+        screen *:after {
+            box-sizing: border-box;
+            content: "";
+            display: block;
+            transform-style: preserve-3d;
+            position: relative;
+            perspective: 200rem;
         }
 
-        #directory {
-            position: fixed;
-            top: 0;
+        card {
+            margin: auto;
+            height: 96rem;
+            width: 64.5rem;
+            background: #fff;
+            border-radius: 5rem;
+            transform: translate3d(0, 0, 0) rotate3d(0, 0, 0, 0) rotate(1deg);
+            position: relative;
+            animation: rotate 3s linear;
+        }
+
+        card *,
+        card *:before,
+        card *:after,
+        card:before,
+        card:after {
+            position: absolute;
             left: 0;
-            width: 30%;
+            top: 0;
+        }
+
+        card:before,
+        card:after {
+            width: 100%;
             height: 100%;
-            background-color: #fff;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
-            z-index: 2;
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
+            transform: translate3d(0, 0, -0.2rem) rotateY(180deg);
+            border-radius: 5rem;
+            animation: light 3s linear;
+            box-shadow: inset 0 0 1rem rgba(25, 13, 35, 0.5);
+            background-image: linear-gradient(to right bottom, rgba(25, 13, 35, 0.2), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(25, 13, 35, 0.3));
         }
 
-        #directory-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            background-color: #f4f4f4;
-            border-bottom: 1px solid #ccc;
-            font-weight: bold;
+        card:after {
+            transform: translate3d(0, 0, 0.2rem) rotateY(0deg);
+            animation: light 3s linear reverse;
         }
 
-        #directory-header button {
-            background: none;
-            border: none;
-            font-size: 1.5vw;
-            cursor: pointer;
-            color: #666;
+        back {
+            box-shadow: 0 0 0 1rem #302e9b, inset 0 0 0 1rem #302e9b, inset 0 0 0 2rem #f5e3e3;
+            border-radius: 1rem;
+            height: 93%;
+            width: 90%;
+            border: 2rem solid rgba(255, 255, 255, 0);
+            background-position: 0.9rem 0.99rem;
+            background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 0.99rem, #302e9b 0.99rem, #302e9b 1.98rem), repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 0.99rem, #302e9b 0.99rem, #302e9b 1.98rem);
+            transform: translate3d(0, 0, -0.1rem) rotateY(180deg);
+            bottom: 0;
+            right: 0;
+            margin: auto;
         }
 
-        #directory-header button:hover {
-            color: #000;
+        shadow {
+            margin: auto;
+            height: 100rem;
+            width: 70rem;
+            background: radial-gradient(#190d23, rgba(255, 255, 255, 0));
+            background: #190d23;
+            border-radius: 10rem;
+            position: relative;
+            animation: shadow 3s linear;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(0deg) skewY(0) scale(1);
+            opacity: 0.2;
+            box-shadow: 0 0 2vmin #190d23, 0 0 5vmin #190d23;
         }
 
-        #directory-list {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            overflow-y: auto;
-            flex-grow: 1;
+        hoverspace {
+            height: 100%;
+            width: 50rem;
+            position: absolute;
+            transform: translate3d(0, 0, 50rem);
+            top: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            cursor: grab;
         }
 
-        #directory-list li {
-            padding: 10px;
-            cursor: pointer;
+        hoverspace:hover~card {
+            animation: rotatehover 3s linear;
         }
 
-        #directory-list li:hover {
-            background-color: #e0e0e0;
+        hoverspace:hover~card:before,
+        hoverspace:hover~card:after {
+            animation: lighthover 3s linear;
         }
 
-        #open-directory {
-            position: fixed;
-            top: 2.5%;
-            left: 2.5%;
-            z-index: 0;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 1.25%;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 1.4vw;
+        hoverspace:hover~card:after {
+            animation: lighthover 3s linear reverse;
         }
 
-        #open-directory:hover {
-            background-color: #0056b3;
+        hoverspace:hover~shadow {
+            animation: shadowhover 3s linear;
         }
 
-        .collapsible {
-            margin-bottom: 10px;
+        @keyframes rotate {
+            100% {
+                transform: translate3d(0, 0, 0) rotate3d(1, 1, 0, -360deg) rotate(1deg);
+            }
         }
 
-        .collapsible input {
-            display: none;
+        @keyframes rotatehover {
+            100% {
+                transform: translate3d(0, 0, 0) rotate3d(1, 1, 0, -360deg) rotate(1deg);
+            }
         }
 
-        .collapsible label {
-            display: block;
-            background-color: #f4f4f4;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
+        @keyframes light {
+
+            0%,
+            100%,
+            50% {
+                background-color: rgba(255, 255, 255, 0);
+            }
+
+            25% {
+                background-color: rgba(245, 227, 227, 0.7);
+            }
+
+            75% {
+                background-color: #190d23;
+            }
         }
 
-        .collapsible input:checked + label {
-            background-color: #e0e0e0;
+        @keyframes lighthover {
+
+            0%,
+            100%,
+            50% {
+                background-color: rgba(255, 255, 255, 0);
+            }
+
+            25% {
+                background-color: rgba(245, 227, 227, 0.7);
+            }
+
+            75% {
+                background-color: #190d23;
+            }
         }
 
-        .collapsible-body {
-            display: none;
-            padding: 10px;
-            background-color: #fafafa;
-            margin-top: 5px;
+        @keyframes shadow {
+            25% {
+                transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(90deg) skewY(-90deg);
+                opacity: 0;
+            }
+
+            50% {
+                transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(90deg) skewY(0);
+                opacity: 0.2;
+            }
+
+            75% {
+                transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(90deg) skewY(90deg);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(180deg) skewY(0);
+                opacity: 0.2;
+            }
         }
 
-        .collapsible input:checked + label + .collapsible-body {
-            display: block;
+        @keyframes shadowhover {
+            25% {
+                transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(90deg) skewY(-90deg);
+                opacity: 0;
+            }
+
+            50% {
+                transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(90deg) skewY(0);
+                opacity: 0.2;
+            }
+
+            75% {
+                transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(90deg) skewY(90deg);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(180deg) skewY(0);
+                opacity: 0.2;
+            }
         }
 
+        front {
+            transform: translate3d(0, 0, 0.1rem) rotateY(0deg);
+            height: 100%;
+            width: 100%;
+        }
+
+        front>* {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
     </style>
 </head>
 
 <body>
-    <div id="overlay"></div>
-    <div id="directory">
-        <div id="directory-header">
-            <span>目錄</span>
-            <button id="close-directory">X</button>
-        </div>
-        <div id="directory-list">
-            <!-- 目錄項目將會被動態生成 -->
-        </div>
-    </div>
-    <button id="open-directory">目錄</button>
-
+    <screen>
+        <hoverspace></hoverspace>
+        <shadow></shadow>
+        <card>
+            <back></back>
+            <front>
+                <!--up-->
+                <x>
+                    <x></x>
+                    <x>
+                        <x>
+                            <x></x>
+                        </x>
+                        <!--body-->
+                        <x>
+                            <!--shirt-->
+                            <x>
+                                <x></x>
+                                <x></x>
+                            </x>
+                            <!--coat-->
+                            <x>
+                                <x></x>
+                            </x>
+                            <x></x>
+                        </x>
+                        <x></x>
+                        <x></x>
+                        <x></x>
+                        <x></x>
+                        <x>
+                            <x></x>
+                            <x></x>
+                            <x></x>
+                            <x></x>
+                            <x></x>
+                            <x></x>
+                            <x></x>
+                            <x></x>
+                        </x>
+                        <x></x>
+                        <x></x>
+                        <x></x>
+                        <x></x>
+                        <x></x>
+                        <x></x>
+                    </x>
+                </x>
+                <!--down-->
+                <x>
+                    <x></x>
+                    <x>
+                        <x>
+                            <x></x>
+                        </x>
+                        <!--body-->
+                        <x>
+                            <!--shirt-->
+                            <x>
+                                <x></x>
+                                <x></x>
+                            </x>
+                            <!--coat-->
+                            <x>
+                                <x></x>
+                            </x>
+                            <x></x>
+                        </x>
+                        <x></x>
+                        <x></x>
+                        <x></x>
+                        <x></x>
+                        <x>
+                            <x></x>
+                            <x></x>
+                            <x></x>
+                            <x></x>
+                            <x></x>
+                            <x></x>
+                            <x></x>
+                            <x></x>
+                        </x>
+                        <x></x>
+                        <x></x>
+                        <x></x>
+                        <x></x>
+                        <x></x>
+                        <x></x>
+                    </x>
+                </x>
+            </front>
+        </card>
+    </screen>
     <script>
-        const menuItems = [
-            { name: 'Home', action: () => alert('Clicked Home.') },
-            { name: 'About Us', action: () => alert('Clicked About Us') },
-            { name: 'Help', action: () => alert('Clicked Help.') },
-            {
-                name: 'Item',
-                children: [
-                    { name: 'Item1', action: () => alert('Clicked Item1.') },
-                    { name: 'Item2', action: () => alert('Clicked Item2.') },
-                ],
-            },
-            { name: 'Call Us', action: () => alert('Clicked Call Us.') },
-        ];
-
-        function createDirectory(items, parentElement) {
-            items.forEach((item, index) => {
-                const collapsible = document.createElement('div');
-                collapsible.classList.add('collapsible');
-                
-                const input = document.createElement('input');
-                input.id = 'collapsible' + index;
-                input.type = 'radio';
-                input.name = 'collapsible-group';
-                const label = document.createElement('label');
-                label.setAttribute('for', input.id);
-                label.textContent = item.name;
-
-                const collapsibleBody = document.createElement('div');
-                collapsibleBody.classList.add('collapsible-body');
-
-                if (item.action) {
-                    const action = document.createElement('span');
-                    action.textContent = item.name + ' - Action';
-                    action.addEventListener('click', () => item.action());
-                    collapsibleBody.appendChild(action);
-                }
-
-                if (item.children) {
-                    const childList = document.createElement('div');
-                    createDirectory(item.children, childList);
-                    collapsibleBody.appendChild(childList);
-                }
-
-                collapsible.appendChild(input);
-                collapsible.appendChild(label);
-                collapsible.appendChild(collapsibleBody);
-                parentElement.appendChild(collapsible);
-            });
-        }
-
-        function toggleDirectory(show) {
-            const overlay = document.getElementById('overlay');
-            const directory = document.getElementById('directory');
-
-            if (show) {
-                overlay.style.display = 'block';
-                directory.style.display = 'flex';
-            } else {
-                overlay.style.display = 'none';
-                directory.style.display = 'none';
+        document.addEventListener("DOMContentLoaded", () => {
+            const card = document.querySelector("card");
+            const shadow = document.querySelector("shadow");
+    
+            let x = 0, y = 0, z = 0; // 當前位置
+            let targetX = 0, targetY = 0, targetZ = 0; // 目標位置
+    
+            const bounds = { x: 100, y: 50, z: 50 }; // 邊界
+            const speed = 0.05; // 平滑移動速度，越小越平滑
+    
+            function generateNewTarget() {
+                targetX = (Math.random() - 0.5) * bounds.x * 2;
+                targetY = (Math.random() - 0.5) * bounds.y * 2;
+                targetZ = (Math.random() - 0.5) * bounds.z * 2;
             }
-        }
-
-        document.getElementById('open-directory').addEventListener('click', () => toggleDirectory(true));
-        document.getElementById('close-directory').addEventListener('click', () => toggleDirectory(false));
-        document.getElementById('overlay').addEventListener('click', () => toggleDirectory(false));
-
-        createDirectory(menuItems, document.getElementById('directory-list'));
+    
+            function smoothMove() {
+                // 平滑移動到目標點
+                x += (targetX - x) * speed;
+                y += (targetY - y) * speed;
+                z += (targetZ - z) * speed;
+    
+                // 如果接近目標點，生成新的目標
+                if (Math.abs(x - targetX) < 0.1 && Math.abs(y - targetY) < 0.1 && Math.abs(z - targetZ) < 0.1) {
+                    generateNewTarget();
+                }
+    
+                // 更新卡片和影子的位置與旋轉
+                card.style.transform = `translate3d(${x}rem, ${y}rem, ${z}rem) rotate3d(${x}, ${y}, ${z}, ${z}deg)`;
+                shadow.style.transform = `translate3d(${x}rem, ${y + 50}rem, ${z - 50}rem) rotateX(90deg) scale(${1 - z / bounds.z})`;
+    
+                requestAnimationFrame(smoothMove);
+            }
+    
+            generateNewTarget(); // 初始化第一個目標點
+            smoothMove(); // 啟動運動
+        });
     </script>
+    
 </body>
 
 </html>
