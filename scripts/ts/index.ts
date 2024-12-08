@@ -44,7 +44,7 @@ import DirectoryManager from './classes/directory/Directory.js';
             // const dramaRes = await fetch("https://raw.githubusercontent.com/HaveAGoodCode/HaveAGoodCode.github.io/refs/heads/main/dramas/drama.drama");
             // const drama = await dramaRes.text();
             // const lines = drama.split('\n');
-            var lines = `@Ball:true為真，false為假
+            var lines = `@Image:watson.png
                         @Ball:電腦任何地方的真假表示都用這兩個東西替代
                         @Function:q4
                         @Ball:rev
@@ -58,20 +58,16 @@ import DirectoryManager from './classes/directory/Directory.js';
         private static async restoreState() {
             const currentIndex = MessageID.getID();
 
-            if (currentIndex === 0) {
+            if (currentIndex === -1) {
+                MessageID.addOne();
                 await processMessage();
                 return;
-            }
-
-            const upIndex = currentIndex - 1;
-            if (upIndex < 0 || upIndex >= messages.length) {
-                throw new Error("Invalid currentMessageID");
             }
 
             var message = messages[currentIndex];
 
             let startIndex = -1;
-            for (let i = upIndex; i >= 0; i--) {
+            for (let i = currentIndex; i >= 0; i--) {
                 if (messages[i].type === DramaType.Ball) {
                     startIndex = i;
                     break;
@@ -82,26 +78,30 @@ import DirectoryManager from './classes/directory/Directory.js';
                 throw new Error("No message with type DramaType.Ball found");
             }
 
-            if (message.type === DramaType.Ball) {
-                for (let i = startIndex; i < currentIndex; i++) {
-                    var currentMessage = messages[i];
-                    if (currentMessage.type === DramaType.Function) {
-                        await currentMessage.obj();
-                    }
-                }
+            MessageID.addOne();
 
+            for (let i = startIndex; i < currentIndex; i++) {
+                var currentMessage = messages[i];
+                if (currentMessage.type === DramaType.Function) {
+                    await currentMessage.obj();
+                }
+            }
+
+            if (message.type === DramaType.Ball) {
                 KeyAnimation.setObjAnimation(message.obj, ballSays);
             } else {
-                for (let i = startIndex; i < currentIndex; i++) {
-                    var currentMessage = messages[i];
-                    if (currentMessage.type === DramaType.Function) {
-                        await currentMessage.obj();
+                var nextMessage = messages[MessageID.getID()];
+                var animationCallback = nextMessage.type !== DramaType.Ball
+                    ? async () => {
+                        await processMessage();
                     }
-                }
-
-                KeyAnimation.setObjAnimation(messages[startIndex].obj, ballSays, await message.obj());
+                    : null;
+                var finalCallBack = async () => {
+                    await message.obj();
+                    await animationCallback?.();
+                };
+                KeyAnimation.setObjAnimation(messages[startIndex].obj, ballSays, finalCallBack);
             }
-            MessageID.addOne();
         }
 
         private static async initAll() {
@@ -149,7 +149,7 @@ import DirectoryManager from './classes/directory/Directory.js';
                     EmbedController.play();
                 };
                 IFrameAPI.createController(element, options, callback);
-                
+
                 await this.restoreState();
             };
         }

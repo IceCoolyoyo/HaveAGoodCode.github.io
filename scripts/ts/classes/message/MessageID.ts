@@ -5,7 +5,7 @@ export default class MessageID {
 
     static {
         var v = Number(window.localStorage.getItem('messageCount'));
-        MessageID.id = Number.isNaN(v) ? 0 : v;
+        MessageID.id = Number.isNaN(v) ? -1 : v;
     }
 
     static addOne() {

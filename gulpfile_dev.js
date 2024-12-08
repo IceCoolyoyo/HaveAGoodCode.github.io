@@ -59,7 +59,7 @@ function minifyScripts() {
     );
 }
 
-const processScripts = gulp.series(buildScripts, minifyScripts);
+const processScripts = gulp.series(buildScripts);
 
 function watchTasks() {
     gulp.watch(['pages/**/*.html'], minifyPages);

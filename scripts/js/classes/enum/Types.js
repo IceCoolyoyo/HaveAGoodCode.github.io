@@ -1,1 +1,13 @@
-import BallAnimation from"../animation/BallAnimation.js";import Question from"../textbook/Question.js";import Table from"../textbook/Table.js";var DramaType;(a=>{a.Ball="Ball",a.Function="Function",a.Image="Image"})(DramaType=DramaType||{});let classList=Object.freeze({BallAnimation:BallAnimation,Table:Table,Question:Question});export{DramaType,classList};
+import BallAnimation from '../animation/BallAnimation.js';
+import Question from '../textbook/Question.js';
+import Table from '../textbook/Table.js';
+export var DramaType;
+(function (DramaType) {
+    DramaType["Ball"] = "Ball";
+    DramaType["Function"] = "Function";
+    DramaType["Image"] = "Image";
+})(DramaType || (DramaType = {}));
+;
+export const classList = Object.freeze({
+    BallAnimation, Table, Question
+});

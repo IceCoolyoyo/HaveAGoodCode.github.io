@@ -56,8 +56,7 @@ export default class Message {
             case DramaType.Image:
                 var obj = document.createElement('img');
                 obj.src = Setting.imageSrcFolder + string;
-                obj.classList.add(Setting.stableSizeTag);
-                return new Message(type, obj);
+                return new Message(DramaType.Function, function () { document.getElementById("left")?.appendChild(obj) });
 
             default:
                 throw new Error(`Unknow type : ${type}, string : ${string}`);

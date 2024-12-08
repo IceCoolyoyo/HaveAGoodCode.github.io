@@ -14,7 +14,7 @@ export default class Setting {
     static jumpTag = Object.freeze('jump');
     static stableSizeTag = Object.freeze('checkSize');
 
-    static imageSrcFolder = Object.freeze('images/');
+    static imageSrcFolder = Object.freeze('../assets/images/');
 
     static jumpAnimationOnceMS = Object.freeze(400);
 

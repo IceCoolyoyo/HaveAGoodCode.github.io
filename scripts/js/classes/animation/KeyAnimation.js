@@ -1,1 +1,49 @@
-import DebugTool from"../debug/DebugTool.js";class KeyAnimation{static get canCountinue(){return KeyAnimation.countinue}static toggleCountinue(){KeyAnimation.countinue=!KeyAnimation.countinue}static setObjAnimation(t,i,n){var e=KeyAnimation.calcWidth(t);KeyAnimation.toggleCountinue(),i.innerHTML=t,i.style.width=e+"ch",i.style.borderRightColor="rgb(0, 0, 0)",i.style.animation=`typing ${e/10}s steps(${t.length}), caret 0.8s steps(1) infinite`,setTimeout(()=>{KeyAnimation.clearObjAnimation(i),KeyAnimation.toggleCountinue(),n&&n()},e/10*1e3+500)}static clearObjAnimation(t){t.style.borderRightColor="transparent",t.style.animation=""}static deTypingAnimation(t,i){i.style.animation=`deTyping ${t/10}s steps(${i.innerHTML.length}), caret 0.8s steps(1) infinite`,setTimeout(()=>{KeyAnimation.clearObjAnimation(i)},t/10*1e3)}static calcWidth(t){var n=/[\u4E00-\u9FFF]/,e=/[\u3000-\u303F\uFF00-\uFFFF]/;let o=[],a=0;for(let i of t){let t=n.test(i)||e.test(i)?2:1;a+=t,DebugTool.ifDebug(()=>o.push({char:i,width:t}))}return DebugTool.ifDebug(()=>console.debug("%cFunction %ccalcWidth","color: #CCEEFF;","color: #FFC8B4; font-weight: bold;",o)),a}}KeyAnimation.countinue=!0;export default KeyAnimation;
+import DebugTool from '../debug/DebugTool.js';
+class KeyAnimation {
+    static get canCountinue() {
+        return KeyAnimation.countinue;
+    }
+    static toggleCountinue() {
+        KeyAnimation.countinue = !KeyAnimation.countinue;
+    }
+    static setObjAnimation(string, obj, runnable) {
+        var width = KeyAnimation.calcWidth(string);
+        KeyAnimation.toggleCountinue();
+        obj.innerHTML = string;
+        obj.style.width = `${width}ch`;
+        obj.style.borderRightColor = 'rgb(0, 0, 0)';
+        obj.style.animation = `typing ${width / 10}s steps(${string.length}), caret 0.8s steps(1) infinite`;
+        setTimeout(() => {
+            KeyAnimation.clearObjAnimation(obj);
+            KeyAnimation.toggleCountinue();
+            if (runnable) {
+                runnable();
+            }
+        }, ((width / 10) * 1000) + 500);
+    }
+    static clearObjAnimation(obj) {
+        obj.style.borderRightColor = 'transparent';
+        obj.style.animation = ``;
+    }
+    static deTypingAnimation(width, obj) {
+        obj.style.animation = `deTyping ${width / 10}s steps(${obj.innerHTML.length}), caret 0.8s steps(1) infinite`;
+        setTimeout(() => {
+            KeyAnimation.clearObjAnimation(obj);
+        }, ((width / 10) * 1000));
+    }
+    static calcWidth(string) {
+        const chineseCharRegex = /[\u4E00-\u9FFF]/;
+        const doubleWidthCharRegex = /[\u3000-\u303F\uFF00-\uFFFF]/;
+        const debugArray = [];
+        let width = 0;
+        for (let char of string) {
+            const charWidth = chineseCharRegex.test(char) || doubleWidthCharRegex.test(char) ? 2 : 1;
+            width += charWidth;
+            DebugTool.ifDebug(() => debugArray.push({ char, width: charWidth }));
+        }
+        DebugTool.ifDebug(() => console.debug("%cFunction %ccalcWidth", "color: #CCEEFF;", "color: #FFC8B4; font-weight: bold;", debugArray));
+        return width;
+    }
+}
+KeyAnimation.countinue = true;
+export default KeyAnimation;

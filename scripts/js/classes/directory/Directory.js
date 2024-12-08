@@ -1,1 +1,63 @@
-class DirectoryManager{static createDirectory(e,r){e.forEach(t=>{var e=document.createElement("li");e.textContent=t.name,e.addEventListener("click",e=>{e.stopPropagation(),t.action&&t.action()}),r.appendChild(e),t.children&&((e=document.createElement("ul")).style.marginLeft="1%",r.appendChild(e),DirectoryManager.createDirectory(t.children,e))})}static toggleDirectory(e){var t=document.getElementById("overlay"),r=document.getElementById("directory");e?(t.style.display="block",r.style.display="flex"):(t.style.display="none",r.style.display="none")}static setupEventListeners(){var e=document.getElementById("open-directory"),t=document.getElementById("close-directory"),r=document.getElementById("overlay");e.addEventListener("click",()=>DirectoryManager.toggleDirectory(!0)),t.addEventListener("click",()=>DirectoryManager.toggleDirectory(!1)),r.addEventListener("click",()=>DirectoryManager.toggleDirectory(!1))}static initializeDirectory(){var e=document.getElementById("directory-list");DirectoryManager.createDirectory(DirectoryManager.menuItems,e)}static main(){DirectoryManager.setupEventListeners(),DirectoryManager.initializeDirectory()}}DirectoryManager.menuItems=[{name:"Home",action:()=>alert("Clicked Home.")},{name:"About Us",action:()=>alert("Clicked About Us")},{name:"Help",action:()=>alert("Clicked Help.")},{name:"Item",children:[{name:"Item1",action:()=>alert("Clicked Item1.")},{name:"Item2",action:()=>alert("Clicked Item2.")}]},{name:"Call Us",action:()=>alert("Clicked Call Us.")}];export default DirectoryManager;
+class DirectoryManager {
+    static createDirectory(items, parentElement) {
+        items.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item.name;
+            li.addEventListener('click', event => {
+                event.stopPropagation();
+                if (item.action) {
+                    item.action();
+                }
+            });
+            parentElement.appendChild(li);
+            if (item.children) {
+                const ul = document.createElement('ul');
+                ul.style.marginLeft = '1%';
+                parentElement.appendChild(ul);
+                DirectoryManager.createDirectory(item.children, ul);
+            }
+        });
+    }
+    static toggleDirectory(show) {
+        const overlay = document.getElementById('overlay');
+        const directory = document.getElementById('directory');
+        if (show) {
+            overlay.style.display = 'block';
+            directory.style.display = 'flex';
+        }
+        else {
+            overlay.style.display = 'none';
+            directory.style.display = 'none';
+        }
+    }
+    static setupEventListeners() {
+        const openButton = document.getElementById('open-directory');
+        const closeButton = document.getElementById('close-directory');
+        const overlay = document.getElementById('overlay');
+        openButton.addEventListener('click', () => DirectoryManager.toggleDirectory(true));
+        closeButton.addEventListener('click', () => DirectoryManager.toggleDirectory(false));
+        overlay.addEventListener('click', () => DirectoryManager.toggleDirectory(false));
+    }
+    static initializeDirectory() {
+        const directoryList = document.getElementById('directory-list');
+        DirectoryManager.createDirectory(DirectoryManager.menuItems, directoryList);
+    }
+    static main() {
+        DirectoryManager.setupEventListeners();
+        DirectoryManager.initializeDirectory();
+    }
+}
+DirectoryManager.menuItems = [
+    { name: 'Home', action: () => alert('Clicked Home.') },
+    { name: 'About Us', action: () => alert('Clicked About Us') },
+    { name: 'Help', action: () => alert('Clicked Help.') },
+    {
+        name: 'Item',
+        children: [
+            { name: 'Item1', action: () => alert('Clicked Item1.') },
+            { name: 'Item2', action: () => alert('Clicked Item2.') },
+        ],
+    },
+    { name: 'Call Us', action: () => alert('Clicked Call Us.') },
+];
+export default DirectoryManager;
