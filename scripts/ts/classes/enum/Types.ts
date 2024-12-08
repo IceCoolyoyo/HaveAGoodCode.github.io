@@ -5,7 +5,8 @@ import Table from '../textbook/Table.js';
 export enum DramaType {
     Ball = 'Ball',
     Function = 'Function',
-    Image = 'Image'
+    Image = 'Image',
+    Code = 'Code'
 };
 
 export const classList = Object.freeze({

@@ -11,7 +11,7 @@ class MessageID {
     }
 }
 (() => {
-    var v = Number(window.localStorage.getItem('messageCount'));
+    const v = Number(window.localStorage.getItem('messageCount'));
     MessageID.id = Number.isNaN(v) ? -1 : v;
 })();
 export default MessageID;

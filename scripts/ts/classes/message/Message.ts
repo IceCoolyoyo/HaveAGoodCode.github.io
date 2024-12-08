@@ -5,6 +5,8 @@ import KeyAnimation from '../animation/KeyAnimation.js';
 import MessageID from '../message/MessageID.js';
 import { messages } from '../constants/Constants.js';
 import Doc from '../doct/doct.js';
+import CodeFrame from '../code_frame/code.js';
+import Codes from '../../Codes.js';
 
 export default class Message {
     type: DramaType;
@@ -22,7 +24,7 @@ export default class Message {
 
     static createObjWithString(string: string) {
         for (let type of Object.values(DramaType)) {
-            var prefix = '@' + type + ":";
+            const prefix = '@' + type + ":";
             if (string.startsWith(prefix)) {
                 return Message.processType(type, string.replace(prefix, ''));
             }
@@ -32,15 +34,16 @@ export default class Message {
 
     static processType(type: DramaType, string: string) {
         switch (type) {
-            case DramaType.Ball:
-                var message: string = string.replace(Setting.drama_fineSentence, goodMessage);
+            case DramaType.Ball: {
+                const message: string = string.replace(Setting.drama_fineSentence, goodMessage);
                 return new Message(type, message, message);
+            }
 
-            case DramaType.Function:
-                var name = string.replace(/[();]/g, '');
-                var method = null;
+            case DramaType.Function: {
+                const name = string.replace(/[();]/g, '');
+                let method = null;
                 for (let className in classList) {
-                    var classObj = classList[className];
+                    const classObj = classList[className];
                     if (classObj) {
                         method = classObj[name];
                         if (typeof method === 'function') {
@@ -52,19 +55,27 @@ export default class Message {
                     throw new Error(`Unknow function : ${method}, name : ${name}`);
                 }
                 return new Message(type, method);
+            }
 
-            case DramaType.Image:
-                var obj = document.createElement('img');
+            case DramaType.Image: {
+                const obj = document.createElement('img');
                 obj.src = Setting.imageSrcFolder + string;
                 return new Message(DramaType.Function, function () { document.getElementById("left")?.appendChild(obj) });
+            }
 
-            default:
+            case DramaType.Code: {
+                const obj = CodeFrame.createCodeFrame(Codes[string]);
+                return new Message(DramaType.Function, function () { document.getElementById("left")?.appendChild(obj) });
+            }
+
+            default: {
                 throw new Error(`Unknow type : ${type}, string : ${string}`);
+            }
         }
     }
 
     static getHelloMsg() {
-        var hour = new Date().getHours();
+        const hour = new Date().getHours();
         if (hour >= 4 && hour < 12) {
             return Setting.goodMorning;
         } else if (hour >= 12 && hour < 18) {
@@ -78,12 +89,12 @@ export default class Message {
 export const ballSays = Doc.getElementById(Setting.ballSaysID);
 
 export async function processMessage() {
-    var message = messages[MessageID.getID()];
+    const message = messages[MessageID.getID()];
     switch (message.type) {
         case DramaType.Ball:
             MessageID.addOne();
-            var nextMessage = messages[MessageID.getID()];
-            var animationCallback = nextMessage.type !== DramaType.Ball
+            const nextMessage = messages[MessageID.getID()];
+            const animationCallback = nextMessage.type !== DramaType.Ball
                 ? async () => {
                     await processMessage();
                 }
@@ -95,17 +106,11 @@ export async function processMessage() {
             await message.obj();
             break;
 
-        // case DramaType.Image:
-        //     var lessonMedia = document.getElementById(Setting.lessonMediaID);
-        //     assert(lessonMedia !== null);
-        //     lessonMedia.appendChild(message.obj);
-        //     break;
-
         default:
             throw new Error(`Unknow type : ${message.type}`);
     }
     MessageID.addOne();
-    var nextMessage = messages[MessageID.getID()];
+    const nextMessage = messages[MessageID.getID()];
     if (nextMessage.type !== DramaType.Ball) {
         await processMessage();
     }

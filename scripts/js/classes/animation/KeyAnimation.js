@@ -7,7 +7,7 @@ class KeyAnimation {
         KeyAnimation.countinue = !KeyAnimation.countinue;
     }
     static setObjAnimation(string, obj, runnable) {
-        var width = KeyAnimation.calcWidth(string);
+        const width = KeyAnimation.calcWidth(string);
         KeyAnimation.toggleCountinue();
         obj.innerHTML = string;
         obj.style.width = `${width}ch`;

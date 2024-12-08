@@ -10,7 +10,7 @@ export default class Question {
     static timeStop: boolean = false;
 
     static {
-        var question_answer: HTMLElement = document.createElement("input");
+        const question_answer: HTMLElement = document.createElement("input");
         question_answer.id = "question-answer";
         question_answer.oninput = function () {
             if ((this as HTMLInputElement).value === Question.answer) {

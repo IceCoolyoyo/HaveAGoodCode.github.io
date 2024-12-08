@@ -12,7 +12,7 @@ export default class KeyAnimation {
     }
  
     public static setObjAnimation(string: string, obj: HTMLElement, runnable?: (() => Promise<void>) | null):void {
-        var width : number = KeyAnimation.calcWidth(string);
+        const width : number = KeyAnimation.calcWidth(string);
         
         KeyAnimation.toggleCountinue();
 

@@ -21,6 +21,7 @@ import LocalStorageApi, { StorageType } from './classes/localStorage/LocalStorag
 import CodeFrame from './classes/code_frame/code.js';
 import Question from './classes/textbook/Question.js';
 import DirectoryManager from './classes/directory/Directory.js';
+import { Part } from './Drama.js';
 (function () {
     var _a;
     const _ = (_a = class {
@@ -35,7 +36,7 @@ import DirectoryManager from './classes/directory/Directory.js';
                         }
                     });
                     if (!init) {
-                        var illustrate = document.getElementById(Setting.illustrateID);
+                        const illustrate = document.getElementById(Setting.illustrateID);
                         if (illustrate !== null) {
                             illustrate.remove();
                         }
@@ -49,13 +50,13 @@ import DirectoryManager from './classes/directory/Directory.js';
                     // const dramaRes = await fetch("https://raw.githubusercontent.com/HaveAGoodCode/HaveAGoodCode.github.io/refs/heads/main/dramas/drama.drama");
                     // const drama = await dramaRes.text();
                     // const lines = drama.split('\n');
-                    var lines = `@Image:watson.png
-                        @Ball:電腦任何地方的真假表示都用這兩個東西替代
+                    const lines = `@Ball:Hello World!
+                        @Code:helloWorld
+                        @Ball:I love Watson Amelia!!!
+                        @Image:watson.png
                         @Function:q4
-                        @Ball:rev
-                        @Function:q5
                             `.trim().split('\n');
-                    for (var index = 0; index < lines.length; index++) {
+                    for (let index = 0; index < lines.length; index++) {
                         messages[index] = Message.createObjWithString(lines[index].replace(/^\s+/, ''));
                     }
                 });
@@ -68,7 +69,7 @@ import DirectoryManager from './classes/directory/Directory.js';
                         yield processMessage();
                         return;
                     }
-                    var message = messages[currentIndex];
+                    const message = messages[currentIndex];
                     let startIndex = -1;
                     for (let i = currentIndex; i >= 0; i--) {
                         if (messages[i].type === DramaType.Ball) {
@@ -81,7 +82,7 @@ import DirectoryManager from './classes/directory/Directory.js';
                     }
                     MessageID.addOne();
                     for (let i = startIndex; i < currentIndex; i++) {
-                        var currentMessage = messages[i];
+                        const currentMessage = messages[i];
                         if (currentMessage.type === DramaType.Function) {
                             yield currentMessage.obj();
                         }
@@ -90,13 +91,13 @@ import DirectoryManager from './classes/directory/Directory.js';
                         KeyAnimation.setObjAnimation(message.obj, ballSays);
                     }
                     else {
-                        var nextMessage = messages[MessageID.getID()];
-                        var animationCallback = nextMessage.type !== DramaType.Ball
+                        const nextMessage = messages[MessageID.getID()];
+                        const animationCallback = nextMessage.type !== DramaType.Ball
                             ? () => __awaiter(this, void 0, void 0, function* () {
                                 yield processMessage();
                             })
                             : null;
-                        var finalCallBack = () => __awaiter(this, void 0, void 0, function* () {
+                        const finalCallBack = () => __awaiter(this, void 0, void 0, function* () {
                             yield message.obj();
                             yield (animationCallback === null || animationCallback === void 0 ? void 0 : animationCallback());
                         });
@@ -111,7 +112,7 @@ import DirectoryManager from './classes/directory/Directory.js';
                     this.spotifyInit();
                     DirectoryManager.main();
                     setTimeout(() => {
-                        var obj = document.getElementById(Setting.illustrateID);
+                        const obj = document.getElementById(Setting.illustrateID);
                         // The element may have been deleted before execution
                         if (obj) {
                             obj.style.animation = 'fade 2s linear 0s';
@@ -136,7 +137,7 @@ import DirectoryManager from './classes/directory/Directory.js';
                     const element = document.getElementById('spotify-iframe');
                     const options = { uri: 'spotify:track:5vNRhkKd0yEAg8suGBpjeY' };
                     const callback = (EmbedController) => {
-                        var a = LocalStorageApi.read(StorageType.MUSIC_TIME);
+                        const a = LocalStorageApi.read(StorageType.MUSIC_TIME);
                         if (a !== null) {
                             EmbedController.loadUri(options.uri, false, a);
                         }
@@ -147,6 +148,24 @@ import DirectoryManager from './classes/directory/Directory.js';
                     };
                     IFrameAPI.createController(element, options, callback);
                     yield this.restoreState();
+                });
+            }
+            static awa() {
+                const cls = Part;
+                const allKeys = Reflect.ownKeys(cls);
+                const pointers = [];
+                for (let i = 0; i < allKeys.length; i++) {
+                    const key = allKeys[i];
+                    if (typeof cls[key] !== 'function') {
+                        pointers.push({ targetClass: cls, field: key });
+                    }
+                }
+                const allLines = [];
+                pointers.forEach(ptr => {
+                    const value = ptr.targetClass[ptr.field];
+                    const lines = value.split("\n");
+                    lines.forEach(line => allLines.push(line));
+                    allLines.push("@" + DramaType.Function + ":q4");
                 });
             }
         },

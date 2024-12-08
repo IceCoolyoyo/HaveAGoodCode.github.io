@@ -62,7 +62,7 @@ class Question {
 Question.elementStateMap = new Map();
 Question.timeStop = false;
 (() => {
-    var question_answer = document.createElement("input");
+    const question_answer = document.createElement("input");
     question_answer.id = "question-answer";
     question_answer.oninput = function () {
         if (this.value === Question.answer) {

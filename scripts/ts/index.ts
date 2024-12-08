@@ -10,6 +10,7 @@ import CodeFrame from './classes/code_frame/code.js';
 import Question from './classes/textbook/Question.js';
 import assert from './classes/assert/assert.js';
 import DirectoryManager from './classes/directory/Directory.js';
+import { Part } from './Drama.js';
 
 (function () {
     const _ = class {
@@ -29,7 +30,7 @@ import DirectoryManager from './classes/directory/Directory.js';
             });
 
             if (!init) {
-                var illustrate = document.getElementById(Setting.illustrateID);
+                const illustrate = document.getElementById(Setting.illustrateID);
                 if (illustrate !== null) {
                     illustrate.remove();
                 }
@@ -44,13 +45,13 @@ import DirectoryManager from './classes/directory/Directory.js';
             // const dramaRes = await fetch("https://raw.githubusercontent.com/HaveAGoodCode/HaveAGoodCode.github.io/refs/heads/main/dramas/drama.drama");
             // const drama = await dramaRes.text();
             // const lines = drama.split('\n');
-            var lines = `@Image:watson.png
-                        @Ball:電腦任何地方的真假表示都用這兩個東西替代
+            const lines = `@Ball:Hello World!
+                        @Code:helloWorld
+                        @Ball:I love Watson Amelia!!!
+                        @Image:watson.png
                         @Function:q4
-                        @Ball:rev
-                        @Function:q5
                             `.trim().split('\n');
-            for (var index = 0; index < lines.length; index++) {
+            for (let index = 0; index < lines.length; index++) {
                 messages[index] = Message.createObjWithString(lines[index].replace(/^\s+/, ''));
             }
         }
@@ -64,7 +65,7 @@ import DirectoryManager from './classes/directory/Directory.js';
                 return;
             }
 
-            var message = messages[currentIndex];
+            const message = messages[currentIndex];
 
             let startIndex = -1;
             for (let i = currentIndex; i >= 0; i--) {
@@ -81,7 +82,7 @@ import DirectoryManager from './classes/directory/Directory.js';
             MessageID.addOne();
 
             for (let i = startIndex; i < currentIndex; i++) {
-                var currentMessage = messages[i];
+                const currentMessage = messages[i];
                 if (currentMessage.type === DramaType.Function) {
                     await currentMessage.obj();
                 }
@@ -90,13 +91,13 @@ import DirectoryManager from './classes/directory/Directory.js';
             if (message.type === DramaType.Ball) {
                 KeyAnimation.setObjAnimation(message.obj, ballSays);
             } else {
-                var nextMessage = messages[MessageID.getID()];
-                var animationCallback = nextMessage.type !== DramaType.Ball
+                const nextMessage = messages[MessageID.getID()];
+                const animationCallback = nextMessage.type !== DramaType.Ball
                     ? async () => {
                         await processMessage();
                     }
                     : null;
-                var finalCallBack = async () => {
+                const finalCallBack = async () => {
                     await message.obj();
                     await animationCallback?.();
                 };
@@ -113,7 +114,7 @@ import DirectoryManager from './classes/directory/Directory.js';
             DirectoryManager.main();
 
             setTimeout(() => {
-                var obj = document.getElementById(Setting.illustrateID);
+                const obj = document.getElementById(Setting.illustrateID);
                 // The element may have been deleted before execution
                 if (obj) {
                     obj.style.animation = 'fade 2s linear 0s';
@@ -139,7 +140,7 @@ import DirectoryManager from './classes/directory/Directory.js';
                 const element = document.getElementById('spotify-iframe') as HTMLElement;
                 const options = { uri: 'spotify:track:5vNRhkKd0yEAg8suGBpjeY' };
                 const callback = (EmbedController: { loadUri: (arg0: string, arg1: boolean, arg2: number) => void; addListener: (arg0: string, arg1: (e: any) => void) => void; play: () => void; }) => {
-                    var a = LocalStorageApi.read<number>(StorageType.MUSIC_TIME);
+                    const a = LocalStorageApi.read<number>(StorageType.MUSIC_TIME);
                     if (a !== null) {
                         EmbedController.loadUri(options.uri, false, a);
                     }
@@ -152,6 +153,27 @@ import DirectoryManager from './classes/directory/Directory.js';
 
                 await this.restoreState();
             };
+        }
+
+        private static awa(): void {
+            const cls = Part;
+            const allKeys = Reflect.ownKeys(cls);
+            const pointers: { targetClass: any, field: keyof typeof cls }[] = [];
+
+            for (let i = 0; i < allKeys.length; i++) {
+                const key = allKeys[i];
+                if (typeof cls[key] !== 'function') {
+                    pointers.push({ targetClass: cls, field: key as keyof typeof cls });
+                }
+            }
+
+            const allLines: string[] = [];
+            pointers.forEach(ptr => {
+                const value: string = ptr.targetClass[ptr.field];
+                const lines: string[] = value.split("\n");
+                lines.forEach(line => allLines.push(line));
+                allLines.push("@" + DramaType.Function + ":q4");
+            });
         }
     };
 })();
