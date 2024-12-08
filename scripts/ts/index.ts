@@ -129,7 +129,7 @@ import DirectoryManager from './classes/directory/Directory.js';
                     ev.stopPropagation();
                 }
             }, true);
-            (document.querySelector(Setting.ballFrameID) as HTMLElement).addEventListener('click', async () => await this.click(false));
+            (document.getElementById(Setting.ballFrameID) as HTMLElement).addEventListener('click', async () => await this.click(false));
             (document.getElementById("left") as HTMLElement).appendChild(Question.question_answer);
             (document.getElementById("left") as HTMLElement).appendChild(CodeFrame.getCodeFrame());
         }
