@@ -1,7 +1,7 @@
 export default class Setting {
     static ballID = Object.freeze('ball');
     static shadowID = Object.freeze('shadow');
-    static ballFrameID = Object.freeze('frame');
+    static ballFrameID = Object.freeze('screen');
     static lessonMediaID = Object.freeze('lesson-media');
     static ballSaysID = Object.freeze('text');
     static illustrateID = Object.freeze('Illustrate');

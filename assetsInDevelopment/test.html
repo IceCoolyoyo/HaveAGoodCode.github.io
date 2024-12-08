@@ -45,7 +45,6 @@
             transform: translate3d(0, 0, 0) rotate3d(0, 0, 0, 0) rotate(1deg);
             position: relative;
             animation: rotate 3s linear;
-            z-index: 2;
         }
 
         card *,
@@ -104,7 +103,6 @@
             transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(0deg) skewY(0) scale(1);
             opacity: 0.2;
             box-shadow: 0 0 2vmin #190d23, 0 0 5vmin #190d23;
-            z-index: 1;
         }
 
         hoverspace {
@@ -117,6 +115,113 @@
             right: 0;
             margin: auto;
             cursor: grab;
+        }
+
+        hoverspace:hover~card {
+            animation: rotatehover 3s linear;
+        }
+
+        hoverspace:hover~card:before,
+        hoverspace:hover~card:after {
+            animation: lighthover 3s linear;
+        }
+
+        hoverspace:hover~card:after {
+            animation: lighthover 3s linear reverse;
+        }
+
+        hoverspace:hover~shadow {
+            animation: shadowhover 3s linear;
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: translate3d(0, 0, 0) rotate3d(1, 1, 0, -360deg) rotate(1deg);
+            }
+        }
+
+        @keyframes rotatehover {
+            100% {
+                transform: translate3d(0, 0, 0) rotate3d(1, 1, 0, -360deg) rotate(1deg);
+            }
+        }
+
+        @keyframes light {
+
+            0%,
+            100%,
+            50% {
+                background-color: rgba(255, 255, 255, 0);
+            }
+
+            25% {
+                background-color: rgba(245, 227, 227, 0.7);
+            }
+
+            75% {
+                background-color: #190d23;
+            }
+        }
+
+        @keyframes lighthover {
+
+            0%,
+            100%,
+            50% {
+                background-color: rgba(255, 255, 255, 0);
+            }
+
+            25% {
+                background-color: rgba(245, 227, 227, 0.7);
+            }
+
+            75% {
+                background-color: #190d23;
+            }
+        }
+
+        @keyframes shadow {
+            25% {
+                transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(90deg) skewY(-90deg);
+                opacity: 0;
+            }
+
+            50% {
+                transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(90deg) skewY(0);
+                opacity: 0.2;
+            }
+
+            75% {
+                transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(90deg) skewY(90deg);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(180deg) skewY(0);
+                opacity: 0.2;
+            }
+        }
+
+        @keyframes shadowhover {
+            25% {
+                transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(90deg) skewY(-90deg);
+                opacity: 0;
+            }
+
+            50% {
+                transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(90deg) skewY(0);
+                opacity: 0.2;
+            }
+
+            75% {
+                transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(90deg) skewY(90deg);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translate3d(0, 90rem, -50rem) rotateX(90deg) rotate(180deg) skewY(0);
+                opacity: 0.2;
+            }
         }
 
         front {
@@ -138,6 +243,7 @@
 <body>
     <screen>
         <hoverspace></hoverspace>
+        <shadow></shadow>
         <card>
             <back></back>
             <front>
@@ -228,139 +334,46 @@
             </front>
         </card>
     </screen>
-
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const card = document.querySelector("card");
-
-            // 画布尺寸
-            const width = document.body.clientWidth;
-            const height = document.body.clientHeight;
-            const depth = 50; // 假设 Z 轴深度为 500
-
-            // 三体初始状态
-            const bodies = [
-                { pos: [200, 300, 0], vel: [0.1, 0, 0.05], mass: 10, angles: [0, 0, 0] }, // 三体角度（Pitch, Yaw, Roll）
-                { pos: [400, 200, 50], vel: [0, 0.1, -0.05], mass: 10, angles: [0, 0, 0] },
-                { pos: [600, 400, -50], vel: [0, -0.1, 0.1], mass: 10, angles: [0, 0, 0] }
-            ];
-
-            const G = 1; // 万有引力常数
-            const dt = 4; // 时间步长
-
-            function calculateForces() {
-                const forces = bodies.map(() => [0, 0, 0]);
-                for (let i = 0; i < bodies.length; i++) {
-                    for (let j = 0; j < bodies.length; j++) {
-                        if (i !== j) {
-                            const dx = bodies[j].pos[0] - bodies[i].pos[0];
-                            const dy = bodies[j].pos[1] - bodies[i].pos[1];
-                            const dz = bodies[j].pos[2] - bodies[i].pos[2];
-                            const distance = Math.sqrt(dx ** 2 + dy ** 2 + dz ** 2);
-                            const force = (G * bodies[i].mass * bodies[j].mass) / Math.max(distance ** 2, 1); // 避免除以零
-
-                            forces[i][0] += force * (dx / distance);
-                            forces[i][1] += force * (dy / distance);
-                            forces[i][2] += force * (dz / distance);
-                        }
-                    }
+            const shadow = document.querySelector("shadow");
+    
+            let x = 0, y = 0, z = 0; // 當前位置
+            let targetX = 0, targetY = 0, targetZ = 0; // 目標位置
+    
+            const bounds = { x: 100, y: 50, z: 50 }; // 邊界
+            const speed = 0.05; // 平滑移動速度，越小越平滑
+    
+            function generateNewTarget() {
+                targetX = (Math.random() - 0.5) * bounds.x * 2;
+                targetY = (Math.random() - 0.5) * bounds.y * 2;
+                targetZ = (Math.random() - 0.5) * bounds.z * 2;
+            }
+    
+            function smoothMove() {
+                // 平滑移動到目標點
+                x += (targetX - x) * speed;
+                y += (targetY - y) * speed;
+                z += (targetZ - z) * speed;
+    
+                // 如果接近目標點，生成新的目標
+                if (Math.abs(x - targetX) < 0.1 && Math.abs(y - targetY) < 0.1 && Math.abs(z - targetZ) < 0.1) {
+                    generateNewTarget();
                 }
-                return forces;
+    
+                // 更新卡片和影子的位置與旋轉
+                card.style.transform = `translate3d(${x}rem, ${y}rem, ${z}rem) rotate3d(${x}, ${y}, ${z}, ${z}deg)`;
+                shadow.style.transform = `translate3d(${x}rem, ${y + 50}rem, ${z - 50}rem) rotateX(90deg) scale(${1 - z / bounds.z})`;
+    
+                requestAnimationFrame(smoothMove);
             }
-
-            function updateBodies() {
-                const forces = calculateForces();
-                for (let i = 0; i < bodies.length; i++) {
-                    bodies[i].vel[0] += (forces[i][0] / bodies[i].mass) * dt;
-                    bodies[i].vel[1] += (forces[i][1] / bodies[i].mass) * dt;
-                    bodies[i].vel[2] += (forces[i][2] / bodies[i].mass) * dt;
-
-                    // 更新位置
-                    bodies[i].pos[0] += bodies[i].vel[0] * dt;
-                    bodies[i].pos[1] += bodies[i].vel[1] * dt;
-                    bodies[i].pos[2] += bodies[i].vel[2] * dt;
-
-                    // 限制范围在画布内 (包括 Z 轴)
-                    if (bodies[i].pos[0] < 0 || bodies[i].pos[0] > width) {
-                        bodies[i].vel[0] *= -1;
-                        bodies[i].pos[0] = Math.max(0, Math.min(width, bodies[i].pos[0]));
-                    }
-                    if (bodies[i].pos[1] < 0 || bodies[i].pos[1] > height) {
-                        bodies[i].vel[1] *= -1;
-                        bodies[i].pos[1] = Math.max(0, Math.min(height, bodies[i].pos[1]));
-                    }
-                    if (bodies[i].pos[2] < -depth || bodies[i].pos[2] > depth) {
-                        bodies[i].vel[2] *= -1;
-                        bodies[i].pos[2] = Math.max(-depth, Math.min(depth, bodies[i].pos[2]));
-                    }
-                }
-            }
-
-            function applyRotation(angles) {
-                const pitch = angles[0]; // pitch angle
-                const yaw = angles[1];   // yaw angle
-                const roll = angles[2];  // roll angle
-
-                const pitchMatrix = [
-                    [1, 0, 0],
-                    [0, Math.cos(pitch), -Math.sin(pitch)],
-                    [0, Math.sin(pitch), Math.cos(pitch)]
-                ];
-
-                const yawMatrix = [
-                    [Math.cos(yaw), 0, Math.sin(yaw)],
-                    [0, 1, 0],
-                    [-Math.sin(yaw), 0, Math.cos(yaw)]
-                ];
-
-                const rollMatrix = [
-                    [Math.cos(roll), -Math.sin(roll), 0],
-                    [Math.sin(roll), Math.cos(roll), 0],
-                    [0, 0, 1]
-                ];
-
-                // Combine rotations
-                const combinedRotation = multiplyMatrices(multiplyMatrices(pitchMatrix, yawMatrix), rollMatrix);
-
-                return combinedRotation;
-            }
-
-            function multiplyMatrices(a, b) {
-                const result = [];
-                for (let i = 0; i < a.length; i++) {
-                    result[i] = [];
-                    for (let j = 0; j < b[0].length; j++) {
-                        let sum = 0;
-                        for (let k = 0; k < a[0].length; k++) {
-                            sum += a[i][k] * b[k][j];
-                        }
-                        result[i][j] = sum;
-                    }
-                }
-                return result;
-            }
-
-            function animate() {
-                updateBodies();
-
-                const targetBody = bodies[0]; // 只展示第一个物体的位置
-                const [x, y, z] = targetBody.pos;
-
-                // 计算三体角度的旋转矩阵
-                const rotationMatrix = applyRotation(targetBody.angles);
-
-                // 使用 3D 变换
-                card.style.transform = `translate3d(${x - 10}px, ${y - 10}px, ${z}px) ` +
-                    `rotateX(${rotationMatrix[1][1]}rad) ` +
-                    `rotateY(${rotationMatrix[0][0]}rad) ` +
-                    `rotateZ(${rotationMatrix[2][2]}rad)`;
-
-                requestAnimationFrame(animate);
-            }
-
-            animate();
+    
+            generateNewTarget(); // 初始化第一個目標點
+            smoothMove(); // 啟動運動
         });
     </script>
+    
 </body>
 
 </html>

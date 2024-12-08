@@ -22,12 +22,13 @@
 
     <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/index.css">
     <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/text.css">
-    <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/ball.css">
+    <!-- <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/ball.css"> -->
     <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/table.css">
     <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/question.css">
     <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/code.css">
     <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/java.css">
-    <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/directory.css">
+    <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/directory.css">>
+    <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/cards.css">
 
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
 
@@ -72,10 +73,50 @@
         <div id="text"></div>
         <div id="Illustrate">*你可以點那顆球來讓他繼續說。</div>
 
-        <div id="frame">
-            <div id="shadow"></div>
-            <div id="ball"></div>
-        </div>
+        <screen>
+            <hoverspace></hoverspace>
+            <shadow></shadow>
+            <card>
+                <back></back>
+                <front>
+                    <!--up-->
+                    <x>
+                        <x></x>
+                        <x>
+                            <x> <x></x> </x>
+                            <!--body-->
+                            <x>
+                                <!--shirt-->
+                                <x> <x></x> <x></x> </x>
+                                <!--coat-->
+                                <x> <x></x> </x>
+                                <x></x>
+                            </x>
+                            <x></x> <x></x> <x></x> <x></x>
+                            <x> <x></x> <x></x> <x></x> <x></x> <x></x> <x></x> <x></x> <x></x> </x>
+                            <x></x> <x></x> <x></x> <x></x> <x></x> <x></x>
+                        </x>
+                    </x>
+                    <!--down-->
+                    <x>
+                        <x></x>
+                        <x>
+                            <x> <x></x> </x>
+                            <!--body-->
+                            <x>
+                                <!--shirt-->
+                                <x> <x></x> <x></x> </x>
+                                <!--coat-->
+                                <x> <x></x> </x> <x></x>
+                            </x>
+                            <x></x> <x></x> <x></x> <x></x>
+                            <x> <x></x> <x></x> <x></x> <x></x> <x></x> <x></x> <x></x> <x></x> </x>
+                            <x></x> <x></x> <x></x> <x></x> <x></x> <x></x>
+                        </x>
+                    </x>
+                </front>
+            </card>
+        </screen>
 
         <script type="module" src="/scripts/js/index.js"></script>
         <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
