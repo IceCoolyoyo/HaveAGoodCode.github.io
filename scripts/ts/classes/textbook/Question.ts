@@ -54,7 +54,6 @@ export default class Question {
             element.style.animationPlayState = "paused";
         });
 
-        Question.answer = "aaaaaa";
         Question.timeStop = true;
     }
 
@@ -82,5 +81,10 @@ export default class Question {
         });
 
         Question.timeStop = false;
+        Question.question_answer.innerText ="";
+    }
+    
+    static q6() {
+        (document.getElementById("left") as HTMLElement).appendChild(Question.question_answer);
     }
 }

@@ -31,7 +31,6 @@ class Question {
             element.style.filter = 'blur(2px) grayscale(100%)';
             element.style.animationPlayState = "paused";
         });
-        Question.answer = "aaaaaa";
         Question.timeStop = true;
     }
     static q5() {
@@ -57,6 +56,10 @@ class Question {
             element.remove();
         });
         Question.timeStop = false;
+        Question.question_answer.innerText = "";
+    }
+    static q6() {
+        document.getElementById("left").appendChild(Question.question_answer);
     }
 }
 Question.elementStateMap = new Map();

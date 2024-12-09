@@ -7,6 +7,7 @@ import { messages } from '../constants/Constants.js';
 import Doc from '../doct/doct.js';
 import CodeFrame from '../code_frame/code.js';
 import Codes from '../../Codes.js';
+import Question from '../textbook/Question.js';
 
 export default class Message {
     type: DramaType;
@@ -66,6 +67,10 @@ export default class Message {
             case DramaType.Code: {
                 const obj = CodeFrame.createCodeFrame(Codes[string]);
                 return new Message(DramaType.Function, function () { document.getElementById("left")?.appendChild(obj) });
+            }
+
+            case DramaType.Answer: {
+                return new Message(DramaType.Function, function answer() { Question.answer = string });
             }
 
             default: {

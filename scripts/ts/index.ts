@@ -45,14 +45,19 @@ import { Part } from './Drama.js';
             // const dramaRes = await fetch("https://raw.githubusercontent.com/HaveAGoodCode/HaveAGoodCode.github.io/refs/heads/main/dramas/drama.drama");
             // const drama = await dramaRes.text();
             // const lines = drama.split('\n');
-            const lines = `@Ball:Hello World!
-                        @Code:helloWorld
-                        @Ball:I love Watson Amelia!!!
-                        @Image:watson.png
-                        @Function:q4
-                            `.trim().split('\n');
+            const values: any[] = Object.values(Part);
+
+            const allLines: string[] = [];
+            values.forEach(value => {
+                const lines: string[] = value.split("\n");
+                lines.forEach(line => allLines.push(line));
+                allLines.push("@" + DramaType.Function + ":q6");
+                allLines.push("@" + DramaType.Function + ":q4");
+            });
+
+            const lines: string[] = allLines.map(s => s.trim());
             for (let index = 0; index < lines.length; index++) {
-                messages[index] = Message.createObjWithString(lines[index].replace(/^\s+/, ''));
+                messages[index] = Message.createObjWithString(lines[index]);
             }
         }
 
@@ -131,8 +136,6 @@ import { Part } from './Drama.js';
                 }
             }, true);
             (document.getElementById(Setting.ballFrameID) as HTMLElement).addEventListener('click', async () => await this.click(false));
-            (document.getElementById("left") as HTMLElement).appendChild(Question.question_answer);
-            (document.getElementById("left") as HTMLElement).appendChild(CodeFrame.getCodeFrame());
         }
 
         private static spotifyInit(): void {
@@ -153,27 +156,6 @@ import { Part } from './Drama.js';
 
                 await this.restoreState();
             };
-        }
-
-        private static awa(): void {
-            const cls = Part;
-            const allKeys = Reflect.ownKeys(cls);
-            const pointers: { targetClass: any, field: keyof typeof cls }[] = [];
-
-            for (let i = 0; i < allKeys.length; i++) {
-                const key = allKeys[i];
-                if (typeof cls[key] !== 'function') {
-                    pointers.push({ targetClass: cls, field: key as keyof typeof cls });
-                }
-            }
-
-            const allLines: string[] = [];
-            pointers.forEach(ptr => {
-                const value: string = ptr.targetClass[ptr.field];
-                const lines: string[] = value.split("\n");
-                lines.forEach(line => allLines.push(line));
-                allLines.push("@" + DramaType.Function + ":q4");
-            });
         }
     };
 })();

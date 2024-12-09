@@ -16,6 +16,7 @@ import { messages } from '../constants/Constants.js';
 import Doc from '../doct/doct.js';
 import CodeFrame from '../code_frame/code.js';
 import Codes from '../../Codes.js';
+import Question from '../textbook/Question.js';
 export default class Message {
     constructor(type, obj, originalMessage = null) {
         if (type === DramaType.Ball && originalMessage === null) {
@@ -65,6 +66,9 @@ export default class Message {
             case DramaType.Code: {
                 const obj = CodeFrame.createCodeFrame(Codes[string]);
                 return new Message(DramaType.Function, function () { var _a; (_a = document.getElementById("left")) === null || _a === void 0 ? void 0 : _a.appendChild(obj); });
+            }
+            case DramaType.Answer: {
+                return new Message(DramaType.Function, function answer() { Question.answer = string; });
             }
             default: {
                 throw new Error(`Unknow type : ${type}, string : ${string}`);

@@ -1,17 +1,21 @@
 export class Part {
 }
-Part.Part1 = Object.freeze(`@Ball:true為真，false為假
+Part.Part1 = Object.freeze(`@Code:q1
+        @Ball:true為真，false為假
         @Ball:在電腦的任何地方的真假表示都用true或者false
         @Ball:例如：「今天是星期一嗎？」
         @Ball:如果今天是星期一，電腦就會回答 true；
-        @Ball:如果不是，電腦就會回答 false。`);
+        @Ball:如果不是，電腦就會回答 false。
+        @Ball:試用電腦的方式回答「水有毒嗎?」
+        @Answer:false`);
 Part.Part2 = Object.freeze(`@Ball:==用來判斷是否相等
         @Ball:如果跟電腦說5 == 5 
         @Ball:那電腦就會回答 true (真的)
         @Ball:因為 5 跟 5 是一樣的。
         @Ball:但如果跟電腦說5 == 3
         @Ball:那電腦就會回答 false (假的)
-        @Ball:因為 5 跟 3 不一樣。`);
+        @Ball:因為 5 跟 3 不一樣。
+        @Answer:false`);
 Part.Part3 = Object.freeze(`@Ball:System.out.println()
         @Ball:用來輸出結果
         @Ball:就是讓電腦把東西「寫出來」。`);

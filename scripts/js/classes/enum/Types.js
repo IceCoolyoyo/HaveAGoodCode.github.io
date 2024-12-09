@@ -7,6 +7,7 @@ export var DramaType;
     DramaType["Function"] = "Function";
     DramaType["Image"] = "Image";
     DramaType["Code"] = "Code";
+    DramaType["Answer"] = "Answer";
 })(DramaType || (DramaType = {}));
 ;
 export const classList = Object.freeze({

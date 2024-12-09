@@ -9,6 +9,10 @@ class KeyAnimation {
     static setObjAnimation(string, obj, runnable) {
         const width = KeyAnimation.calcWidth(string);
         KeyAnimation.toggleCountinue();
+        const div = document.createElement("div");
+        div.id = "question-title";
+        div.innerText = string;
+        document.getElementById("left").appendChild(div);
         obj.innerHTML = string;
         obj.style.width = `${width}ch`;
         obj.style.borderRightColor = 'rgb(0, 0, 0)';

@@ -5,4 +5,6 @@ export default class Codes {
                 System.out.println("Hello World!");
             }
         }`;
+    public static readonly q1: string = `
+            true or false`;
 }

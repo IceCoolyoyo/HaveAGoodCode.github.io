@@ -6,7 +6,8 @@ export enum DramaType {
     Ball = 'Ball',
     Function = 'Function',
     Image = 'Image',
-    Code = 'Code'
+    Code = 'Code',
+    Answer = 'Answer'
 };
 
 export const classList = Object.freeze({

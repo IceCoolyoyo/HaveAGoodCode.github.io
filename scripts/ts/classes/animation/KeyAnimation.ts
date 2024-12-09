@@ -1,20 +1,25 @@
 import DebugTool from '../debug/DebugTool.js';
 
 export default class KeyAnimation {
-    private static countinue : boolean = true;
+    private static countinue: boolean = true;
 
-    public static get canCountinue() : boolean {
+    public static get canCountinue(): boolean {
         return KeyAnimation.countinue;
     }
 
-    private static toggleCountinue() : void {
+    private static toggleCountinue(): void {
         KeyAnimation.countinue = !KeyAnimation.countinue;
     }
- 
-    public static setObjAnimation(string: string, obj: HTMLElement, runnable?: (() => Promise<void>) | null):void {
-        const width : number = KeyAnimation.calcWidth(string);
-        
+
+    public static setObjAnimation(string: string, obj: HTMLElement, runnable?: (() => Promise<void>) | null): void {
+        const width: number = KeyAnimation.calcWidth(string);
+
         KeyAnimation.toggleCountinue();
+
+        const div: HTMLElement = document.createElement("div");
+        div.id = "question-title";
+        div.innerText = string;
+        (document.getElementById("left") as HTMLElement).appendChild(div)
 
         obj.innerHTML = string;
         obj.style.width = `${width}ch`;
@@ -30,12 +35,12 @@ export default class KeyAnimation {
         }, ((width / 10) * 1000) + 500);
     }
 
-    public static clearObjAnimation(obj: HTMLElement):void {
+    public static clearObjAnimation(obj: HTMLElement): void {
         obj.style.borderRightColor = 'transparent';
         obj.style.animation = ``;
     }
 
-    public static deTypingAnimation(width: number, obj: HTMLElement):void {
+    public static deTypingAnimation(width: number, obj: HTMLElement): void {
         obj.style.animation = `deTyping ${width / 10}s steps(${obj.innerHTML.length}), caret 0.8s steps(1) infinite`;
         setTimeout(() => {
             KeyAnimation.clearObjAnimation(obj);

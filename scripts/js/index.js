@@ -18,7 +18,6 @@ import { messages } from './classes/constants/Constants.js';
 import MessageID from './classes/message/MessageID.js';
 import KeyAnimation from './classes/animation/KeyAnimation.js';
 import LocalStorageApi, { StorageType } from './classes/localStorage/LocalStorageApi.js';
-import CodeFrame from './classes/code_frame/code.js';
 import Question from './classes/textbook/Question.js';
 import DirectoryManager from './classes/directory/Directory.js';
 import { Part } from './Drama.js';
@@ -50,14 +49,17 @@ import { Part } from './Drama.js';
                     // const dramaRes = await fetch("https://raw.githubusercontent.com/HaveAGoodCode/HaveAGoodCode.github.io/refs/heads/main/dramas/drama.drama");
                     // const drama = await dramaRes.text();
                     // const lines = drama.split('\n');
-                    const lines = `@Ball:Hello World!
-                        @Code:helloWorld
-                        @Ball:I love Watson Amelia!!!
-                        @Image:watson.png
-                        @Function:q4
-                            `.trim().split('\n');
+                    const values = Object.values(Part);
+                    const allLines = [];
+                    values.forEach(value => {
+                        const lines = value.split("\n");
+                        lines.forEach(line => allLines.push(line));
+                        allLines.push("@" + DramaType.Function + ":q6");
+                        allLines.push("@" + DramaType.Function + ":q4");
+                    });
+                    const lines = allLines.map(s => s.trim());
                     for (let index = 0; index < lines.length; index++) {
-                        messages[index] = Message.createObjWithString(lines[index].replace(/^\s+/, ''));
+                        messages[index] = Message.createObjWithString(lines[index]);
                     }
                 });
             }
@@ -129,8 +131,6 @@ import { Part } from './Drama.js';
                     }
                 }, true);
                 document.getElementById(Setting.ballFrameID).addEventListener('click', () => __awaiter(this, void 0, void 0, function* () { return yield this.click(false); }));
-                document.getElementById("left").appendChild(Question.question_answer);
-                document.getElementById("left").appendChild(CodeFrame.getCodeFrame());
             }
             static spotifyInit() {
                 window.onSpotifyIframeApiReady = (IFrameAPI) => __awaiter(this, void 0, void 0, function* () {
@@ -148,24 +148,6 @@ import { Part } from './Drama.js';
                     };
                     IFrameAPI.createController(element, options, callback);
                     yield this.restoreState();
-                });
-            }
-            static awa() {
-                const cls = Part;
-                const allKeys = Reflect.ownKeys(cls);
-                const pointers = [];
-                for (let i = 0; i < allKeys.length; i++) {
-                    const key = allKeys[i];
-                    if (typeof cls[key] !== 'function') {
-                        pointers.push({ targetClass: cls, field: key });
-                    }
-                }
-                const allLines = [];
-                pointers.forEach(ptr => {
-                    const value = ptr.targetClass[ptr.field];
-                    const lines = value.split("\n");
-                    lines.forEach(line => allLines.push(line));
-                    allLines.push("@" + DramaType.Function + ":q4");
                 });
             }
         },

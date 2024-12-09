@@ -6,4 +6,6 @@ Codes.helloWorld = `
                 System.out.println("Hello World!");
             }
         }`;
+Codes.q1 = `
+            true or false`;
 export default Codes;
