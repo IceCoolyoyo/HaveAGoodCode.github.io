@@ -66,9 +66,9 @@ import { Part } from './Drama.js';
             static restoreState() {
                 return __awaiter(this, void 0, void 0, function* () {
                     const currentIndex = MessageID.getID();
-                    if (currentIndex === -1) {
-                        MessageID.addOne();
+                    if (currentIndex === 0) {
                         yield processMessage();
+                        MessageID.addOne();
                         return;
                     }
                     const message = messages[currentIndex];
@@ -98,10 +98,10 @@ import { Part } from './Drama.js';
                             ? () => __awaiter(this, void 0, void 0, function* () {
                                 yield processMessage();
                             })
-                            : null;
+                            : () => __awaiter(this, void 0, void 0, function* () { });
                         const finalCallBack = () => __awaiter(this, void 0, void 0, function* () {
                             yield message.obj();
-                            yield (animationCallback === null || animationCallback === void 0 ? void 0 : animationCallback());
+                            yield animationCallback();
                         });
                         KeyAnimation.setObjAnimation(messages[startIndex].obj, ballSays, finalCallBack);
                     }

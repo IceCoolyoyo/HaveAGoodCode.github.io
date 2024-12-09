@@ -64,9 +64,9 @@ import { Part } from './Drama.js';
         private static async restoreState() {
             const currentIndex = MessageID.getID();
 
-            if (currentIndex === -1) {
-                MessageID.addOne();
+            if (currentIndex === 0) {
                 await processMessage();
+                MessageID.addOne();
                 return;
             }
 
@@ -101,10 +101,10 @@ import { Part } from './Drama.js';
                     ? async () => {
                         await processMessage();
                     }
-                    : null;
+                    : async () => {};
                 const finalCallBack = async () => {
                     await message.obj();
-                    await animationCallback?.();
+                    await animationCallback();
                 };
                 KeyAnimation.setObjAnimation(messages[startIndex].obj, ballSays, finalCallBack);
             }

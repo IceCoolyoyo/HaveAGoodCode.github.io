@@ -16,11 +16,6 @@ export default class KeyAnimation {
 
         KeyAnimation.toggleCountinue();
 
-        const div: HTMLElement = document.createElement("div");
-        div.id = "question-title";
-        div.innerText = string;
-        (document.getElementById("left") as HTMLElement).appendChild(div)
-
         obj.innerHTML = string;
         obj.style.width = `${width}ch`;
         obj.style.borderRightColor = 'rgb(0, 0, 0)';
@@ -29,6 +24,12 @@ export default class KeyAnimation {
         setTimeout(() => {
             KeyAnimation.clearObjAnimation(obj);
             KeyAnimation.toggleCountinue();
+
+            const div: HTMLElement = document.createElement("div");
+            div.id = "question-title";
+            div.innerText = string;
+            (document.getElementById("left") as HTMLElement).appendChild(div);
+
             if (runnable) {
                 runnable();
             }

@@ -56,7 +56,7 @@ class Question {
             element.remove();
         });
         Question.timeStop = false;
-        Question.question_answer.innerText = "";
+        Question.question_answer.value = "";
     }
     static q6() {
         document.getElementById("left").appendChild(Question.question_answer);
@@ -68,9 +68,11 @@ Question.timeStop = false;
     const question_answer = document.createElement("input");
     question_answer.id = "question-answer";
     question_answer.oninput = function () {
-        if (this.value === Question.answer) {
-            Question.q5();
-        }
+        setTimeout(() => {
+            if (this.value === Question.answer) {
+                Question.q5();
+            }
+        }, 300);
     };
     Question.question_answer = question_answer;
 })();

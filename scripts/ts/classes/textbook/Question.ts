@@ -13,9 +13,11 @@ export default class Question {
         const question_answer: HTMLElement = document.createElement("input");
         question_answer.id = "question-answer";
         question_answer.oninput = function () {
-            if ((this as HTMLInputElement).value === Question.answer) {
-                Question.q5();
-            }
+            setTimeout(() => {
+                if ((this as HTMLInputElement).value === Question.answer) {
+                    Question.q5();
+                }
+            }, 300);
         };
         Question.question_answer = question_answer;
     }
@@ -81,7 +83,7 @@ export default class Question {
         });
 
         Question.timeStop = false;
-        Question.question_answer.innerText ="";
+        (Question.question_answer as HTMLInputElement).value ="";
     }
     
     static q6() {
