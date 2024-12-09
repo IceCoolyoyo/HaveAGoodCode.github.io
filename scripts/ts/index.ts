@@ -65,8 +65,18 @@ import { Part } from './Drama.js';
             const currentIndex = MessageID.getID();
 
             if (currentIndex === 0) {
-                await processMessage();
-                MessageID.addOne();
+                if (messages[currentIndex].type === DramaType.Ball) {
+                    await processMessage();
+                    MessageID.addOne();
+                } else {
+                    while (true) {
+                        await processMessage();
+                        if (messages[MessageID.getID()].type === DramaType.Ball) {
+                            await processMessage();
+                            break;
+                        }
+                    }
+                }
                 return;
             }
 
@@ -101,7 +111,7 @@ import { Part } from './Drama.js';
                     ? async () => {
                         await processMessage();
                     }
-                    : async () => {};
+                    : async () => { };
                 const finalCallBack = async () => {
                     await message.obj();
                     await animationCallback();

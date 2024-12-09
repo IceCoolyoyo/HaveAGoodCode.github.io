@@ -67,8 +67,19 @@ import { Part } from './Drama.js';
                 return __awaiter(this, void 0, void 0, function* () {
                     const currentIndex = MessageID.getID();
                     if (currentIndex === 0) {
-                        yield processMessage();
-                        MessageID.addOne();
+                        if (messages[currentIndex].type === DramaType.Ball) {
+                            yield processMessage();
+                            MessageID.addOne();
+                        }
+                        else {
+                            while (true) {
+                                yield processMessage();
+                                if (messages[MessageID.getID()].type === DramaType.Ball) {
+                                    yield processMessage();
+                                    break;
+                                }
+                            }
+                        }
                         return;
                     }
                     const message = messages[currentIndex];
