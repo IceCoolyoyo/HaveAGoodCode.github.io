@@ -65,7 +65,7 @@ export default class Message {
             }
             case DramaType.Code: {
                 const obj = CodeFrame.createCodeFrame(Codes[string]);
-                return new Message(DramaType.Function, function () { var _a; (_a = document.getElementById("left")) === null || _a === void 0 ? void 0 : _a.appendChild(obj); });
+                return new Message(DramaType.Code, function code() { var _a; (_a = document.getElementById("left")) === null || _a === void 0 ? void 0 : _a.appendChild(obj); });
             }
             case DramaType.Answer: {
                 return new Message(DramaType.Function, function answer() { Question.answer = string; });
@@ -93,25 +93,39 @@ export function processMessage() {
     return __awaiter(this, void 0, void 0, function* () {
         const message = messages[MessageID.getID()];
         switch (message.type) {
-            case DramaType.Ball:
+            case DramaType.Ball: {
                 MessageID.addOne();
                 const nextMessage = messages[MessageID.getID()];
-                const animationCallback = nextMessage.type !== DramaType.Ball
+                const animationCallback = nextMessage.type !== DramaType.Ball && nextMessage.type !== DramaType.Code
                     ? () => __awaiter(this, void 0, void 0, function* () {
                         yield processMessage();
                     })
                     : null;
                 KeyAnimation.setObjAnimation(message.obj, ballSays, animationCallback);
                 return;
-            case DramaType.Function:
+            }
+            case DramaType.Code: {
+                MessageID.addOne();
+                const nextMessage = messages[MessageID.getID()];
+                const animationCallback = nextMessage.type !== DramaType.Ball && nextMessage.type !== DramaType.Code
+                    ? () => __awaiter(this, void 0, void 0, function* () {
+                        yield processMessage();
+                    })
+                    : null;
+                KeyAnimation.setObjAnimation2(message.obj, animationCallback);
+                return;
+            }
+            case DramaType.Function: {
                 yield message.obj();
                 break;
-            default:
+            }
+            default: {
                 throw new Error(`Unknow type : ${message.type}`);
+            }
         }
         MessageID.addOne();
         const nextMessage = messages[MessageID.getID()];
-        if (nextMessage.type !== DramaType.Ball) {
+        if (nextMessage.type !== DramaType.Ball && nextMessage.type !== DramaType.Code) {
             yield processMessage();
         }
         return MessageID.getID();

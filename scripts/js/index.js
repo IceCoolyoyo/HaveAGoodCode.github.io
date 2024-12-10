@@ -54,8 +54,6 @@ import { Part } from './Drama.js';
                     values.forEach(value => {
                         const lines = value.split("\n");
                         lines.forEach(line => allLines.push(line));
-                        allLines.push("@" + DramaType.Function + ":q6");
-                        allLines.push("@" + DramaType.Function + ":q4");
                     });
                     const lines = allLines.map(s => s.trim());
                     for (let index = 0; index < lines.length; index++) {
@@ -67,14 +65,14 @@ import { Part } from './Drama.js';
                 return __awaiter(this, void 0, void 0, function* () {
                     const currentIndex = MessageID.getID();
                     if (currentIndex === 0) {
-                        if (messages[currentIndex].type === DramaType.Ball) {
+                        if (messages[currentIndex].type === DramaType.Ball || messages[currentIndex].type === DramaType.Code) {
                             yield processMessage();
                             MessageID.addOne();
                         }
                         else {
                             while (true) {
                                 yield processMessage();
-                                if (messages[MessageID.getID()].type === DramaType.Ball) {
+                                if (messages[MessageID.getID()].type === DramaType.Ball || messages[MessageID.getID()].type === DramaType.Code) {
                                     yield processMessage();
                                     break;
                                 }
@@ -85,7 +83,7 @@ import { Part } from './Drama.js';
                     const message = messages[currentIndex];
                     let startIndex = -1;
                     for (let i = currentIndex; i >= 0; i--) {
-                        if (messages[i].type === DramaType.Ball) {
+                        if (messages[i].type === DramaType.Ball || messages[i].type === DramaType.Code) {
                             startIndex = i;
                             break;
                         }
@@ -103,9 +101,12 @@ import { Part } from './Drama.js';
                     if (message.type === DramaType.Ball) {
                         KeyAnimation.setObjAnimation(message.obj, ballSays);
                     }
+                    else if (message.type === DramaType.Code) {
+                        KeyAnimation.setObjAnimation2(message.obj, () => __awaiter(this, void 0, void 0, function* () { }));
+                    }
                     else {
                         const nextMessage = messages[MessageID.getID()];
-                        const animationCallback = nextMessage.type !== DramaType.Ball
+                        const animationCallback = nextMessage.type !== DramaType.Ball && nextMessage.type !== DramaType.Code
                             ? () => __awaiter(this, void 0, void 0, function* () {
                                 yield processMessage();
                             })
@@ -142,7 +143,29 @@ import { Part } from './Drama.js';
                     }
                 }, true);
                 document.getElementById(Setting.ballFrameID).addEventListener('click', () => __awaiter(this, void 0, void 0, function* () { return yield this.click(false); }));
-                window.addEventListener('mousewheel', function (event) { });
+                window.addEventListener('wheel', function (event) {
+                    if (event.ctrlKey === true || event.metaKey === true) {
+                        event.preventDefault();
+                    }
+                }, { passive: true });
+            }
+            static spotifyInit() {
+                window.onSpotifyIframeApiReady = (IFrameAPI) => __awaiter(this, void 0, void 0, function* () {
+                    const element = document.getElementById('spotify-iframe');
+                    const options = { uri: 'spotify:track:5vNRhkKd0yEAg8suGBpjeY' };
+                    const callback = (EmbedController) => {
+                        const a = LocalStorageApi.read(StorageType.MUSIC_TIME);
+                        if (a !== null) {
+                            EmbedController.loadUri(options.uri, false, a);
+                        }
+                        EmbedController.addListener('playback_update', e => {
+                            LocalStorageApi.write(StorageType.MUSIC_TIME, parseInt(e.data.position, 10) / 1000);
+                        });
+                        EmbedController.play();
+                    };
+                    IFrameAPI.createController(element, options, callback);
+                    yield this.restoreState();
+                });
             }
         },
         __setFunctionName(_a, "_"),
@@ -150,32 +173,4 @@ import { Part } from './Drama.js';
             _a.initAll();
         })(),
         _a);
-    {
-        if (event.ctrl)
-            ;
-    }
-    {
-        passive: false;
-    }
-    ;
-});
-spotifyInit();
-void {}(window).onSpotifyIframeApiReady;
-(IFrameAPI) => __awaiter(void 0, void 0, void 0, function* () {
-    const element = document.getElementById('spotify-iframe');
-    const options = { uri: 'spotify:track:5vNRhkKd0yEAg8suGBpjeY' };
-    const callback = (EmbedController) => {
-        const a = LocalStorageApi.read(StorageType.MUSIC_TIME);
-        if (a !== null) {
-            EmbedController.loadUri(options.uri, false, a);
-        }
-        EmbedController.addListener('playback_update', e => {
-            LocalStorageApi.write(StorageType.MUSIC_TIME, parseInt(e.data.position, 10) / 1000);
-        });
-        EmbedController.play();
-    };
-    IFrameAPI.createController(element, options, callback);
-    yield this.restoreState();
-});
-;
-();
+})();

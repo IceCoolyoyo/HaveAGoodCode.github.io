@@ -5,7 +5,7 @@ export class Part {
         @Ball:如果今天是星期一，電腦就會回答 true；
         @Ball:如果不是，電腦就會回答 false。
         @Ball:「水有毒嗎?」
-        @Code:q1
+        @Code:helloWorld
         @Answer:false`);
     static Part2 = Object.freeze(`@Ball:==用來判斷是否相等
         @Ball:如果跟電腦說5 == 5 
@@ -13,10 +13,12 @@ export class Part {
         @Ball:因為 5 跟 5 是一樣的。
         @Ball:但如果跟電腦說5 == 3
         @Ball:那電腦就會回答 false (假的)
-        @Ball:因為 5 跟 3 不一樣。`);
+        @Ball:因為 5 跟 3 不一樣。
+        @Answer:false`);
     static Part3 = Object.freeze(`@Code:println
         @Ball:用來輸出結果
-        @Ball:就是讓電腦把東西「寫出來」。`);
+        @Ball:就是讓電腦把東西「寫出來」。
+        @Answer:false`);
     static Part4 = Object.freeze(`@Code:equalTrue
         @Ball:這樣電腦會輸出 true
         @Ball:因為 5 跟 5 是一樣的。
@@ -33,7 +35,8 @@ export class Part {
         @Ball:意思是電腦會用這個 「boolean」 
         @Ball:來儲存只有「真」或「假」的資訊
         @Ball:就像電腦在說：「喔，這個東西是 boolean
-        @Ball:所以它只能是 true 或 false。」`);
+        @Ball:所以它只能是 true 或 false。」
+        @Answer:false`);
     static Part6 = Object.freeze(`@Ball:我們還可以用「名字 = 東西;」
         @Ball:來把資料放進剛剛建立的空間裡。
         @Code:declareBool

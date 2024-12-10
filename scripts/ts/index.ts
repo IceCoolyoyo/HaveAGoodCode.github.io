@@ -51,8 +51,6 @@ import { Part } from './Drama.js';
             values.forEach(value => {
                 const lines: string[] = value.split("\n");
                 lines.forEach(line => allLines.push(line));
-                allLines.push("@" + DramaType.Function + ":q6");
-                allLines.push("@" + DramaType.Function + ":q4");
             });
 
             const lines: string[] = allLines.map(s => s.trim());
@@ -65,13 +63,13 @@ import { Part } from './Drama.js';
             const currentIndex = MessageID.getID();
 
             if (currentIndex === 0) {
-                if (messages[currentIndex].type === DramaType.Ball) {
+                if (messages[currentIndex].type === DramaType.Ball || messages[currentIndex].type === DramaType.Code) {
                     await processMessage();
                     MessageID.addOne();
                 } else {
                     while (true) {
                         await processMessage();
-                        if (messages[MessageID.getID()].type === DramaType.Ball) {
+                        if (messages[MessageID.getID()].type === DramaType.Ball || messages[MessageID.getID()].type === DramaType.Code) {
                             await processMessage();
                             break;
                         }
@@ -84,7 +82,7 @@ import { Part } from './Drama.js';
 
             let startIndex = -1;
             for (let i = currentIndex; i >= 0; i--) {
-                if (messages[i].type === DramaType.Ball) {
+                if (messages[i].type === DramaType.Ball || messages[i].type === DramaType.Code) {
                     startIndex = i;
                     break;
                 }
@@ -105,9 +103,11 @@ import { Part } from './Drama.js';
 
             if (message.type === DramaType.Ball) {
                 KeyAnimation.setObjAnimation(message.obj, ballSays);
+            } else if (message.type === DramaType.Code) {
+                KeyAnimation.setObjAnimation2(message.obj, async () => { });
             } else {
                 const nextMessage = messages[MessageID.getID()];
-                const animationCallback = nextMessage.type !== DramaType.Ball
+                const animationCallback = nextMessage.type !== DramaType.Ball && nextMessage.type !== DramaType.Code
                     ? async () => {
                         await processMessage();
                     }
@@ -146,9 +146,11 @@ import { Part } from './Drama.js';
                 }
             }, true);
             (document.getElementById(Setting.ballFrameID) as HTMLElement).addEventListener('click', async () => await this.click(false));
-            window.addEventListener('mousewheel', function (event) => {
-                if (event.ctrl)
-            }, {passive : false});
+            window.addEventListener('wheel', function (event: WheelEvent) {
+                if (event.ctrlKey === true || event.metaKey === true) {
+                    event.preventDefault();
+                }
+            }, { passive: true });
         }
 
         private static spotifyInit(): void {

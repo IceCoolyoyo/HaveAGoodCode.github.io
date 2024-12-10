@@ -36,6 +36,17 @@ export default class KeyAnimation {
         }, ((width / 10) * 1000) + 500);
     }
 
+    public static setObjAnimation2(obj: Function, callback: (() => Promise<void>) | null): void {
+        KeyAnimation.toggleCountinue();
+
+        obj();
+
+        setTimeout(() => {
+            KeyAnimation.toggleCountinue();
+            callback?.();
+        }, 100);
+    }
+
     public static clearObjAnimation(obj: HTMLElement): void {
         obj.style.borderRightColor = 'transparent';
         obj.style.animation = ``;

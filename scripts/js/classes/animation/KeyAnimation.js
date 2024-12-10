@@ -25,6 +25,14 @@ class KeyAnimation {
             }
         }, ((width / 10) * 1000) + 500);
     }
+    static setObjAnimation2(obj, callback) {
+        KeyAnimation.toggleCountinue();
+        obj();
+        setTimeout(() => {
+            KeyAnimation.toggleCountinue();
+            callback === null || callback === void 0 ? void 0 : callback();
+        }, 100);
+    }
     static clearObjAnimation(obj) {
         obj.style.borderRightColor = 'transparent';
         obj.style.animation = ``;

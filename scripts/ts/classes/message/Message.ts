@@ -66,7 +66,7 @@ export default class Message {
 
             case DramaType.Code: {
                 const obj = CodeFrame.createCodeFrame(Codes[string]);
-                return new Message(DramaType.Function, function () { document.getElementById("left")?.appendChild(obj) });
+                return new Message(DramaType.Code, function code() { document.getElementById("left")?.appendChild(obj) });
             }
 
             case DramaType.Answer: {
@@ -96,27 +96,42 @@ export const ballSays = Doc.getElementById(Setting.ballSaysID);
 export async function processMessage() {
     const message = messages[MessageID.getID()];
     switch (message.type) {
-        case DramaType.Ball:
+        case DramaType.Ball: {
             MessageID.addOne();
             const nextMessage = messages[MessageID.getID()];
-            const animationCallback = nextMessage.type !== DramaType.Ball
+            const animationCallback = nextMessage.type !== DramaType.Ball && nextMessage.type !== DramaType.Code
                 ? async () => {
                     await processMessage();
                 }
                 : null;
             KeyAnimation.setObjAnimation(message.obj, ballSays, animationCallback);
             return;
+        }
 
-        case DramaType.Function:
+        case DramaType.Code: {
+            MessageID.addOne();
+            const nextMessage = messages[MessageID.getID()];
+            const animationCallback = nextMessage.type !== DramaType.Ball && nextMessage.type !== DramaType.Code
+                ? async () => {
+                    await processMessage();
+                }
+                : null;
+            KeyAnimation.setObjAnimation2(message.obj, animationCallback);
+            return;
+        }
+
+        case DramaType.Function: {
             await message.obj();
             break;
+        }
 
-        default:
+        default: {
             throw new Error(`Unknow type : ${message.type}`);
+        }
     }
     MessageID.addOne();
     const nextMessage = messages[MessageID.getID()];
-    if (nextMessage.type !== DramaType.Ball) {
+    if (nextMessage.type !== DramaType.Ball && nextMessage.type !== DramaType.Code) {
         await processMessage();
     }
     return MessageID.getID();
