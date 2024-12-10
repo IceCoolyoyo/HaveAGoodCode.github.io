@@ -6,11 +6,12 @@ class CodeFrame {
         const codeLines = document.createElement('pre');
         codeLines.className = 'java';
         codeLines.id = 'code-lines';
-        codeLines.innerHTML = "<code>" + codes + "\n</code>";
-        const lines = codeLines.innerHTML.split("\n");
+        const code = document.createElement("code");
+        const lines = codes.split("\n");
         const leadingSpacesCount = ((_a = lines[1].match(/^\s*/)) === null || _a === void 0 ? void 0 : _a[0].length) || 0;
         const trimmedLines = lines.slice(1).map(line => line.slice(leadingSpacesCount));
-        codeLines.innerHTML = trimmedLines.join("\n");
+        code.innerText = trimmedLines.join("\n");
+        codeLines.appendChild(code);
         hljs.highlightElement(codeLines);
         codeDiv.appendChild(codeLines);
         const spanIcon = CodeFrame.spanIcon.cloneNode(true);

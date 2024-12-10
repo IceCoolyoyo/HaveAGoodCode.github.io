@@ -142,24 +142,7 @@ import { Part } from './Drama.js';
                     }
                 }, true);
                 document.getElementById(Setting.ballFrameID).addEventListener('click', () => __awaiter(this, void 0, void 0, function* () { return yield this.click(false); }));
-            }
-            static spotifyInit() {
-                window.onSpotifyIframeApiReady = (IFrameAPI) => __awaiter(this, void 0, void 0, function* () {
-                    const element = document.getElementById('spotify-iframe');
-                    const options = { uri: 'spotify:track:5vNRhkKd0yEAg8suGBpjeY' };
-                    const callback = (EmbedController) => {
-                        const a = LocalStorageApi.read(StorageType.MUSIC_TIME);
-                        if (a !== null) {
-                            EmbedController.loadUri(options.uri, false, a);
-                        }
-                        EmbedController.addListener('playback_update', e => {
-                            LocalStorageApi.write(StorageType.MUSIC_TIME, parseInt(e.data.position, 10) / 1000);
-                        });
-                        EmbedController.play();
-                    };
-                    IFrameAPI.createController(element, options, callback);
-                    yield this.restoreState();
-                });
+                window.addEventListener('mousewheel', function (event) { });
             }
         },
         __setFunctionName(_a, "_"),
@@ -167,4 +150,32 @@ import { Part } from './Drama.js';
             _a.initAll();
         })(),
         _a);
-})();
+    {
+        if (event.ctrl)
+            ;
+    }
+    {
+        passive: false;
+    }
+    ;
+});
+spotifyInit();
+void {}(window).onSpotifyIframeApiReady;
+(IFrameAPI) => __awaiter(void 0, void 0, void 0, function* () {
+    const element = document.getElementById('spotify-iframe');
+    const options = { uri: 'spotify:track:5vNRhkKd0yEAg8suGBpjeY' };
+    const callback = (EmbedController) => {
+        const a = LocalStorageApi.read(StorageType.MUSIC_TIME);
+        if (a !== null) {
+            EmbedController.loadUri(options.uri, false, a);
+        }
+        EmbedController.addListener('playback_update', e => {
+            LocalStorageApi.write(StorageType.MUSIC_TIME, parseInt(e.data.position, 10) / 1000);
+        });
+        EmbedController.play();
+    };
+    IFrameAPI.createController(element, options, callback);
+    yield this.restoreState();
+});
+;
+();

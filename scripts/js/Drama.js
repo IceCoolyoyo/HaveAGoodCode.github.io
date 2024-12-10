@@ -1,12 +1,12 @@
 export class Part {
 }
-Part.Part1 = Object.freeze(`@Code:q1
-        @Ball:true為真，false為假
+Part.Part1 = Object.freeze(`@Ball:true為真，false為假
         @Ball:在電腦的任何地方的真假表示都用true或者false
         @Ball:例如：「今天是星期一嗎？」
         @Ball:如果今天是星期一，電腦就會回答 true；
         @Ball:如果不是，電腦就會回答 false。
-        @Ball:試用電腦的方式回答「水有毒嗎?」
+        @Ball:「水有毒嗎?」
+        @Code:q1
         @Answer:false`);
 Part.Part2 = Object.freeze(`@Ball:==用來判斷是否相等
         @Ball:如果跟電腦說5 == 5 
@@ -14,17 +14,19 @@ Part.Part2 = Object.freeze(`@Ball:==用來判斷是否相等
         @Ball:因為 5 跟 5 是一樣的。
         @Ball:但如果跟電腦說5 == 3
         @Ball:那電腦就會回答 false (假的)
-        @Ball:因為 5 跟 3 不一樣。
-        @Answer:false`);
-Part.Part3 = Object.freeze(`@Ball:System.out.println()
+        @Ball:因為 5 跟 3 不一樣。`);
+Part.Part3 = Object.freeze(`@Code:println
         @Ball:用來輸出結果
         @Ball:就是讓電腦把東西「寫出來」。`);
-Part.Part4 = Object.freeze(`@Ball:程式寫System.out.println(5 == 5);
+Part.Part4 = Object.freeze(`@Code:equalTrue
         @Ball:這樣電腦會輸出 true
         @Ball:因為 5 跟 5 是一樣的。
-        @Ball:如果程式寫System.out.println(5 == 3);
+        @Code:equalFalse
         @Ball:那電腦會輸出 false
-        @Ball:因為 5 跟 3 不一樣。`);
+        @Ball:因為 5 跟 3 不一樣。
+        @Ball:「123和321是否相同?」
+        @Code:q2
+        @Answer:false`);
 Part.Part5 = Object.freeze(`@Ball:電腦需要儲存資料時
         @Ball:電腦需要知道資料的長相才能儲存
         @Ball:所以true和false其實是一種特定的「資料長相」
@@ -35,30 +37,45 @@ Part.Part5 = Object.freeze(`@Ball:電腦需要儲存資料時
         @Ball:所以它只能是 true 或 false。」`);
 Part.Part6 = Object.freeze(`@Ball:我們還可以用「名字 = 東西;」
         @Ball:來把資料放進剛剛建立的空間裡。
-        @Ball:比如：boolean isSunny; isSunny= true; 
+        @Code:declareBool
         @Ball:這樣就是在 isSunny裡存了一個 true
-        @Ball:表示今天是晴天。`);
+        @Ball:表示今天是晴天。
+        @Ball:「isRainy裡面存的是什麼?」
+        @Code:q3
+        @Answer:false`);
 Part.Part7 = Object.freeze(`@Ball:而且名字還可以一直用
-        @Ball:boolean isSunny; isSunny = true; isSunny = false;
+        @Code:redeclareBool
         @Ball:把裡面的資料換成 false
         @Ball:可能原本天氣是晴朗的
         @Ball:但後來天氣變陰了
-        @Ball:就可以告訴電腦後來天氣的變化。`);
+        @Ball:就可以告訴電腦後來天氣的變化。
+        @Ball:「isRainy裡面存的是什麼?」
+        @Code:q4
+        @Answer:true`);
 Part.Part8 = Object.freeze(`@Ball:我們還可以一次完成兩件事：
         @Ball:建立空間，然後把資料存進去。
         @Ball:用「長相 名字 = 資料;」的方式
         @Ball:電腦就會自動完成這兩件事。
-        @Ball:比如說： boolean isSunny = true;
+        @Code:do2Things
         @Ball:這樣就直接建立了一個 isSunny 的空間
         @Ball:並且存了 true表示天氣是晴天。
         @Ball:同樣的，如果之後天氣變了
-        @Ball:boolean isSunny = true; isSunny = false;
-        @Ball:可以跟電腦說天氣變陰了。`);
+        @Code:do2ThingsReDecBool
+        @Ball:可以跟電腦說天氣變陰了。
+        @Ball:「下列兩段程式碼是否相等?」
+        @Code:q5_1
+        @Code:q5_2
+        @Answer:true`);
 Part.Part9 = Object.freeze(`@Ball:!= 就是用來判斷「兩個東西是不是不同」的。
-        @Ball:System.out.println(5 != 3);這樣就會輸出 true
+        @Code:notEqualTrue
+        @Ball:這樣就會輸出 true
         @Ball:因為 5 和 3 不一樣。
-        @Ball:如果是： System.out.println(5 != 5); 
-        @Ball:那它會輸出 false，因為 5 跟 5 是一樣的。`);
+        @Code:notEqualFalse
+        @Ball:那它會輸出 false
+        @Ball:因為 5 跟 5 是一樣的。
+        @Ball:「請回答下列程式碼的輸出?」
+        @Code:q6
+        @Answer:false`);
 Part.Part10 = Object.freeze(`@Ball:電腦的加減乘除，基本上跟數學一樣
         @Ball:只是乘法和除法的符號稍微不同：
         @Ball:加法：1 + 1，電腦回答 2、
@@ -72,7 +89,10 @@ Part.Part10 = Object.freeze(`@Ball:電腦的加減乘除，基本上跟數學一
         @Ball:然後再乘 2，結果就是 16。
         @Ball:但如果沒括號，像這樣： 3 + 5 * 2
         @Ball:電腦會先算乘法 5 * 2 = 10 
-        @Ball:然後再加 3，結果是 13。`);
+        @Ball:然後再加 3，結果是 13。
+        @Ball:「請回答下列程式碼的輸出?」
+        @Code:q7
+        @Answer:7`);
 Part.Part11 = Object.freeze(`@Ball:電腦連大於、小於、大於或等於、小於或等於
         @Ball:這些數學符號也能用，而且和數學完全一樣。
         @Ball:比如： 大於：5 > 3
@@ -85,24 +105,30 @@ Part.Part11 = Object.freeze(`@Ball:電腦連大於、小於、大於或等於、
         @Ball:電腦會回答 true，因為 3 比 5 小。
         @Ball:如果程式寫System.out.println(7 >= 8);
         @Ball:這樣就會輸出 false
-        @Ball:因為 7 既不比 8 大，也不等於 8。`);
+        @Ball:因為 7 既不比 8 大，也不等於 8。
+        @Ball:「請回答下列程式碼的輸出?」
+        @Code:q8
+        @Answer:true`);
 Part.Part12 = Object.freeze(`@Ball:! 是用來反轉 boolean 值的
         @Ball:這就像告訴電腦：「如果它是真的，給我假的；
         @Ball:如果它是假的，給我真的。」
-        @Ball:boolean a = false; System.out.println(!a);
+        @Code:reverseF2T
         @Ball:這樣就是先存 false 到 a
         @Ball:然後用 !a 把它反轉，結果就會輸出 true。
-        @Ball:boolean b = true; System.out.println(!b);
-        @Ball:這次 b 是 true，反轉後就會輸出 false。`);
+        @Code:reverseT2F
+        @Ball:這次 b 是 true，反轉後就會輸出 false。
+        @Ball:「請回答下列程式碼的輸出?」
+        @Code:q9
+        @Answer:true`);
 Part.Part13 = Object.freeze(`@Ball:|| 是「或」的意思
         @Ball:只要兩個條件中有一個是真的（true），結果就會是 true；
         @Ball:只有兩個都假的時候，才會是 false。
-        @Ball:比如：System.out.println(true || false); 
+        @Code:orGateTF
         @Ball:這樣因為 true 和 false 中有一個是真的，所以輸出是 true。
-        @Ball:再看這個：System.out.println(false || false); 
+        @Code:orGateFF
         @Ball:這次兩個條件都是假的，所以結果是 false。
         @Ball:那如果兩個條件都是真的呢？
-        @Ball:比如：System.out.println(true || true); 
+        @Code:orGateTT
         @Ball:它會輸出 true，因為有一個真
         @Ball:甚至兩個都真，都符合條件。`);
 Part.Part14 = Object.freeze(`@Ball:&& 是「與」的意思，它的規則是：

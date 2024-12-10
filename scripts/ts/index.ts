@@ -146,6 +146,9 @@ import { Part } from './Drama.js';
                 }
             }, true);
             (document.getElementById(Setting.ballFrameID) as HTMLElement).addEventListener('click', async () => await this.click(false));
+            window.addEventListener('mousewheel', function (event) => {
+                if (event.ctrl)
+            }, {passive : false});
         }
 
         private static spotifyInit(): void {
