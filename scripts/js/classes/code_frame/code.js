@@ -4,13 +4,14 @@ class CodeFrame {
         const codeDiv = document.createElement('div');
         codeDiv.id = 'code';
         const codeLines = document.createElement('pre');
-        codeLines.className = 'java';
         codeLines.id = 'code-lines';
         const code = document.createElement("code");
         const lines = codes.split("\n");
+        code.classList.add("java");
         const leadingSpacesCount = ((_a = lines[1].match(/^\s*/)) === null || _a === void 0 ? void 0 : _a[0].length) || 0;
         const trimmedLines = lines.slice(1).map(line => line.slice(leadingSpacesCount));
-        code.innerText = trimmedLines.join("\n");
+        code.textContent = trimmedLines.join("\n");
+        code.innerHTML = code.innerHTML.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         codeLines.appendChild(code);
         hljs.highlightElement(codeLines);
         codeDiv.appendChild(codeLines);

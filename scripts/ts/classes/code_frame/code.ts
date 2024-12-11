@@ -25,14 +25,16 @@ export default class CodeFrame {
         codeDiv.id = 'code';
 
         const codeLines = document.createElement('pre');
-        codeLines.className = 'java';
         codeLines.id = 'code-lines';
         
         const code = document.createElement("code");
         const lines = codes.split("\n");
+        (code as HTMLElement).classList.add("java");
         const leadingSpacesCount = lines[1].match(/^\s*/)?.[0].length || 0;
         const trimmedLines = lines.slice(1).map(line => line.slice(leadingSpacesCount));
-        code.innerText = trimmedLines.join("\n");
+        code.textContent = trimmedLines.join("\n");
+
+        code.innerHTML = code.innerHTML.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 
         codeLines.appendChild(code);
 

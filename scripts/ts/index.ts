@@ -51,6 +51,8 @@ import { Part } from './Drama.js';
             values.forEach(value => {
                 const lines: string[] = value.split("\n");
                 lines.forEach(line => allLines.push(line));
+                allLines.push("@" + DramaType.Function + ":q4");
+                allLines.push("@" + DramaType.Function + ":q6");
             });
 
             const lines: string[] = allLines.map(s => s.trim());
@@ -67,13 +69,10 @@ import { Part } from './Drama.js';
                     await processMessage();
                     MessageID.addOne();
                 } else {
-                    while (true) {
+                    while (messages[MessageID.getID()].type !== DramaType.Ball && messages[MessageID.getID()].type !== DramaType.Code) {
                         await processMessage();
-                        if (messages[MessageID.getID()].type === DramaType.Ball || messages[MessageID.getID()].type === DramaType.Code) {
-                            await processMessage();
-                            break;
-                        }
                     }
+                    await processMessage();                    
                 }
                 return;
             }
@@ -116,7 +115,11 @@ import { Part } from './Drama.js';
                     await message.obj();
                     await animationCallback();
                 };
-                KeyAnimation.setObjAnimation(messages[startIndex].obj, ballSays, finalCallBack);
+                if (messages[startIndex].type === DramaType.Ball) {
+                    KeyAnimation.setObjAnimation(messages[startIndex].obj, ballSays, finalCallBack);
+                } else {
+                    KeyAnimation.setObjAnimation2(messages[startIndex].obj, finalCallBack);
+                }
             }
         }
 

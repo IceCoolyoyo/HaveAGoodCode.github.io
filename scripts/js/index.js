@@ -54,6 +54,8 @@ import { Part } from './Drama.js';
                     values.forEach(value => {
                         const lines = value.split("\n");
                         lines.forEach(line => allLines.push(line));
+                        allLines.push("@" + DramaType.Function + ":q4");
+                        allLines.push("@" + DramaType.Function + ":q6");
                     });
                     const lines = allLines.map(s => s.trim());
                     for (let index = 0; index < lines.length; index++) {
@@ -70,13 +72,10 @@ import { Part } from './Drama.js';
                             MessageID.addOne();
                         }
                         else {
-                            while (true) {
+                            while (messages[MessageID.getID()].type !== DramaType.Ball && messages[MessageID.getID()].type !== DramaType.Code) {
                                 yield processMessage();
-                                if (messages[MessageID.getID()].type === DramaType.Ball || messages[MessageID.getID()].type === DramaType.Code) {
-                                    yield processMessage();
-                                    break;
-                                }
                             }
+                            yield processMessage();
                         }
                         return;
                     }
@@ -115,7 +114,12 @@ import { Part } from './Drama.js';
                             yield message.obj();
                             yield animationCallback();
                         });
-                        KeyAnimation.setObjAnimation(messages[startIndex].obj, ballSays, finalCallBack);
+                        if (messages[startIndex].type === DramaType.Ball) {
+                            KeyAnimation.setObjAnimation(messages[startIndex].obj, ballSays, finalCallBack);
+                        }
+                        else {
+                            KeyAnimation.setObjAnimation2(messages[startIndex].obj, finalCallBack);
+                        }
                     }
                 });
             }
