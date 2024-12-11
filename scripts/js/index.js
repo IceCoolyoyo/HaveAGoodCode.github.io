@@ -152,6 +152,27 @@ import { Part } from './Drama.js';
                         event.preventDefault();
                     }
                 }, { passive: true });
+                const checkOrientation = function () {
+                    const bo = document.getElementById("alert_box");
+                    if (Math.abs(window.orientation) == 90) {
+                        if (bo !== null) {
+                            bo.remove();
+                        }
+                    }
+                    else {
+                        if (bo === null) {
+                            const a = document.createElement("div");
+                            a.id = "alert_box";
+                            const b = document.createElement("p");
+                            b.textContent = "請轉到橫向畫面。";
+                            a.appendChild(b);
+                            document.body.appendChild(a);
+                        }
+                    }
+                };
+                const supportsOrientationChange = "onorientationchange" in window, orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+                window.addEventListener(orientationEvent, checkOrientation, false);
+                checkOrientation();
             }
             static spotifyInit() {
                 window.onSpotifyIframeApiReady = (IFrameAPI) => __awaiter(this, void 0, void 0, function* () {
