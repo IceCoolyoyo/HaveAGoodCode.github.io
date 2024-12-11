@@ -8,8 +8,7 @@ export class Part {
         @Code:helloWorld
         @Answer:false`);
     static Part2 = Object.freeze(`@Ball:==用來判斷是否相等
-        @Ball:如果跟電腦說5 == 5 
-        @Ball:那電腦就會回答 true (真的)
+        @Ball:跟電腦說5 == 5，電腦會回答true(真的)
         @Ball:因為 5 跟 5 是一樣的。
         @Ball:但如果跟電腦說5 == 3
         @Ball:那電腦就會回答 false (假的)
