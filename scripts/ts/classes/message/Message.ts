@@ -1,4 +1,4 @@
-import { DramaType, classList } from '../enum/Types.js';
+import { classList } from '../enum/Types.js';
 import Setting from '../setting/Setting.js';
 import { goodMessage } from '../constants/Constants.js';
 import KeyAnimation from '../animation/KeyAnimation.js';
@@ -8,6 +8,7 @@ import Doc from '../doct/doct.js';
 import CodeFrame from '../code_frame/code.js';
 import Codes from '../../Codes.js';
 import Question from '../textbook/Question.js';
+import Drama, { DramaType } from '../drama/Dramas.js';
 
 export default class Message {
     type: DramaType;
@@ -94,7 +95,7 @@ export default class Message {
 export const ballSays = Doc.getElementById(Setting.ballSaysID);
 
 export async function processMessage() {
-    const message = messages[MessageID.getID()];
+    const message = Drama.refresh(messages[MessageID.getID()]);
     switch (message.type) {
         case DramaType.Ball: {
             MessageID.addOne();

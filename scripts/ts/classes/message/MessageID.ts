@@ -1,7 +1,7 @@
 import { messages } from '../constants/Constants.js';
 
 export default class MessageID {
-    static id: number;
+    public static id: number;
 
     static {
         const v = Number(window.localStorage.getItem('messageCount'));

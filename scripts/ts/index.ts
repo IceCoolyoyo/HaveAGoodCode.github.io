@@ -1,16 +1,13 @@
 import Setting from './classes/setting/Setting.js';
 import Message, { ballSays, processMessage } from './classes/message/Message.js';
-import { DramaType } from './classes/enum/Types.js';
 import { messages } from './classes/constants/Constants.js';
 import MessageID from './classes/message/MessageID.js';
 import KeyAnimation from './classes/animation/KeyAnimation.js';
-import Doc from './classes/doct/doct.js';
 import LocalStorageApi, { StorageType } from './classes/localStorage/LocalStorageApi.js';
-import CodeFrame from './classes/code_frame/code.js';
 import Question from './classes/textbook/Question.js';
-import assert from './classes/assert/assert.js';
 import DirectoryManager from './classes/directory/Directory.js';
 import { Part } from './Drama.js';
+import Drama, { DramaType } from './classes/drama/Dramas.js';
 
 (function () {
     const _ = class {
@@ -22,12 +19,6 @@ import { Part } from './Drama.js';
             if (!KeyAnimation.canCountinue) {
                 return;
             }
-
-            messages.forEach((chat, index) => {
-                if (chat.type === DramaType.Ball && chat.originalMessage !== null && chat.originalMessage.includes(Setting.drama_time)) {
-                    messages[index].obj = chat.originalMessage.replace(Setting.drama_time, Message.getHelloMsg());
-                }
-            });
 
             if (!init) {
                 const illustrate = document.getElementById(Setting.illustrateID);
@@ -65,27 +56,18 @@ import { Part } from './Drama.js';
             const currentIndex = MessageID.getID();
 
             if (currentIndex === 0) {
-                if (messages[currentIndex].type === DramaType.Ball || messages[currentIndex].type === DramaType.Code) {
-                    await processMessage();
-                    MessageID.addOne();
-                } else {
-                    while (messages[MessageID.getID()].type !== DramaType.Ball && messages[MessageID.getID()].type !== DramaType.Code) {
-                        await processMessage();
-                    }
+                while (!Drama.clickOnceContains(messages[MessageID.getID()])) {
                     await processMessage();
                 }
+                await processMessage();
                 return;
             }
 
             const message = messages[currentIndex];
 
-            let startIndex = -1;
-            for (let i = currentIndex; i >= 0; i--) {
-                if (messages[i].type === DramaType.Ball || messages[i].type === DramaType.Code) {
-                    startIndex = i;
-                    break;
-                }
-            }
+            const startIndex = messages.slice(0, currentIndex + 1)
+                .reverse()
+                .findIndex(Drama.clickOnceContains);
 
             if (startIndex === -1) {
                 throw new Error("No message with type DramaType.Ball found");
@@ -148,7 +130,9 @@ import { Part } from './Drama.js';
                     ev.stopPropagation();
                 }
             }, true);
+
             (document.getElementById(Setting.ballFrameID) as HTMLElement).addEventListener('click', async () => await this.click(false));
+            
             window.addEventListener('wheel', function (event: WheelEvent) {
                 if (event.ctrlKey === true || event.metaKey === true) {
                     event.preventDefault();

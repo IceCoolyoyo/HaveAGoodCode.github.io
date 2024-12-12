@@ -1,3 +1,6 @@
+import Message, { processMessage } from "../message/Message.js";
+import MessageID from "../message/MessageID.js";
+
 interface MenuItem {
     name: string;
     action?: () => void;
@@ -6,7 +9,10 @@ interface MenuItem {
 
 export default class DirectoryManager {
     private static menuItems: MenuItem[] = [
-        { name: 'Home', action: () => alert('Clicked Home.') },
+        { name: 'Home', action:  async () => {
+            MessageID.id = 5;
+            processMessage();
+        } },
         { name: 'About Us', action: () => alert('Clicked About Us') },
         { name: 'Help', action: () => alert('Clicked Help.') },
         {

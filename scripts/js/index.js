@@ -13,7 +13,6 @@ var __setFunctionName = (this && this.__setFunctionName) || function (f, name, p
 };
 import Setting from './classes/setting/Setting.js';
 import Message, { ballSays, processMessage } from './classes/message/Message.js';
-import { DramaType } from './classes/enum/Types.js';
 import { messages } from './classes/constants/Constants.js';
 import MessageID from './classes/message/MessageID.js';
 import KeyAnimation from './classes/animation/KeyAnimation.js';
@@ -21,6 +20,7 @@ import LocalStorageApi, { StorageType } from './classes/localStorage/LocalStorag
 import Question from './classes/textbook/Question.js';
 import DirectoryManager from './classes/directory/Directory.js';
 import { Part } from './Drama.js';
+import Drama, { DramaType } from './classes/drama/Dramas.js';
 (function () {
     var _a;
     const _ = (_a = class {
@@ -29,11 +29,6 @@ import { Part } from './Drama.js';
                     if (!KeyAnimation.canCountinue) {
                         return;
                     }
-                    messages.forEach((chat, index) => {
-                        if (chat.type === DramaType.Ball && chat.originalMessage !== null && chat.originalMessage.includes(Setting.drama_time)) {
-                            messages[index].obj = chat.originalMessage.replace(Setting.drama_time, Message.getHelloMsg());
-                        }
-                    });
                     if (!init) {
                         const illustrate = document.getElementById(Setting.illustrateID);
                         if (illustrate !== null) {
@@ -67,22 +62,16 @@ import { Part } from './Drama.js';
                 return __awaiter(this, void 0, void 0, function* () {
                     const currentIndex = MessageID.getID();
                     if (currentIndex === 0) {
-                        if (messages[currentIndex].type === DramaType.Ball || messages[currentIndex].type === DramaType.Code) {
-                            yield processMessage();
-                            MessageID.addOne();
-                        }
-                        else {
-                            while (messages[MessageID.getID()].type !== DramaType.Ball && messages[MessageID.getID()].type !== DramaType.Code) {
-                                yield processMessage();
-                            }
+                        while (!Drama.clickOnceContains(messages[MessageID.getID()])) {
                             yield processMessage();
                         }
+                        yield processMessage();
                         return;
                     }
                     const message = messages[currentIndex];
                     let startIndex = -1;
                     for (let i = currentIndex; i >= 0; i--) {
-                        if (messages[i].type === DramaType.Ball || messages[i].type === DramaType.Code) {
+                        if (Drama.clickOnceContains(messages[i])) {
                             startIndex = i;
                             break;
                         }
