@@ -1,4 +1,9 @@
+import { messages } from "../constants/Constants.js";
 import Doc from "../doct/doct.js";
+import Drama, { DramaType } from "../drama/Dramas.js";
+import Left from "../left/Left.js";
+import { processMessage } from "../message/Message.js";
+import MessageID from "../message/MessageID.js";
 import Table from "./Table.js";
 
 export let answer: string[] = [];
@@ -59,7 +64,7 @@ export default class Question {
         Question.timeStop = true;
     }
 
-    static q5() {
+    static async q5() {
         const elements = <HTMLElement[]>Array.from(document.querySelectorAll('*:not(html):not(body):not(head):not(#base):not(#left *):not(#left):not(#lesson-media)'));
 
         elements.forEach(element => {
@@ -77,15 +82,17 @@ export default class Question {
                 }
             }
         });
-        
-        Array.from(document.querySelectorAll("#left *")).forEach(element => {
-            element.remove();
-        });
+
+        Left.clear();
 
         Question.timeStop = false;
-        (Question.question_answer as HTMLInputElement).value ="";
+        (Question.question_answer as HTMLInputElement).value = "";
+        while (messages[MessageID.getID()].type !== DramaType.Ball) {
+            await processMessage();
+        }
+        await processMessage();
     }
-    
+
     static q6() {
         (document.getElementById("left") as HTMLElement).appendChild(Question.question_answer);
     }

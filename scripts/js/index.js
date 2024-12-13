@@ -69,13 +69,9 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                         return;
                     }
                     const message = messages[currentIndex];
-                    let startIndex = -1;
-                    for (let i = currentIndex; i >= 0; i--) {
-                        if (Drama.clickOnceContains(messages[i])) {
-                            startIndex = i;
-                            break;
-                        }
-                    }
+                    const startIndex = messages.slice(0, currentIndex + 1)
+                        .reverse()
+                        .findIndex(Drama.clickOnceContains);
                     if (startIndex === -1) {
                         throw new Error("No message with type DramaType.Ball found");
                     }
@@ -143,7 +139,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                 }, { passive: true });
                 const checkOrientation = function () {
                     const bo = document.getElementById("alert_box");
-                    if (Math.abs(window.orientation) == 90) {
+                    if (window.matchMedia("(orientation: portrait)")) {
                         if (bo !== null) {
                             bo.remove();
                         }

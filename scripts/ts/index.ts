@@ -132,7 +132,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
             }, true);
 
             (document.getElementById(Setting.ballFrameID) as HTMLElement).addEventListener('click', async () => await this.click(false));
-            
+
             window.addEventListener('wheel', function (event: WheelEvent) {
                 if (event.ctrlKey === true || event.metaKey === true) {
                     event.preventDefault();
@@ -141,7 +141,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
 
             const checkOrientation = function () {
                 const bo: HTMLElement | null = document.getElementById("alert_box");
-                if (Math.abs(window.orientation) == 90) {
+                if (window.matchMedia("(orientation: portrait)")) {
                     if (bo !== null) {
                         bo.remove();
                     }

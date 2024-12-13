@@ -100,7 +100,7 @@ export async function processMessage() {
         case DramaType.Ball: {
             MessageID.addOne();
             const nextMessage = messages[MessageID.getID()];
-            const animationCallback = nextMessage.type !== DramaType.Ball && nextMessage.type !== DramaType.Code
+            const animationCallback = !Drama.clickOnceContains(nextMessage)
                 ? async () => {
                     await processMessage();
                 }
@@ -112,7 +112,7 @@ export async function processMessage() {
         case DramaType.Code: {
             MessageID.addOne();
             const nextMessage = messages[MessageID.getID()];
-            const animationCallback = nextMessage.type !== DramaType.Ball && nextMessage.type !== DramaType.Code
+            const animationCallback = !Drama.clickOnceContains(nextMessage)
                 ? async () => {
                     await processMessage();
                 }
@@ -132,7 +132,7 @@ export async function processMessage() {
     }
     MessageID.addOne();
     const nextMessage = messages[MessageID.getID()];
-    if (nextMessage.type !== DramaType.Ball && nextMessage.type !== DramaType.Code) {
+    if (!Drama.clickOnceContains(nextMessage)) {
         await processMessage();
     }
     return MessageID.getID();

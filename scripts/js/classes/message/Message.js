@@ -97,7 +97,7 @@ export function processMessage() {
             case DramaType.Ball: {
                 MessageID.addOne();
                 const nextMessage = messages[MessageID.getID()];
-                const animationCallback = nextMessage.type !== DramaType.Ball && nextMessage.type !== DramaType.Code
+                const animationCallback = !Drama.clickOnceContains(nextMessage)
                     ? () => __awaiter(this, void 0, void 0, function* () {
                         yield processMessage();
                     })
@@ -108,7 +108,7 @@ export function processMessage() {
             case DramaType.Code: {
                 MessageID.addOne();
                 const nextMessage = messages[MessageID.getID()];
-                const animationCallback = nextMessage.type !== DramaType.Ball && nextMessage.type !== DramaType.Code
+                const animationCallback = !Drama.clickOnceContains(nextMessage)
                     ? () => __awaiter(this, void 0, void 0, function* () {
                         yield processMessage();
                     })
@@ -126,7 +126,7 @@ export function processMessage() {
         }
         MessageID.addOne();
         const nextMessage = messages[MessageID.getID()];
-        if (nextMessage.type !== DramaType.Ball && nextMessage.type !== DramaType.Code) {
+        if (!Drama.clickOnceContains(nextMessage)) {
             yield processMessage();
         }
         return MessageID.getID();

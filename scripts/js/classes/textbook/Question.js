@@ -1,4 +1,18 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+import { messages } from "../constants/Constants.js";
 import Doc from "../doct/doct.js";
+import { DramaType } from "../drama/Dramas.js";
+import Left from "../left/Left.js";
+import { processMessage } from "../message/Message.js";
+import MessageID from "../message/MessageID.js";
 import Table from "./Table.js";
 export let answer = [];
 class Question {
@@ -34,29 +48,33 @@ class Question {
         Question.timeStop = true;
     }
     static q5() {
-        const elements = Array.from(document.querySelectorAll('*:not(html):not(body):not(head):not(#base):not(#left *):not(#left):not(#lesson-media)'));
-        elements.forEach(element => {
-            const originalState = Question.elementStateMap.get(element);
-            if (originalState) {
-                if (originalState.filter !== null) {
-                    element.style.filter = originalState.filter;
+        return __awaiter(this, void 0, void 0, function* () {
+            const elements = Array.from(document.querySelectorAll('*:not(html):not(body):not(head):not(#base):not(#left *):not(#left):not(#lesson-media)'));
+            elements.forEach(element => {
+                const originalState = Question.elementStateMap.get(element);
+                if (originalState) {
+                    if (originalState.filter !== null) {
+                        element.style.filter = originalState.filter;
+                    }
+                    else {
+                        element.style.filter = "";
+                    }
+                    if (originalState.animationPlayState !== null) {
+                        element.style.animationPlayState = originalState.animationPlayState;
+                    }
+                    else {
+                        element.style.animationPlayState = "";
+                    }
                 }
-                else {
-                    element.style.filter = "";
-                }
-                if (originalState.animationPlayState !== null) {
-                    element.style.animationPlayState = originalState.animationPlayState;
-                }
-                else {
-                    element.style.animationPlayState = "";
-                }
+            });
+            Left.clear();
+            Question.timeStop = false;
+            Question.question_answer.value = "";
+            while (messages[MessageID.getID()].type !== DramaType.Ball) {
+                yield processMessage();
             }
+            yield processMessage();
         });
-        Array.from(document.querySelectorAll("#left *")).forEach(element => {
-            element.remove();
-        });
-        Question.timeStop = false;
-        Question.question_answer.value = "";
     }
     static q6() {
         document.getElementById("left").appendChild(Question.question_answer);
