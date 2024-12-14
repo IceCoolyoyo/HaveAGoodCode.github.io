@@ -15,18 +15,6 @@
     right: calc(5% + 2% + 2%); // #frame width + right
 }
 
-@keyframes deTyping {
-    to {
-        width: 0;
-    }
-}
-
-@keyframes typing {
-    from {
-        width: 0
-    }
-}
-
 @keyframes caret {
     50% {
         border-right-color: transparent;
