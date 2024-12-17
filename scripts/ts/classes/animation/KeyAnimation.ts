@@ -1,5 +1,3 @@
-import DebugTool from '../debug/DebugTool.js';
-
 export default class KeyAnimation {
     private static countinue: boolean = true;
 
@@ -12,28 +10,51 @@ export default class KeyAnimation {
     }
 
     public static setObjAnimation(string: string, obj: HTMLElement, runnable?: (() => Promise<void>) | null): void {
-        const width: number = KeyAnimation.calcWidth(string);
-
         KeyAnimation.toggleCountinue();
 
-        obj.innerHTML = string;
-        obj.style.width = `${width}ch`;
         obj.style.borderRightColor = 'rgb(0, 0, 0)';
-        obj.style.animation = `typing ${width / 10}s steps(${string.length}), caret 0.8s steps(1) infinite`;
+        obj.style.animation = `caret 0.8s steps(1) infinite`;
+
+        KeyAnimation.typing(string, obj, 110, () =>
+            setTimeout(() => {
+                obj.style.borderRightColor = 'transparent';
+                KeyAnimation.toggleCountinue();
+
+                const div: HTMLElement = document.createElement("div");
+                div.id = "question-title";
+                div.innerText = string;
+                (document.getElementById("left") as HTMLElement).appendChild(div);
+
+                if (runnable !== undefined && runnable !== null) {
+                    runnable();
+                }
+            }, 500));
+    }
+
+    private static typing(string: string, element: HTMLElement, typingInterval: number, endRun: () => void, currentIndex: number = 0, isInitialCall: boolean = true): void {
+        if (isInitialCall) {
+            element.textContent = "";
+            setTimeout(() => {
+                KeyAnimation.typing(string, element, typingInterval, endRun, currentIndex, false);
+            }, typingInterval);
+            return;
+        }
+
+        if (currentIndex >= string.length) {
+            endRun();
+            return;
+        }
+
+        const currentChar = string[currentIndex];
+
+        element.textContent += currentChar;
+        currentIndex++;
+
+        const delay = currentChar === " " ? 0 : typingInterval;
 
         setTimeout(() => {
-            KeyAnimation.clearObjAnimation(obj);
-            KeyAnimation.toggleCountinue();
-
-            const div: HTMLElement = document.createElement("div");
-            div.id = "question-title";
-            div.innerText = string;
-            (document.getElementById("left") as HTMLElement).appendChild(div);
-
-            if (runnable) {
-                runnable();
-            }
-        }, ((width / 10) * 1000) + 500);
+            KeyAnimation.typing(string, element, typingInterval, endRun, currentIndex, false);
+        }, delay);
     }
 
     public static setObjAnimation2(obj: Function, callback: (() => Promise<void>) | null): void {
@@ -45,37 +66,5 @@ export default class KeyAnimation {
             KeyAnimation.toggleCountinue();
             callback?.();
         }, 100);
-    }
-
-    public static clearObjAnimation(obj: HTMLElement): void {
-        obj.style.borderRightColor = 'transparent';
-        obj.style.animation = ``;
-    }
-
-    public static deTypingAnimation(width: number, obj: HTMLElement): void {
-        obj.style.animation = `deTyping ${width / 10}s steps(${obj.innerHTML.length}), caret 0.8s steps(1) infinite`;
-        setTimeout(() => {
-            KeyAnimation.clearObjAnimation(obj);
-        }, ((width / 10) * 1000));
-    }
-
-    public static calcWidth(string: string): number {
-        const chineseCharRegex = /[\u4E00-\u9FFF]/;
-        const doubleWidthCharRegex = /[\u3000-\u303F\uFF00-\uFFFF]/;
-
-        const debugArray: Array<{ char: string; width: number }> = [];
-
-        let width = 0;
-
-        for (let char of string) {
-            const charWidth = chineseCharRegex.test(char) || doubleWidthCharRegex.test(char) ? 2 : 1;
-            width += charWidth;
-            DebugTool.ifDebug(() => debugArray.push({ char, width: charWidth }));
-        }
-
-        DebugTool.ifDebug(() =>
-            console.debug("%cFunction %ccalcWidth", "color: #CCEEFF;", "color: #FFC8B4; font-weight: bold;", debugArray)
-        );
-        return width;
     }
 }
