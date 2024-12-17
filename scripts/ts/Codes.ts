@@ -5,6 +5,8 @@ export default class Codes {
                 System.out.println("Hello World!");
             }
         }`;
+    public static readonly q0: string = `
+    System.out.println(666);`;
     public static readonly q1: string = `
     true or false?`;
     public static readonly q2: string = `
@@ -30,12 +32,42 @@ export default class Codes {
     true or false?`;
     public static readonly q7: string = `
     System.out.println(2+(6+4)/2);`;
-    public static readonly q8: string = `
+    public static readonly q8_1: string = `
+    System.out.println(561-999<999-666);`;
+    public static readonly q8_2: string = `
     System.out.println(8+4849*9>=32*94+96*12);`;
     public static readonly q9: string = `
     boolean x = true;
     x = !x;
     System.out.println(!x);`;
+    public static readonly q10: string = `
+    boolean x = false;
+    boolean y = true;
+    System.out.println(x || y);`;
+    public static readonly q11: string = `
+    boolean x = false;
+    boolean y = true;
+    System.out.println(x && y);`;
+    public static readonly q12: string = `
+    int i = 1;
+    System.out.println(i);`;
+    public static readonly q13: string = `
+    long i = 5L;
+    System.out.println(i);`;
+    public static readonly q14: string = `
+    float i = 5.15156156456156F;
+    System.out.println(i);`;
+    public static readonly q15: string = `
+    float i = 456456456.1544454545;
+    System.out.println(i);`;
+    public static readonly q16: string = `
+    int i = 5; i = i + 6; System.out.println(i);`;
+    public static readonly q17: string = `
+    int i = 9; i = i - 6; System.out.println(i);`;
+    public static readonly q18: string = `
+    int i = 3; i = i * 6; System.out.println(i);`;
+    public static readonly q19: string = `
+    int i = 42; i = i / 6; System.out.println(i);`;
 
     public static readonly println: string = `
     System.out.println("Hello World!");`;
@@ -53,7 +85,8 @@ export default class Codes {
     public static readonly do2Things: string = `
     boolean isSunny = true;`;
     public static readonly do2ThingsReDecBool: string = `
-    isSunny = true; isSunny = false;`;
+    isSunny = true;
+    isSunny = false;`;
     public static readonly notEqualTrue: string = `
     System.out.println(5 != 3);`;
     public static readonly notEqualFalse: string = `
@@ -70,4 +103,18 @@ export default class Codes {
     System.out.println(false || false);`;
     public static readonly orGateTT: string = `
     System.out.println(true || true);`;
+    public static readonly andGateTF: string = `
+    System.out.println(true && true);`;
+    public static readonly andGateFF: string = `
+    System.out.println(false && false);`;
+    public static readonly andGateTT: string = `
+    System.out.println(true && true);`;
+    public static readonly add: string = `
+    int a = 0; a = a + 1; System.out.println(a);`;
+    public static readonly minus: string = `
+    int a = 0; a = a - 1; System.out.println(a);`;
+    public static readonly multiply: string = `
+    int a = 2; a = a * 2; System.out.println(a);`;
+    public static readonly divide: string = `
+    int a = 6; a = a / 3; System.out.println(a);`;
 }
