@@ -53,7 +53,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
         }
 
         private static async restoreState() {
-            const currentIndex = MessageID.getID();
+            const currentIndex = MessageID.getID() - 1;
 
             if (currentIndex === 0) {
                 while (!Drama.clickOnceContains(messages[MessageID.getID()])) {
@@ -65,7 +65,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
 
             const message = messages[currentIndex];
 
-            const startIndex = messages.slice(0, currentIndex + 1)
+            const startIndex = messages.slice(0, currentIndex)
                 .reverse()
                 .findIndex(Drama.clickOnceContains);
 
@@ -138,7 +138,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                 if (event.ctrlKey === true || event.metaKey === true) {
                     event.preventDefault();
                 }
-            }, { passive: true });
+            }, { passive: false });
 
             const checkOrientation = function () {
                 const bo: HTMLElement | null = document.getElementById("alert_box");
@@ -168,9 +168,10 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                 (document.getElementById("closeIntro") as HTMLElement).onclick = () => 
                     (document.getElementById('introBackground') as HTMLElement).remove();
                 MessageID.id = 0;
+                LocalStorageApi.write<number>(StorageType.MESSAGE_COUNT, 0);
             } else {
                 (document.getElementById('introBackground') as HTMLElement).remove();
-                MessageID.id = (LocalStorageApi.read<number>(StorageType.MESSAGE_COUNT) as number) - 1;
+                MessageID.id = (LocalStorageApi.read<number>(StorageType.MESSAGE_COUNT) as number);
             }
         }
 

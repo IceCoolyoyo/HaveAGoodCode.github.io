@@ -60,7 +60,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
             }
             static restoreState() {
                 return __awaiter(this, void 0, void 0, function* () {
-                    const currentIndex = MessageID.getID();
+                    const currentIndex = MessageID.getID() - 1;
                     if (currentIndex === 0) {
                         while (!Drama.clickOnceContains(messages[MessageID.getID()])) {
                             yield processMessage();
@@ -69,7 +69,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                         return;
                     }
                     const message = messages[currentIndex];
-                    const startIndex = messages.slice(0, currentIndex + 1)
+                    const startIndex = messages.slice(0, currentIndex)
                         .reverse()
                         .findIndex(Drama.clickOnceContains);
                     if (startIndex === -1) {
@@ -137,7 +137,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                     if (event.ctrlKey === true || event.metaKey === true) {
                         event.preventDefault();
                     }
-                }, { passive: true });
+                }, { passive: false });
                 const checkOrientation = function () {
                     const bo = document.getElementById("alert_box");
                     if (window.matchMedia("(orientation: portrait)")) {
@@ -164,10 +164,11 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                 if (LocalStorageApi.read(StorageType.MESSAGE_COUNT) === null && LocalStorageApi.read(StorageType.MUSIC_TIME) === null) {
                     document.getElementById("closeIntro").onclick = () => document.getElementById('introBackground').remove();
                     MessageID.id = 0;
+                    LocalStorageApi.write(StorageType.MESSAGE_COUNT, 0);
                 }
                 else {
                     document.getElementById('introBackground').remove();
-                    MessageID.id = LocalStorageApi.read(StorageType.MESSAGE_COUNT) - 1;
+                    MessageID.id = LocalStorageApi.read(StorageType.MESSAGE_COUNT);
                 }
             }
             static spotifyInit() {
