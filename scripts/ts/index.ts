@@ -29,7 +29,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
 
             await processMessage();
 
-            window.localStorage.setItem('messageCount', MessageID.getID().toString());
+            LocalStorageApi.write<number>(StorageType.MESSAGE_COUNT, MessageID.getID());
         }
 
         private static async getDrama(): Promise<void> {
@@ -106,6 +106,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
         }
 
         private static async initAll() {
+            this.handleOnceJoinnnnnnnnnnnnnnnnnn();
             await this.getDrama();
 
             this.eventHook();
@@ -124,6 +125,10 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
         }
 
         private static eventHook(): void {
+            console.log((document.getElementById("awa") as HTMLElement));
+            (document.getElementById("awa") as HTMLElement).onclick = () => 
+                (document.getElementById('introBackground') as HTMLElement).remove();
+
             document.body.addEventListener('click', (ev) => {
                 if (Question.timeStop) {
                     ev.preventDefault();
@@ -162,6 +167,15 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
             checkOrientation();
         }
 
+        private static handleOnceJoinnnnnnnnnnnnnnnnnn(): void {
+            if (LocalStorageApi.read<number>(StorageType.MESSAGE_COUNT) === null && LocalStorageApi.read<number>(StorageType.MUSIC_TIME) === null) {
+                // User First Open Webside
+            } else {
+                (document.getElementById('introBackground') as HTMLElement).remove();
+                MessageID.id = LocalStorageApi.read<number>(StorageType.MESSAGE_COUNT) as number;
+            }
+        }
+
         private static spotifyInit(): void {
             (window as any).onSpotifyIframeApiReady = async (IFrameAPI: { createController: (arg0: HTMLElement | null, arg1: { uri: string; }, arg2: (EmbedController: any) => void) => void; }) => {
                 const element = document.getElementById('spotify-iframe') as HTMLElement;
@@ -172,7 +186,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                         EmbedController.loadUri(options.uri, false, a);
                     }
                     EmbedController.addListener('playback_update', e => {
-                        LocalStorageApi.write(StorageType.MUSIC_TIME, parseInt((e.data.position as string), 10) / 1000);
+                        LocalStorageApi.write<number>(StorageType.MUSIC_TIME, parseInt((e.data.position as string), 10) / 1000);
                     });
                     EmbedController.play();
                 };

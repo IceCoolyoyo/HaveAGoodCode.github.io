@@ -36,7 +36,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                         }
                     }
                     yield processMessage();
-                    window.localStorage.setItem('messageCount', MessageID.getID().toString());
+                    LocalStorageApi.write(StorageType.MESSAGE_COUNT, MessageID.getID());
                 });
             }
             static getDrama() {
@@ -110,6 +110,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
             }
             static initAll() {
                 return __awaiter(this, void 0, void 0, function* () {
+                    this.handleOnceJoinnnnnnnnnnnnnnnnnn();
                     yield this.getDrama();
                     this.eventHook();
                     this.spotifyInit();
@@ -125,6 +126,8 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                 });
             }
             static eventHook() {
+                console.log(document.getElementById("awa"));
+                document.getElementById("awa").onclick = () => document.getElementById('introBackground').remove();
                 document.body.addEventListener('click', (ev) => {
                     if (Question.timeStop) {
                         ev.preventDefault();
@@ -158,6 +161,15 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                 const supportsOrientationChange = "onorientationchange" in window, orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
                 window.addEventListener(orientationEvent, checkOrientation, false);
                 checkOrientation();
+            }
+            static handleOnceJoinnnnnnnnnnnnnnnnnn() {
+                if (LocalStorageApi.read(StorageType.MESSAGE_COUNT) === null && LocalStorageApi.read(StorageType.MUSIC_TIME) === null) {
+                    // User First Open Webside
+                }
+                else {
+                    document.getElementById('introBackground').remove();
+                    MessageID.id = LocalStorageApi.read(StorageType.MESSAGE_COUNT);
+                }
             }
             static spotifyInit() {
                 window.onSpotifyIframeApiReady = (IFrameAPI) => __awaiter(this, void 0, void 0, function* () {

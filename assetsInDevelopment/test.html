@@ -1,1 +1,129 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Document</title></head><body><span>Hello World!</span></body></html>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="triangleCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('triangleCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const sideLength = 300;
+        const canvasSize = 600;
+        canvas.width = canvasSize;
+        canvas.height = canvasSize;
+
+        const height = Math.sqrt(3) / 2 * sideLength;
+
+        const offsetX = (canvasSize - sideLength) / 2;
+        const offsetY = (canvasSize - height) / 2;
+        {
+
+            const x1 = offsetX + sideLength / 2;
+            const y1 = offsetY;
+
+            const x2 = offsetX;
+            const y2 = offsetY + height;
+
+            const x3 = offsetX + sideLength;
+            const y3 = offsetY + height;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.lineTo(x3, y3);
+            ctx.closePath();
+            ctx.fillStyle = '#007bff';
+            ctx.fill();
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+        {
+
+            const x1 = canvasSize / 2;
+            const y1 = (canvasSize - height) / 2;
+
+            const x2 = (canvasSize - sideLength) / 2;
+            const y2 = (canvasSize + height) / 2;
+
+            const x3 = (canvasSize + sideLength) / 2;
+            const y3 = (canvasSize + height) / 2;
+
+            const radius = 5;
+
+            ctx.beginPath();
+            ctx.arc(x1, y1, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = 'red'; ctx.fill();
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(x2, y2, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = 'red'; ctx.fill();
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(x3, y3, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = 'red'; ctx.fill();
+            ctx.stroke();
+        }
+
+        {
+            const height = Math.sqrt(3) / 2 * sideLength;
+
+            const offsetX = (canvasSize - sideLength) / 2;
+            const offsetY = (canvasSize - height) / 2;
+            const x1 = canvasSize / 2;
+            const y1 = (canvasSize - height) / 2;
+
+            const x2 = (canvasSize - sideLength) / 2;
+            const y2 = (canvasSize + height) / 2;
+
+            const x3 = (canvasSize + sideLength) / 2;
+            const y3 = (canvasSize + height) / 2;
+
+            const radius = 5;
+
+            ctx.beginPath();
+            ctx.arc(x1, y1, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = 'red'; ctx.fill();
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(x2, y2, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = 'red'; ctx.fill();
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(x3, y3, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = 'red'; ctx.fill();
+            ctx.stroke();
+        }
+    </script>
+</body>
+
+</html>

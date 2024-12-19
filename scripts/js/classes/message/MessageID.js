@@ -1,5 +1,5 @@
 import { messages } from '../constants/Constants.js';
-class MessageID {
+export default class MessageID {
     static addOne() {
         MessageID.id = MessageID.getPreAdd(1);
     }
@@ -10,8 +10,3 @@ class MessageID {
         return MessageID.id;
     }
 }
-(() => {
-    const v = Number(window.localStorage.getItem('messageCount'));
-    MessageID.id = Number.isNaN(v) ? 0 : v;
-})();
-export default MessageID;
