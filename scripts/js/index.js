@@ -126,8 +126,6 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                 });
             }
             static eventHook() {
-                console.log(document.getElementById("awa"));
-                document.getElementById("awa").onclick = () => document.getElementById('introBackground').remove();
                 document.body.addEventListener('click', (ev) => {
                     if (Question.timeStop) {
                         ev.preventDefault();
@@ -164,11 +162,12 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
             }
             static handleOnceJoinnnnnnnnnnnnnnnnnn() {
                 if (LocalStorageApi.read(StorageType.MESSAGE_COUNT) === null && LocalStorageApi.read(StorageType.MUSIC_TIME) === null) {
-                    // User First Open Webside
+                    document.getElementById("closeIntro").onclick = () => document.getElementById('introBackground').remove();
+                    MessageID.id = 0;
                 }
                 else {
                     document.getElementById('introBackground').remove();
-                    MessageID.id = LocalStorageApi.read(StorageType.MESSAGE_COUNT);
+                    MessageID.id = LocalStorageApi.read(StorageType.MESSAGE_COUNT) - 1;
                 }
             }
             static spotifyInit() {

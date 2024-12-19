@@ -125,10 +125,6 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
         }
 
         private static eventHook(): void {
-            console.log((document.getElementById("awa") as HTMLElement));
-            (document.getElementById("awa") as HTMLElement).onclick = () => 
-                (document.getElementById('introBackground') as HTMLElement).remove();
-
             document.body.addEventListener('click', (ev) => {
                 if (Question.timeStop) {
                     ev.preventDefault();
@@ -169,10 +165,12 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
 
         private static handleOnceJoinnnnnnnnnnnnnnnnnn(): void {
             if (LocalStorageApi.read<number>(StorageType.MESSAGE_COUNT) === null && LocalStorageApi.read<number>(StorageType.MUSIC_TIME) === null) {
-                // User First Open Webside
+                (document.getElementById("closeIntro") as HTMLElement).onclick = () => 
+                    (document.getElementById('introBackground') as HTMLElement).remove();
+                MessageID.id = 0;
             } else {
                 (document.getElementById('introBackground') as HTMLElement).remove();
-                MessageID.id = LocalStorageApi.read<number>(StorageType.MESSAGE_COUNT) as number;
+                MessageID.id = (LocalStorageApi.read<number>(StorageType.MESSAGE_COUNT) as number) - 1;
             }
         }
 
