@@ -61,7 +61,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
             static restoreState() {
                 return __awaiter(this, void 0, void 0, function* () {
                     const currentIndex = MessageID.getID() - 1;
-                    if (currentIndex === 0) {
+                    if (currentIndex === (0 - 1)) {
                         while (!Drama.clickOnceContains(messages[MessageID.getID()])) {
                             yield processMessage();
                         }
