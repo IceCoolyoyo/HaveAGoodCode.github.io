@@ -11,32 +11,37 @@ export default class KeyAnimation {
 
     public static setObjAnimation(string: string, obj: HTMLElement, runnable?: (() => Promise<void>) | null): void {
         KeyAnimation.toggleCountinue();
+        KeyAnimation.setupObjAnimationStyles(obj);
 
+        KeyAnimation.typing(string, obj, 90, () => {
+            KeyAnimation.finalizeAnimation(string, obj, runnable);
+        });
+    }
+
+    private static setupObjAnimationStyles(obj: HTMLElement): void {
         obj.style.borderRightColor = 'rgb(0, 0, 0)';
         obj.style.animation = `caret 0.8s steps(1) infinite`;
+    }
 
-        KeyAnimation.typing(string, obj, 90, () =>
-            setTimeout(() => {
-                obj.style.borderRightColor = 'transparent';
-                KeyAnimation.toggleCountinue();
+    private static finalizeAnimation(string: string, obj: HTMLElement, runnable?: (() => Promise<void>) | null): void {
+        setTimeout(() => {
+            obj.style.borderRightColor = 'transparent';
+            KeyAnimation.toggleCountinue();
 
-                const div: HTMLElement = document.createElement("div");
-                div.id = "question-title";
-                div.innerText = string;
-                (document.getElementById("left") as HTMLElement).appendChild(div);
+            const div: HTMLElement = document.createElement("div");
+            div.id = "question-title";
+            div.innerText = string;
+            (document.getElementById("left") as HTMLElement).appendChild(div);
 
-                if (runnable !== undefined && runnable !== null) {
-                    runnable();
-                }
-            }, 500));
+            if (runnable) {
+                runnable();
+            }
+        }, 500);
     }
 
     private static typing(string: string, element: HTMLElement, typingInterval: number, endRun: () => void, currentIndex: number = 0, isInitialCall: boolean = true): void {
         if (isInitialCall) {
-            element.textContent = "";
-            setTimeout(() => {
-                KeyAnimation.typing(string, element, typingInterval, endRun, currentIndex, false);
-            }, typingInterval);
+            KeyAnimation.initializeTyping(element, string, typingInterval, endRun);
             return;
         }
 
@@ -45,23 +50,34 @@ export default class KeyAnimation {
             return;
         }
 
+        KeyAnimation.processTyping(string, element, typingInterval, endRun, currentIndex);
+    }
+
+    private static initializeTyping(element: HTMLElement, string: string, typingInterval: number, endRun: () => void): void {
+        element.textContent = "";
+        setTimeout(() => {
+            KeyAnimation.typing(string, element, typingInterval, endRun, 0, false);
+        }, typingInterval);
+    }
+
+    private static processTyping(string: string, element: HTMLElement, typingInterval: number, endRun: () => void, currentIndex: number): void {
         const currentChar = string[currentIndex];
-
         element.textContent += currentChar;
-        currentIndex++;
-
         const delay = currentChar === " " ? 0 : typingInterval;
 
         setTimeout(() => {
-            KeyAnimation.typing(string, element, typingInterval, endRun, currentIndex, false);
+            KeyAnimation.typing(string, element, typingInterval, endRun, currentIndex + 1, false);
         }, delay);
     }
 
     public static setObjAnimation2(obj: Function, callback: (() => Promise<void>) | null): void {
         KeyAnimation.toggleCountinue();
-
         obj();
+        
+        KeyAnimation.finalizeObjAnimation2(callback);
+    }
 
+    private static finalizeObjAnimation2(callback: (() => Promise<void>) | null): void {
         setTimeout(() => {
             KeyAnimation.toggleCountinue();
             callback?.();

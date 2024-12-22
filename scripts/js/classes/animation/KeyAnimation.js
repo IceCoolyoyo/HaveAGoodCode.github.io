@@ -7,43 +7,59 @@ class KeyAnimation {
     }
     static setObjAnimation(string, obj, runnable) {
         KeyAnimation.toggleCountinue();
+        KeyAnimation.setupObjAnimationStyles(obj);
+        KeyAnimation.typing(string, obj, 90, () => {
+            KeyAnimation.finalizeAnimation(string, obj, runnable);
+        });
+    }
+    static setupObjAnimationStyles(obj) {
         obj.style.borderRightColor = 'rgb(0, 0, 0)';
         obj.style.animation = `caret 0.8s steps(1) infinite`;
-        KeyAnimation.typing(string, obj, 90, () => setTimeout(() => {
+    }
+    static finalizeAnimation(string, obj, runnable) {
+        setTimeout(() => {
             obj.style.borderRightColor = 'transparent';
             KeyAnimation.toggleCountinue();
             const div = document.createElement("div");
             div.id = "question-title";
             div.innerText = string;
             document.getElementById("left").appendChild(div);
-            if (runnable !== undefined && runnable !== null) {
+            if (runnable) {
                 runnable();
             }
-        }, 500));
+        }, 500);
     }
     static typing(string, element, typingInterval, endRun, currentIndex = 0, isInitialCall = true) {
         if (isInitialCall) {
-            element.textContent = "";
-            setTimeout(() => {
-                KeyAnimation.typing(string, element, typingInterval, endRun, currentIndex, false);
-            }, typingInterval);
+            KeyAnimation.initializeTyping(element, string, typingInterval, endRun);
             return;
         }
         if (currentIndex >= string.length) {
             endRun();
             return;
         }
+        KeyAnimation.processTyping(string, element, typingInterval, endRun, currentIndex);
+    }
+    static initializeTyping(element, string, typingInterval, endRun) {
+        element.textContent = "";
+        setTimeout(() => {
+            KeyAnimation.typing(string, element, typingInterval, endRun, 0, false);
+        }, typingInterval);
+    }
+    static processTyping(string, element, typingInterval, endRun, currentIndex) {
         const currentChar = string[currentIndex];
         element.textContent += currentChar;
-        currentIndex++;
         const delay = currentChar === " " ? 0 : typingInterval;
         setTimeout(() => {
-            KeyAnimation.typing(string, element, typingInterval, endRun, currentIndex, false);
+            KeyAnimation.typing(string, element, typingInterval, endRun, currentIndex + 1, false);
         }, delay);
     }
     static setObjAnimation2(obj, callback) {
         KeyAnimation.toggleCountinue();
         obj();
+        KeyAnimation.finalizeObjAnimation2(callback);
+    }
+    static finalizeObjAnimation2(callback) {
         setTimeout(() => {
             KeyAnimation.toggleCountinue();
             callback === null || callback === void 0 ? void 0 : callback();

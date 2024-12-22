@@ -15,9 +15,6 @@
 
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
 
-    <link rel="preload" as="style" onload="this.rel = 'stylesheet'"
-        href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         rel="stylesheet">
@@ -35,6 +32,7 @@
     <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/alert_box.css">
     <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/intro.css">
     <link rel="preload" as="style" onload="this.rel = 'stylesheet'" href="/styles/css/sideMenu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
 
@@ -44,40 +42,32 @@
 </head>
 
 <body>
-    <div id="introBackground">
-        <h1 id="innerTitle">歡迎來到 HaveGoodCode.github.io!</h1>
-        <div id="intro">
-            <p id="innerText">這是一個致力於提供程式學習者教學的網站。</p>
-            <p id="innerText">您可以在這裡體驗到學習且同時實作的教學模式。</p>
-            <p id="innerText">我們的教材有明確文獻資料，您不必擔心。</p>
-            <p id="innerText">我們的教材經過眾多初學者檢閱，您可以輕鬆學習。</p>
-        </div>
-        <button id="closeIntro">繼續</button>
-    </div>
-
-    <div id="overlay"></div>
-    <div id="directory">
-        <button id="close-directory"></button>
-        <ul id="directory-list">
-        </ul>
-    </div>
-    <button id="open-directory">目錄</button>
-
     <div id="base">
-
-        <input type="checkbox" name="" id="sideMenu-active" style="z-index: 9999;">
-        <div class="sideMenu" style="z-index: 9999;">
+        <div id="introBackground">
+            <h1 id="innerTitle">歡迎來到 HaveGoodCode.github.io!</h1>
+            <div id="intro">
+                <p id="innerText">這是一個致力於提供程式學習者教學的網站。</p>
+                <p id="innerText">您可以在這裡體驗到學習且同時實作的教學模式。</p>
+                <p id="innerText">我們的教材有明確文獻資料，您不必擔心。</p>
+                <p id="innerText">我們的教材經過眾多初學者檢閱，您可以輕鬆學習。</p>
+            </div>
+            <button id="closeIntro">繼續</button>
+        </div>
+    
+        <div id="overlay"></div>
+        <div id="directory">
+            <button id="close-directory"></button>
+            <ul id="directory-list">
+            </ul>
+        </div>
+        <button id="open-directory">目錄</button>
+        
+        <input type="checkbox" name="" id="sideMenu-active">
+        <div class="sideMenu">
             <nav>
-                <a href="#"><i class="fas fa-sitemap"></i>金魚系列 VIII</a>
-                <a href="#"><i class="fas fa-chalkboard"></i>側邊選單</a>
-                <a href="#"><i class="fas fa-book-reader"></i>非常常見</a>
-                <a href="#"><i class="fas fa-user-graduate"></i>不會不行</a>
-                <a href="#"><i class="fas fa-trophy"></i>切了就會</a>
             </nav>
             <label for="sideMenu-active">
-                <span class="material-symbols-outlined">
-                    chevron_right
-                    </span>
+                <i class="fas fa-angle-right"></i>
             </label>
         </div>
 
