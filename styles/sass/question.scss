@@ -24,4 +24,12 @@
     font-style: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
+
+    border-right: 3px solid;
+}
+
+@keyframes caret {
+    50% {
+        border-right-color: transparent;
+    }
 }

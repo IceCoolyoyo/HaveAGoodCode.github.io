@@ -95,6 +95,7 @@ export default class Message {
 export function createNewTextLine(): HTMLElement {
     const div: HTMLElement = document.createElement("div");
     div.id = "question-title";
+    div.style.width = 'auto';
     (document.getElementById("left") as HTMLElement).appendChild(div);
     return div;
 }

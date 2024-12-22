@@ -62,9 +62,54 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                         return;
                     }
                     const message = messages[currentIndex];
-                    const startIndex = messages.slice(0, currentIndex)
-                        .reverse()
-                        .findIndex(Drama.clickOnceContains);
+                    let startIndex = -1;
+                    for (let i = currentIndex; i >= 0; i--) {
+                        if (messages[i].type === DramaType.Ball) {
+                            const f = function () {
+                                return __awaiter(this, void 0, void 0, function* () {
+                                    const message = Drama.refresh(messages[i]);
+                                    switch (message.type) {
+                                        case DramaType.Ball: {
+                                            if (Drama.clickOnceContains(messages[++i])) {
+                                                KeyAnimation.setObjAnimation(message.obj, createNewTextLine());
+                                            }
+                                            else {
+                                                KeyAnimation.setObjAnimation(message.obj, createNewTextLine(), () => __awaiter(this, void 0, void 0, function* () { return yield f(); }));
+                                            }
+                                            return;
+                                        }
+                                        case DramaType.Code: {
+                                            if (Drama.clickOnceContains(messages[++i])) {
+                                                KeyAnimation.setObjAnimation2(message.obj);
+                                            }
+                                            else {
+                                                KeyAnimation.setObjAnimation2(() => __awaiter(this, void 0, void 0, function* () { return yield f(); }));
+                                            }
+                                            return;
+                                        }
+                                        case DramaType.Function: {
+                                            yield message.obj();
+                                            break;
+                                        }
+                                        default: {
+                                            throw new Error(`Unknow type : ${message.type}`);
+                                        }
+                                    }
+                                    i++;
+                                    const nextMessage = messages[i];
+                                    if (!Drama.clickOnceContains(nextMessage)) {
+                                        yield f();
+                                    }
+                                    return;
+                                });
+                            };
+                            yield f();
+                            while (messages[i].type !== DramaType.Ball) {
+                                yield f();
+                            }
+                            break;
+                        }
+                    }
                     if (startIndex === -1) {
                         throw new Error("No message with type DramaType.Ball found");
                     }
@@ -100,7 +145,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
             }
             static initAll() {
                 return __awaiter(this, void 0, void 0, function* () {
-                    this.handleOnceJoinnnnnnnnnnnnnnnnnn();
+                    this.handleOnceJoin();
                     yield this.getDrama();
                     this.restoreState();
                     this.eventHook();
@@ -142,7 +187,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                 window.addEventListener(orientationEvent, checkOrientation, false);
                 checkOrientation();
             }
-            static handleOnceJoinnnnnnnnnnnnnnnnnn() {
+            static handleOnceJoin() {
                 if (LocalStorageApi.read(StorageType.MESSAGE_COUNT) === null && LocalStorageApi.read(StorageType.MUSIC_TIME) === null) {
                     document.getElementById("closeIntro").onclick = () => document.getElementById('introBackground').remove();
                     MessageID.id = 0;

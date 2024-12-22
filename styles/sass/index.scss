@@ -85,8 +85,9 @@
     left: 0;
     position: absolute;
     padding: 1%;
+    padding-left: calc(20px + 1%);
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     gap: 1%;
     box-sizing: border-box;
 
@@ -96,4 +97,5 @@
 #left>* {
     width: 100%;
     box-sizing: border-box;
+    text-align: left;
 }

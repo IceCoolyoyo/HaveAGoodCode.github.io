@@ -57,9 +57,53 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
 
             const message = messages[currentIndex];
 
-            const startIndex = messages.slice(0, currentIndex)
-                .reverse()
-                .findIndex(Drama.clickOnceContains);
+            let startIndex = -1;
+            for (let i = currentIndex; i >= 0; i--) {
+                if (messages[i].type === DramaType.Ball) {
+                    const f = async function () {
+                        const message = Drama.refresh(messages[i]);
+                        switch (message.type) {
+                            case DramaType.Ball: {
+                                if (Drama.clickOnceContains(messages[++i])) {
+                                    KeyAnimation.setObjAnimation(message.obj, createNewTextLine());
+                                } else {
+                                    KeyAnimation.setObjAnimation(message.obj, createNewTextLine(), async () => await f());
+                                }
+                                return;
+                            }
+
+                            case DramaType.Code: {
+                                if (Drama.clickOnceContains(messages[++i])) {
+                                    KeyAnimation.setObjAnimation2(message.obj);
+                                } else {
+                                    KeyAnimation.setObjAnimation2(async () => await f());
+                                }
+                                return;
+                            }
+
+                            case DramaType.Function: {
+                                await message.obj();
+                                break;
+                            }
+
+                            default: {
+                                throw new Error(`Unknow type : ${message.type}`);
+                            }
+                        }
+                        i++;
+                        const nextMessage = messages[i];
+                        if (!Drama.clickOnceContains(nextMessage)) {
+                            await f();
+                        }
+                        return;
+                    };
+                    await f();
+                    while (messages[i].type !== DramaType.Ball) {
+                        await f();
+                    }
+                    break;
+                }
+            }
 
             if (startIndex === -1) {
                 throw new Error("No message with type DramaType.Ball found");
@@ -73,7 +117,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                     await currentMessage.obj();
                 }
             }
-            
+
             if (message.type === DramaType.Ball) {
                 KeyAnimation.setObjAnimation(message.obj, createNewTextLine());
             } else if (message.type === DramaType.Code) {
@@ -95,7 +139,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
         }
 
         private static async initAll() {
-            this.handleOnceJoinnnnnnnnnnnnnnnnnn();
+            this.handleOnceJoin();
             await this.getDrama();
             this.restoreState();
 
@@ -143,7 +187,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
             checkOrientation();
         }
 
-        private static handleOnceJoinnnnnnnnnnnnnnnnnn(): void {
+        private static handleOnceJoin(): void {
             if (LocalStorageApi.read<number>(StorageType.MESSAGE_COUNT) === null && LocalStorageApi.read<number>(StorageType.MUSIC_TIME) === null) {
                 (document.getElementById("closeIntro") as HTMLElement).onclick = () =>
                     (document.getElementById('introBackground') as HTMLElement).remove();
