@@ -30,7 +30,7 @@ export default class CodeFrame {
         const leadingSpacesCount = lines[1].match(/^\s*/)?.[0].length || 0;
         const trimmedLines = lines.slice(1).map(line => line.slice(leadingSpacesCount));
         code.textContent = trimmedLines.join("\n");
-
+        
         hljs.highlightElement(code);
         codeDiv.appendChild(code);
 

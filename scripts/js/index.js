@@ -11,8 +11,7 @@ var __setFunctionName = (this && this.__setFunctionName) || function (f, name, p
     if (typeof name === "symbol") name = name.description ? "[".concat(name.description, "]") : "";
     return Object.defineProperty(f, "name", { configurable: true, value: prefix ? "".concat(prefix, " ", name) : name });
 };
-import Setting from './classes/setting/Setting.js';
-import Message, { ballSays, processMessage } from './classes/message/Message.js';
+import Message, { createNewTextLine, processMessage } from './classes/message/Message.js';
 import { messages } from './classes/constants/Constants.js';
 import MessageID from './classes/message/MessageID.js';
 import KeyAnimation from './classes/animation/KeyAnimation.js';
@@ -24,19 +23,13 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
 (function () {
     var _a;
     const _ = (_a = class {
-            static click(init) {
+            static click() {
                 return __awaiter(this, void 0, void 0, function* () {
                     if (!KeyAnimation.canCountinue) {
                         return;
                     }
-                    if (!init) {
-                        const illustrate = document.getElementById(Setting.illustrateID);
-                        if (illustrate !== null) {
-                            illustrate.remove();
-                        }
-                    }
                     yield processMessage();
-                    LocalStorageApi.write(StorageType.MESSAGE_COUNT, MessageID.getID());
+                    LocalStorageApi.write(StorageType.MESSAGE_COUNT, MessageID.getID() - 1);
                 });
             }
             static getDrama() {
@@ -60,8 +53,8 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
             }
             static restoreState() {
                 return __awaiter(this, void 0, void 0, function* () {
-                    const currentIndex = MessageID.getID() - 1;
-                    if (currentIndex === (0 - 1)) {
+                    const currentIndex = MessageID.getID();
+                    if (currentIndex === 0) {
                         while (!Drama.clickOnceContains(messages[MessageID.getID()])) {
                             yield processMessage();
                         }
@@ -83,24 +76,21 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                         }
                     }
                     if (message.type === DramaType.Ball) {
-                        KeyAnimation.setObjAnimation(message.obj, ballSays);
+                        KeyAnimation.setObjAnimation(message.obj, createNewTextLine());
                     }
                     else if (message.type === DramaType.Code) {
                         KeyAnimation.setObjAnimation2(message.obj, () => __awaiter(this, void 0, void 0, function* () { }));
                     }
                     else {
                         const nextMessage = messages[MessageID.getID()];
-                        const animationCallback = nextMessage.type !== DramaType.Ball && nextMessage.type !== DramaType.Code
-                            ? () => __awaiter(this, void 0, void 0, function* () {
-                                yield processMessage();
-                            })
-                            : () => __awaiter(this, void 0, void 0, function* () { });
                         const finalCallBack = () => __awaiter(this, void 0, void 0, function* () {
                             yield message.obj();
-                            yield animationCallback();
+                            if (!Drama.clickOnceContains(nextMessage)) {
+                                yield processMessage();
+                            }
                         });
                         if (messages[startIndex].type === DramaType.Ball) {
-                            KeyAnimation.setObjAnimation(messages[startIndex].obj, ballSays, finalCallBack);
+                            KeyAnimation.setObjAnimation(messages[startIndex].obj, createNewTextLine(), finalCallBack);
                         }
                         else {
                             KeyAnimation.setObjAnimation2(messages[startIndex].obj, finalCallBack);
@@ -112,17 +102,9 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                 return __awaiter(this, void 0, void 0, function* () {
                     this.handleOnceJoinnnnnnnnnnnnnnnnnn();
                     yield this.getDrama();
+                    this.restoreState();
                     this.eventHook();
-                    this.spotifyInit();
-                    DirectoryManager.main();
-                    setTimeout(() => {
-                        const obj = document.getElementById(Setting.illustrateID);
-                        // The element may have been deleted before execution
-                        if (obj) {
-                            obj.style.animation = 'fade 2s linear 0s';
-                            obj.style.display = 'block';
-                        }
-                    }, 6000);
+                    DirectoryManager.initializeDirectory();
                 });
             }
             static eventHook() {
@@ -132,7 +114,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                         ev.stopPropagation();
                     }
                 }, true);
-                document.getElementById(Setting.ballFrameID).addEventListener('click', () => __awaiter(this, void 0, void 0, function* () { return yield this.click(false); }));
+                document.getElementById('left').addEventListener('click', () => __awaiter(this, void 0, void 0, function* () { return yield this.click(); }));
                 window.addEventListener('wheel', function (event) {
                     if (event.ctrlKey === true || event.metaKey === true) {
                         event.preventDefault();
@@ -170,24 +152,6 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                     document.getElementById('introBackground').remove();
                     MessageID.id = LocalStorageApi.read(StorageType.MESSAGE_COUNT);
                 }
-            }
-            static spotifyInit() {
-                window.onSpotifyIframeApiReady = (IFrameAPI) => __awaiter(this, void 0, void 0, function* () {
-                    const element = document.getElementById('spotify-iframe');
-                    const options = { uri: 'spotify:track:5vNRhkKd0yEAg8suGBpjeY' };
-                    const callback = (EmbedController) => {
-                        const a = LocalStorageApi.read(StorageType.MUSIC_TIME);
-                        if (a !== null) {
-                            EmbedController.loadUri(options.uri, false, a);
-                        }
-                        EmbedController.addListener('playback_update', e => {
-                            LocalStorageApi.write(StorageType.MUSIC_TIME, parseInt(e.data.position, 10) / 1000);
-                        });
-                        EmbedController.play();
-                    };
-                    IFrameAPI.createController(element, options, callback);
-                    yield this.restoreState();
-                });
             }
         },
         __setFunctionName(_a, "_"),

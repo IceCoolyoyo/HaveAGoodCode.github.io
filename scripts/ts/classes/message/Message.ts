@@ -4,7 +4,6 @@ import { goodMessage } from '../constants/Constants.js';
 import KeyAnimation from '../animation/KeyAnimation.js';
 import MessageID from '../message/MessageID.js';
 import { messages } from '../constants/Constants.js';
-import Doc from '../doct/doct.js';
 import CodeFrame from '../code_frame/code.js';
 import Codes from '../../Codes.js';
 import Question from '../textbook/Question.js';
@@ -92,32 +91,32 @@ export default class Message {
     }
 }
 
-export const ballSays = Doc.getElementById(Setting.ballSaysID);
+
+export function createNewTextLine(): HTMLElement {
+    const div: HTMLElement = document.createElement("div");
+    div.id = "question-title";
+    (document.getElementById("left") as HTMLElement).appendChild(div);
+    return div;
+}
 
 export async function processMessage() {
     const message = Drama.refresh(messages[MessageID.getID()]);
     switch (message.type) {
         case DramaType.Ball: {
-            MessageID.addOne();
-            const nextMessage = messages[MessageID.getID()];
-            const animationCallback = !Drama.clickOnceContains(nextMessage)
-                ? async () => {
-                    await processMessage();
-                }
-                : null;
-            KeyAnimation.setObjAnimation(message.obj, ballSays, animationCallback);
+            if (Drama.clickOnceContains(MessageID.addOneAndGet())) {
+                KeyAnimation.setObjAnimation(message.obj, createNewTextLine());
+            } else {
+                KeyAnimation.setObjAnimation(message.obj, createNewTextLine(), async () => await processMessage());
+            }
             return;
         }
 
         case DramaType.Code: {
-            MessageID.addOne();
-            const nextMessage = messages[MessageID.getID()];
-            const animationCallback = !Drama.clickOnceContains(nextMessage)
-                ? async () => {
-                    await processMessage();
-                }
-                : null;
-            KeyAnimation.setObjAnimation2(message.obj, animationCallback);
+            if (Drama.clickOnceContains(MessageID.addOneAndGet())) {
+                KeyAnimation.setObjAnimation2(message.obj);
+            } else {
+                KeyAnimation.setObjAnimation2(async () => await processMessage());
+            }
             return;
         }
 

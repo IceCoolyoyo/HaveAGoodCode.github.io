@@ -9,22 +9,18 @@ class KeyAnimation {
         KeyAnimation.toggleCountinue();
         KeyAnimation.setupObjAnimationStyles(obj);
         KeyAnimation.typing(string, obj, 90, () => {
-            KeyAnimation.finalizeAnimation(string, obj, runnable);
+            KeyAnimation.finalizeAnimation(obj, runnable);
         });
     }
     static setupObjAnimationStyles(obj) {
         obj.style.borderRightColor = 'rgb(0, 0, 0)';
         obj.style.animation = `caret 0.8s steps(1) infinite`;
     }
-    static finalizeAnimation(string, obj, runnable) {
+    static finalizeAnimation(obj, runnable) {
         setTimeout(() => {
             obj.style.borderRightColor = 'transparent';
             KeyAnimation.toggleCountinue();
-            const div = document.createElement("div");
-            div.id = "question-title";
-            div.innerText = string;
-            document.getElementById("left").appendChild(div);
-            if (runnable) {
+            if (runnable !== undefined && runnable !== null) {
                 runnable();
             }
         }, 500);

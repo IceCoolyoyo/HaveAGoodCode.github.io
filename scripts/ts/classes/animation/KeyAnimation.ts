@@ -9,12 +9,12 @@ export default class KeyAnimation {
         KeyAnimation.countinue = !KeyAnimation.countinue;
     }
 
-    public static setObjAnimation(string: string, obj: HTMLElement, runnable?: (() => Promise<void>) | null): void {
+    public static setObjAnimation(string: string, obj: HTMLElement, runnable?: (() => Promise<any>) | null): void {
         KeyAnimation.toggleCountinue();
         KeyAnimation.setupObjAnimationStyles(obj);
 
         KeyAnimation.typing(string, obj, 90, () => {
-            KeyAnimation.finalizeAnimation(string, obj, runnable);
+            KeyAnimation.finalizeAnimation(obj, runnable);
         });
     }
 
@@ -23,17 +23,12 @@ export default class KeyAnimation {
         obj.style.animation = `caret 0.8s steps(1) infinite`;
     }
 
-    private static finalizeAnimation(string: string, obj: HTMLElement, runnable?: (() => Promise<void>) | null): void {
+    private static finalizeAnimation(obj: HTMLElement, runnable?: (() => Promise<any>) | null): void {
         setTimeout(() => {
             obj.style.borderRightColor = 'transparent';
             KeyAnimation.toggleCountinue();
 
-            const div: HTMLElement = document.createElement("div");
-            div.id = "question-title";
-            div.innerText = string;
-            (document.getElementById("left") as HTMLElement).appendChild(div);
-
-            if (runnable) {
+            if (runnable !== undefined && runnable !== null) {
                 runnable();
             }
         }, 500);
@@ -70,14 +65,14 @@ export default class KeyAnimation {
         }, delay);
     }
 
-    public static setObjAnimation2(obj: Function, callback: (() => Promise<void>) | null): void {
+    public static setObjAnimation2(obj: Function, callback?: (() => Promise<any>)): void {
         KeyAnimation.toggleCountinue();
         obj();
         
         KeyAnimation.finalizeObjAnimation2(callback);
     }
 
-    private static finalizeObjAnimation2(callback: (() => Promise<void>) | null): void {
+    private static finalizeObjAnimation2(callback: (() => Promise<any>) | undefined): void {
         setTimeout(() => {
             KeyAnimation.toggleCountinue();
             callback?.();

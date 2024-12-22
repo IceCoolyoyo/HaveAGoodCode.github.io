@@ -62,36 +62,8 @@ export default class DirectoryManager {
         });
     }
 
-    private static toggleDirectory(show: boolean): void {
-        const overlay = document.getElementById('overlay') as HTMLElement;
-        const directory = document.getElementById('directory') as HTMLElement;
-
-        if (show) {
-            overlay.style.display = 'block';
-            directory.style.display = 'flex';
-        } else {
-            overlay.style.display = 'none';
-            directory.style.display = 'none';
-        }
-    }
-
-    private static setupEventListeners(): void {
-        const openButton = document.getElementById('open-directory') as HTMLElement;
-        const closeButton = document.getElementById('close-directory') as HTMLElement;
-        const overlay = document.getElementById('overlay') as HTMLElement;
-
-        openButton.addEventListener('click', () => DirectoryManager.toggleDirectory(true));
-        closeButton.addEventListener('click', () => DirectoryManager.toggleDirectory(false));
-        overlay.addEventListener('click', () => DirectoryManager.toggleDirectory(false));
-    }
-
     public static initializeDirectory(): void {
         const directoryList = document.getElementById('directory-list') as HTMLElement;
         DirectoryManager.createDirectory(DirectoryManager.menuItems, directoryList);
-    }
-
-    public static main(): void {
-        DirectoryManager.setupEventListeners();
-        DirectoryManager.initializeDirectory();
     }
 }

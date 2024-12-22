@@ -8,35 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { messages } from "../constants/Constants.js";
-import Doc from "../doct/doct.js";
 import { DramaType } from "../drama/Dramas.js";
 import Left from "../left/Left.js";
 import { processMessage } from "../message/Message.js";
 import MessageID from "../message/MessageID.js";
-import Table from "./Table.js";
 export let answer = [];
 class Question {
-    static q1() {
-        Doc.getElementById('right').style.width = '100%';
-        answer[0] = '2';
-    }
-    static q2() {
-        // (document.getElementsByClassName('text')[0] as HTMLElement).style.display = 'none';
-        // var Illustrate = document.getElementById('Illustrate');
-        // if (Illustrate !== null) {
-        //     Illustrate.style.display = 'none';
-        // }
-        // (document.getElementById('frame') as HTMLElement).style.display = 'none';
-        Doc.getElementById('right').style.width = '60%';
-        answer[0] = '2';
-    }
-    static q3() {
-        Doc.getElementById('question').remove();
-        Doc.getElementById('editor-iframe').remove();
-        Table.compareTable();
-    }
     static q4() {
-        const elements = Array.from(document.querySelectorAll('*:not(html):not(body):not(head):not(#base):not(#left *):not(#left):not(#lesson-media)'));
+        const elements = Array.from(document.querySelectorAll('*:not(html):not(body):not(head):not(#base):not(#left *):not(#left)'));
         elements.forEach(element => {
             Question.elementStateMap.set(element, {
                 filter: element.style.filter || null,
@@ -49,7 +28,7 @@ class Question {
     }
     static q5() {
         return __awaiter(this, void 0, void 0, function* () {
-            const elements = Array.from(document.querySelectorAll('*:not(html):not(body):not(head):not(#base):not(#left *):not(#left):not(#lesson-media)'));
+            const elements = Array.from(document.querySelectorAll('*:not(html):not(body):not(head):not(#base):not(#left *):not(#left)'));
             elements.forEach(element => {
                 const originalState = Question.elementStateMap.get(element);
                 if (originalState) {

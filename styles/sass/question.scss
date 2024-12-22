@@ -1,9 +1,13 @@
 #question-answer {
     font-family: 'LXGW WenKai Mono TC';
-    font-size: 5vmin;
-    padding: 1%;
+
+    font-size: calc(var(--font-size) * 2);
+    font-family: "JetBrains Mono", monospace;
+    font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
+    text-align: left;
+
     transition: all 0.3s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -14,7 +18,6 @@
 }
 
 #question-title {
-    // padding = 1% (left and right)
     font-family: 'LXGW WenKai Mono TC';
     font-size: calc(var(--font-size) + 0.5vw);
     font-weight: 400;

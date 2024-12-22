@@ -1,5 +1,4 @@
-import Setting from './classes/setting/Setting.js';
-import Message, { ballSays, processMessage } from './classes/message/Message.js';
+import Message, { createNewTextLine, processMessage } from './classes/message/Message.js';
 import { messages } from './classes/constants/Constants.js';
 import MessageID from './classes/message/MessageID.js';
 import KeyAnimation from './classes/animation/KeyAnimation.js';
@@ -15,21 +14,14 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
             this.initAll();
         }
 
-        private static async click(init: boolean): Promise<void> {
+        private static async click(): Promise<void> {
             if (!KeyAnimation.canCountinue) {
                 return;
             }
 
-            if (!init) {
-                const illustrate = document.getElementById(Setting.illustrateID);
-                if (illustrate !== null) {
-                    illustrate.remove();
-                }
-            }
-
             await processMessage();
 
-            LocalStorageApi.write<number>(StorageType.MESSAGE_COUNT, MessageID.getID());
+            LocalStorageApi.write<number>(StorageType.MESSAGE_COUNT, MessageID.getID() - 1);
         }
 
         private static async getDrama(): Promise<void> {
@@ -53,9 +45,9 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
         }
 
         private static async restoreState() {
-            const currentIndex = MessageID.getID() - 1;
+            const currentIndex = MessageID.getID();
 
-            if (currentIndex === (0 - 1)) {
+            if (currentIndex === 0) {
                 while (!Drama.clickOnceContains(messages[MessageID.getID()])) {
                     await processMessage();
                 }
@@ -81,24 +73,21 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                     await currentMessage.obj();
                 }
             }
-
+            
             if (message.type === DramaType.Ball) {
-                KeyAnimation.setObjAnimation(message.obj, ballSays);
+                KeyAnimation.setObjAnimation(message.obj, createNewTextLine());
             } else if (message.type === DramaType.Code) {
                 KeyAnimation.setObjAnimation2(message.obj, async () => { });
             } else {
                 const nextMessage = messages[MessageID.getID()];
-                const animationCallback = nextMessage.type !== DramaType.Ball && nextMessage.type !== DramaType.Code
-                    ? async () => {
-                        await processMessage();
-                    }
-                    : async () => { };
                 const finalCallBack = async () => {
                     await message.obj();
-                    await animationCallback();
+                    if (!Drama.clickOnceContains(nextMessage)) {
+                        await processMessage();
+                    }
                 };
                 if (messages[startIndex].type === DramaType.Ball) {
-                    KeyAnimation.setObjAnimation(messages[startIndex].obj, ballSays, finalCallBack);
+                    KeyAnimation.setObjAnimation(messages[startIndex].obj, createNewTextLine(), finalCallBack);
                 } else {
                     KeyAnimation.setObjAnimation2(messages[startIndex].obj, finalCallBack);
                 }
@@ -108,20 +97,11 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
         private static async initAll() {
             this.handleOnceJoinnnnnnnnnnnnnnnnnn();
             await this.getDrama();
+            this.restoreState();
 
             this.eventHook();
-            this.spotifyInit();
 
-            DirectoryManager.main();
-
-            setTimeout(() => {
-                const obj = document.getElementById(Setting.illustrateID);
-                // The element may have been deleted before execution
-                if (obj) {
-                    obj.style.animation = 'fade 2s linear 0s';
-                    obj.style.display = 'block';
-                }
-            }, 6000);
+            DirectoryManager.initializeDirectory();
         }
 
         private static eventHook(): void {
@@ -132,7 +112,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                 }
             }, true);
 
-            (document.getElementById(Setting.ballFrameID) as HTMLElement).addEventListener('click', async () => await this.click(false));
+            (document.getElementById('left') as HTMLElement).addEventListener('click', async () => await this.click());
 
             window.addEventListener('wheel', function (event: WheelEvent) {
                 if (event.ctrlKey === true || event.metaKey === true) {
@@ -165,7 +145,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
 
         private static handleOnceJoinnnnnnnnnnnnnnnnnn(): void {
             if (LocalStorageApi.read<number>(StorageType.MESSAGE_COUNT) === null && LocalStorageApi.read<number>(StorageType.MUSIC_TIME) === null) {
-                (document.getElementById("closeIntro") as HTMLElement).onclick = () => 
+                (document.getElementById("closeIntro") as HTMLElement).onclick = () =>
                     (document.getElementById('introBackground') as HTMLElement).remove();
                 MessageID.id = 0;
                 LocalStorageApi.write<number>(StorageType.MESSAGE_COUNT, 0);
@@ -173,26 +153,6 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                 (document.getElementById('introBackground') as HTMLElement).remove();
                 MessageID.id = (LocalStorageApi.read<number>(StorageType.MESSAGE_COUNT) as number);
             }
-        }
-
-        private static spotifyInit(): void {
-            (window as any).onSpotifyIframeApiReady = async (IFrameAPI: { createController: (arg0: HTMLElement | null, arg1: { uri: string; }, arg2: (EmbedController: any) => void) => void; }) => {
-                const element = document.getElementById('spotify-iframe') as HTMLElement;
-                const options = { uri: 'spotify:track:5vNRhkKd0yEAg8suGBpjeY' };
-                const callback = (EmbedController: { loadUri: (arg0: string, arg1: boolean, arg2: number) => void; addListener: (arg0: string, arg1: (e: any) => void) => void; play: () => void; }) => {
-                    const a = LocalStorageApi.read<number>(StorageType.MUSIC_TIME);
-                    if (a !== null) {
-                        EmbedController.loadUri(options.uri, false, a);
-                    }
-                    EmbedController.addListener('playback_update', e => {
-                        LocalStorageApi.write<number>(StorageType.MUSIC_TIME, parseInt((e.data.position as string), 10) / 1000);
-                    });
-                    EmbedController.play();
-                };
-                IFrameAPI.createController(element, options, callback);
-
-                await this.restoreState();
-            };
         }
     };
 })();

@@ -1,17 +1,23 @@
 import { messages } from '../constants/Constants.js';
+import Message from './Message.js';
 
 export default class MessageID {
     public static id: number;
 
-    static addOne() {
+    public static addOne(): void {
         MessageID.id = MessageID.getPreAdd(1);
     }
 
-    static getPreAdd(num: number) {
+    public static addOneAndGet(): Message {
+        MessageID.id = MessageID.getPreAdd(1);
+        return messages[MessageID.getID()];
+    }
+
+    public static getPreAdd(num: number): number {
         return (MessageID.id + num) % messages.length;
     }
 
-    static getID() {
+    public static getID(): number {
         return MessageID.id;
     }
 }
