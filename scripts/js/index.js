@@ -61,58 +61,17 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                         yield processMessage();
                         return;
                     }
-                    const message = messages[currentIndex];
                     let startIndex = -1;
                     for (let i = currentIndex; i >= 0; i--) {
                         if (messages[i].type === DramaType.Ball) {
-                            const f = function () {
-                                return __awaiter(this, void 0, void 0, function* () {
-                                    const message = Drama.refresh(messages[i]);
-                                    switch (message.type) {
-                                        case DramaType.Ball: {
-                                            if (Drama.clickOnceContains(messages[++i])) {
-                                                KeyAnimation.setObjAnimation(message.obj, createNewTextLine());
-                                            }
-                                            else {
-                                                KeyAnimation.setObjAnimation(message.obj, createNewTextLine(), () => __awaiter(this, void 0, void 0, function* () { return yield f(); }));
-                                            }
-                                            return;
-                                        }
-                                        case DramaType.Code: {
-                                            if (Drama.clickOnceContains(messages[++i])) {
-                                                KeyAnimation.setObjAnimation2(message.obj);
-                                            }
-                                            else {
-                                                KeyAnimation.setObjAnimation2(() => __awaiter(this, void 0, void 0, function* () { return yield f(); }));
-                                            }
-                                            return;
-                                        }
-                                        case DramaType.Function: {
-                                            yield message.obj();
-                                            break;
-                                        }
-                                        default: {
-                                            throw new Error(`Unknow type : ${message.type}`);
-                                        }
-                                    }
-                                    i++;
-                                    const nextMessage = messages[i];
-                                    if (!Drama.clickOnceContains(nextMessage)) {
-                                        yield f();
-                                    }
-                                    return;
-                                });
-                            };
-                            yield f();
-                            while (messages[i].type !== DramaType.Ball) {
-                                yield f();
-                            }
+                            startIndex = i;
                             break;
                         }
                     }
                     if (startIndex === -1) {
                         throw new Error("No message with type DramaType.Ball found");
                     }
+                    const message = messages[startIndex];
                     MessageID.addOne();
                     for (let i = startIndex; i < currentIndex; i++) {
                         const currentMessage = messages[i];

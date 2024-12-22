@@ -55,52 +55,11 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                 return;
             }
 
-            const message = messages[currentIndex];
 
             let startIndex = -1;
             for (let i = currentIndex; i >= 0; i--) {
                 if (messages[i].type === DramaType.Ball) {
-                    const f = async function () {
-                        const message = Drama.refresh(messages[i]);
-                        switch (message.type) {
-                            case DramaType.Ball: {
-                                if (Drama.clickOnceContains(messages[++i])) {
-                                    KeyAnimation.setObjAnimation(message.obj, createNewTextLine());
-                                } else {
-                                    KeyAnimation.setObjAnimation(message.obj, createNewTextLine(), async () => await f());
-                                }
-                                return;
-                            }
-
-                            case DramaType.Code: {
-                                if (Drama.clickOnceContains(messages[++i])) {
-                                    KeyAnimation.setObjAnimation2(message.obj);
-                                } else {
-                                    KeyAnimation.setObjAnimation2(async () => await f());
-                                }
-                                return;
-                            }
-
-                            case DramaType.Function: {
-                                await message.obj();
-                                break;
-                            }
-
-                            default: {
-                                throw new Error(`Unknow type : ${message.type}`);
-                            }
-                        }
-                        i++;
-                        const nextMessage = messages[i];
-                        if (!Drama.clickOnceContains(nextMessage)) {
-                            await f();
-                        }
-                        return;
-                    };
-                    await f();
-                    while (messages[i].type !== DramaType.Ball) {
-                        await f();
-                    }
+                    startIndex = i;
                     break;
                 }
             }
@@ -108,6 +67,8 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
             if (startIndex === -1) {
                 throw new Error("No message with type DramaType.Ball found");
             }
+
+            const message = messages[startIndex];
 
             MessageID.addOne();
 
