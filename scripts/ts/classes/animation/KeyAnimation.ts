@@ -15,7 +15,7 @@ export default class KeyAnimation {
         obj.style.borderRightColor = 'rgb(0, 0, 0)';
         obj.style.animation = `caret 0.8s steps(1) infinite`;
 
-        KeyAnimation.typing(string, obj, 110, () =>
+        KeyAnimation.typing(string, obj, 90, () =>
             setTimeout(() => {
                 obj.style.borderRightColor = 'transparent';
                 KeyAnimation.toggleCountinue();

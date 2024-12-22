@@ -1,23 +1,19 @@
 class CodeFrame {
     static createCodeFrame(codes) {
         var _a;
-        const codeDiv = document.createElement('div');
+        const codeDiv = document.createElement('pre');
         codeDiv.id = 'code';
-        const codeLines = document.createElement('pre');
-        codeLines.id = 'code-lines';
         const code = document.createElement("code");
         const lines = codes.split("\n");
         code.classList.add("java");
         const leadingSpacesCount = ((_a = lines[1].match(/^\s*/)) === null || _a === void 0 ? void 0 : _a[0].length) || 0;
         const trimmedLines = lines.slice(1).map(line => line.slice(leadingSpacesCount));
         code.textContent = trimmedLines.join("\n");
-        code.innerHTML = code.innerHTML.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        codeLines.appendChild(code);
-        hljs.highlightElement(codeLines);
-        codeDiv.appendChild(codeLines);
+        hljs.highlightElement(code);
+        codeDiv.appendChild(code);
         const spanIcon = CodeFrame.spanIcon.cloneNode(true);
         spanIcon.onclick = () => {
-            navigator.clipboard.writeText(codeLines.textContent);
+            navigator.clipboard.writeText(code.textContent);
             const pathColors = new Map();
             const paths = Array.from(spanIcon.querySelectorAll('path'));
             paths.forEach(path => pathColors.set(path, path.getAttribute('fill')));

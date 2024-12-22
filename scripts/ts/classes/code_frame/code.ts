@@ -21,11 +21,8 @@ export default class CodeFrame {
     }
 
     public static createCodeFrame(codes: string): HTMLElement {
-        const codeDiv = document.createElement('div');
+        const codeDiv = document.createElement('pre');
         codeDiv.id = 'code';
-
-        const codeLines = document.createElement('pre');
-        codeLines.id = 'code-lines';
         
         const code = document.createElement("code");
         const lines = codes.split("\n");
@@ -34,17 +31,12 @@ export default class CodeFrame {
         const trimmedLines = lines.slice(1).map(line => line.slice(leadingSpacesCount));
         code.textContent = trimmedLines.join("\n");
 
-        code.innerHTML = code.innerHTML.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-
-        codeLines.appendChild(code);
-
-        hljs.highlightElement(codeLines);
-
-        codeDiv.appendChild(codeLines);
+        hljs.highlightElement(code);
+        codeDiv.appendChild(code);
 
         const spanIcon: HTMLElement = CodeFrame.spanIcon.cloneNode(true) as HTMLElement;
         spanIcon.onclick = () => {
-            navigator.clipboard.writeText((codeLines as HTMLElement).textContent as string);
+            navigator.clipboard.writeText((code as HTMLElement).textContent as string);
 
             const pathColors = new Map();
             const paths = Array.from((spanIcon.querySelectorAll('path') as NodeListOf<SVGPathElement>));
