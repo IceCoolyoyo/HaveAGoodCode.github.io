@@ -17,6 +17,7 @@ import CodeFrame from '../code_frame/code.js';
 import Codes from '../../Codes.js';
 import Question from '../textbook/Question.js';
 import Drama, { DramaType } from '../drama/Dramas.js';
+import LocalStorageApi, { StorageType } from '../localStorage/LocalStorageApi.js';
 export default class Message {
     constructor(type, obj, originalMessage = null) {
         if (type === DramaType.Ball && originalMessage === null) {
@@ -97,6 +98,7 @@ export function createNewTextLine() {
 }
 export function processMessage() {
     return __awaiter(this, void 0, void 0, function* () {
+        LocalStorageApi.write(StorageType.MESSAGE_COUNT, MessageID.getID());
         const message = Drama.refresh(messages[MessageID.getID()]);
         switch (message.type) {
             case DramaType.Ball: {

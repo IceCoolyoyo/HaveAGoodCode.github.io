@@ -1,56 +1,78 @@
-div#introBackground {
-    min-width: 100vw;
-    min-height: 100vh;
+div#centerBlock {
     background-color: white;
     z-index: 2;
+
     position: absolute;
-    left: 0;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     display: flex;
-    top: 0;
+    flex-direction: column;
+    text-align: left;
 
     font-family: "Inter", serif;
     font-optical-sizing: auto;
     font-style: normal;
 }
 
-div#intro {
-    text-align: center;
-    padding: 20px;
-    border-radius: 8px;box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+div#introBackground {
+    z-index: 2;
+    background-color: white;
+    min-width: 100vw;
+    min-height: 100vh;
+}
 
-    margin: 50px auto;
+div#centerBlock>* {
+    margin-top: 3vh;
+    margin-bottom: 3vh;
+}
+
+div#intro {
+    text-align: left;
+    margin-top: 1.5vh;
+    margin-bottom: 1.5vh;
+}
+
+div#intro>* {
+    margin: 0;
+}
+
+div#title>* {
+    margin: 0;
 }
 
 h1#innerTitle {
-    position: absolute;
-    top: 6vh;
-    left: 50%;
-    transform: translateX(-50%); 
-
     font-weight: 700;
     font-size: 5vw;
 }
 
 p#innerText {
     font-weight: 600;
-    font-size: 2vw;
+    font-size: 2.5vw;
 }
 
 button#closeIntro {
     background-color: rgb(0, 0, 0);
     color: white;
     border: none;
-    padding: 10px 20px;
+
     font-size: 2vw;
+
     cursor: pointer;
+
     border-radius: 0.5vw;
-    min-width: 10vw;
-    position: absolute;
-    top: 70vh;
-    left: 50%;
-    transform: translateX(-50%); 
+
+    min-width: 9vw;
+
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    padding-left: 0;
+    padding-right: 0;
+
+    font-weight: 600;
 }
 
 button#closeIntro:hover {

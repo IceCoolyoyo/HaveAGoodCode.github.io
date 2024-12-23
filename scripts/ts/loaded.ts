@@ -20,8 +20,6 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
             }
 
             await processMessage();
-
-            LocalStorageApi.write<number>(StorageType.MESSAGE_COUNT, MessageID.getID() - 1);
         }
 
         private static async getDrama(): Promise<void> {
@@ -100,7 +98,6 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
         }
 
         private static async initAll() {
-            this.handleOnceJoin();
             await this.getDrama();
             this.restoreState();
 
@@ -118,12 +115,6 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
             }, true);
 
             (document.getElementById('left') as HTMLElement).addEventListener('click', async () => await this.click());
-
-            window.addEventListener('wheel', function (event: WheelEvent) {
-                if (event.ctrlKey === true || event.metaKey === true) {
-                    event.preventDefault();
-                }
-            }, { passive: false });
 
             const checkOrientation = function () {
                 const bo: HTMLElement | null = document.getElementById("alert_box");
@@ -146,18 +137,6 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                 orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
             window.addEventListener(orientationEvent, checkOrientation, false);
             checkOrientation();
-        }
-
-        private static handleOnceJoin(): void {
-            if (LocalStorageApi.read<number>(StorageType.MESSAGE_COUNT) === null && LocalStorageApi.read<number>(StorageType.MUSIC_TIME) === null) {
-                (document.getElementById("closeIntro") as HTMLElement).onclick = () =>
-                    (document.getElementById('introBackground') as HTMLElement).remove();
-                MessageID.id = 0;
-                LocalStorageApi.write<number>(StorageType.MESSAGE_COUNT, 0);
-            } else {
-                (document.getElementById('introBackground') as HTMLElement).remove();
-                MessageID.id = (LocalStorageApi.read<number>(StorageType.MESSAGE_COUNT) as number);
-            }
         }
     };
 })();

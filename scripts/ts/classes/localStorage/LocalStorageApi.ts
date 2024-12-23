@@ -42,4 +42,13 @@ export default class LocalStorageApi {
             console.error("Failed to remove from localStorage:", e);
         }
     }
+
+    public static isClean(): boolean {
+        try {
+            return (LocalStorageApi.LOCAL_STORAGE.length === 0);
+        } catch (e) {
+            console.error("Failed to check localStorage:", e);
+            return false;
+        }
+    }
 }
