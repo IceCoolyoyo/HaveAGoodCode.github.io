@@ -1,12 +1,12 @@
 class KeyAnimation {
-    static get canCountinue() {
-        return KeyAnimation.countinue;
+    static get canContinue() {
+        return KeyAnimation.continue;
     }
-    static toggleCountinue() {
-        KeyAnimation.countinue = !KeyAnimation.countinue;
+    static toggleContinue() {
+        KeyAnimation.continue = !KeyAnimation.continue;
     }
     static setObjAnimation(string, obj, runnable) {
-        KeyAnimation.toggleCountinue();
+        KeyAnimation.toggleContinue();
         KeyAnimation.setupObjAnimationStyles(obj);
         KeyAnimation.typing(string, obj, 90, () => {
             KeyAnimation.finalizeAnimation(obj, runnable);
@@ -19,7 +19,7 @@ class KeyAnimation {
     static finalizeAnimation(obj, runnable) {
         setTimeout(() => {
             obj.style.borderRightColor = 'transparent';
-            KeyAnimation.toggleCountinue();
+            KeyAnimation.toggleContinue();
             if (runnable !== undefined && runnable !== null) {
                 runnable();
             }
@@ -51,16 +51,16 @@ class KeyAnimation {
         }, delay);
     }
     static setObjAnimation2(obj, callback) {
-        KeyAnimation.toggleCountinue();
+        KeyAnimation.toggleContinue();
         obj();
         KeyAnimation.finalizeObjAnimation2(callback);
     }
     static finalizeObjAnimation2(callback) {
         setTimeout(() => {
-            KeyAnimation.toggleCountinue();
+            KeyAnimation.toggleContinue();
             callback === null || callback === void 0 ? void 0 : callback();
         }, 100);
     }
 }
-KeyAnimation.countinue = true;
+KeyAnimation.continue = true;
 export default KeyAnimation;

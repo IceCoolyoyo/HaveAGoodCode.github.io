@@ -1,8 +1,6 @@
 import Message, { createNewTextLine, processMessage } from './classes/message/Message.js';
-import { messages } from './classes/constants/Constants.js';
 import MessageID from './classes/message/MessageID.js';
 import KeyAnimation from './classes/animation/KeyAnimation.js';
-import LocalStorageApi, { StorageType } from './classes/localStorage/LocalStorageApi.js';
 import Question from './classes/textbook/Question.js';
 import DirectoryManager from './classes/directory/Directory.js';
 import { Part } from './Drama.js';
@@ -15,7 +13,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
         }
 
         private static async click(): Promise<void> {
-            if (!KeyAnimation.canCountinue) {
+            if (!KeyAnimation.canContinue) {
                 return;
             }
 
@@ -38,25 +36,24 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
 
             const lines: string[] = allLines.map(s => s.trim());
             for (let index = 0; index < lines.length; index++) {
-                messages[index] = Message.createObjWithString(lines[index]);
+                Message.messages[index] = Message.createObjWithString(lines[index]);
             }
         }
 
-        private static async restoreState() {
+        private static async restoreState(): Promise<void> {
             const currentIndex = MessageID.getID();
 
             if (currentIndex === 0) {
-                while (!Drama.clickOnceContains(messages[MessageID.getID()])) {
+                while (!Drama.clickOnceContains(Message.messages[MessageID.getID()])) {
                     await processMessage();
                 }
                 await processMessage();
                 return;
             }
 
-
             let startIndex = -1;
             for (let i = currentIndex; i >= 0; i--) {
-                if (messages[i].type === DramaType.Ball) {
+                if (Message.messages[i].type === DramaType.Ball) {
                     startIndex = i;
                     break;
                 }
@@ -66,12 +63,12 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                 throw new Error("No message with type DramaType.Ball found");
             }
 
-            const message = messages[startIndex];
+            const message = Message.messages[startIndex];
 
             MessageID.addOne();
 
             for (let i = startIndex; i < currentIndex; i++) {
-                const currentMessage = messages[i];
+                const currentMessage = Message.messages[i];
                 if (currentMessage.type === DramaType.Function) {
                     await currentMessage.obj();
                 }
@@ -82,23 +79,24 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
             } else if (message.type === DramaType.Code) {
                 KeyAnimation.setObjAnimation2(message.obj, async () => { });
             } else {
-                const nextMessage = messages[MessageID.getID()];
+                const nextMessage = Message.messages[MessageID.getID()];
                 const finalCallBack = async () => {
                     await message.obj();
                     if (!Drama.clickOnceContains(nextMessage)) {
                         await processMessage();
                     }
                 };
-                if (messages[startIndex].type === DramaType.Ball) {
-                    KeyAnimation.setObjAnimation(messages[startIndex].obj, createNewTextLine(), finalCallBack);
+                if (Message.messages[startIndex].type === DramaType.Ball) {
+                    KeyAnimation.setObjAnimation(Message.messages[startIndex].obj, createNewTextLine(), finalCallBack);
                 } else {
-                    KeyAnimation.setObjAnimation2(messages[startIndex].obj, finalCallBack);
+                    KeyAnimation.setObjAnimation2(Message.messages[startIndex].obj, finalCallBack);
                 }
             }
         }
 
-        private static async initAll() {
+        private static async initAll(): Promise<void> {
             await this.getDrama();
+            await Message.initialize();
             this.restoreState();
 
             this.eventHook();

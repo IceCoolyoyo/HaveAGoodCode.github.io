@@ -12,7 +12,6 @@ var __setFunctionName = (this && this.__setFunctionName) || function (f, name, p
     return Object.defineProperty(f, "name", { configurable: true, value: prefix ? "".concat(prefix, " ", name) : name });
 };
 import Message, { createNewTextLine, processMessage } from './classes/message/Message.js';
-import { messages } from './classes/constants/Constants.js';
 import MessageID from './classes/message/MessageID.js';
 import KeyAnimation from './classes/animation/KeyAnimation.js';
 import Question from './classes/textbook/Question.js';
@@ -24,7 +23,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
     const _ = (_a = class {
             static click() {
                 return __awaiter(this, void 0, void 0, function* () {
-                    if (!KeyAnimation.canCountinue) {
+                    if (!KeyAnimation.canContinue) {
                         return;
                     }
                     yield processMessage();
@@ -45,7 +44,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                     });
                     const lines = allLines.map(s => s.trim());
                     for (let index = 0; index < lines.length; index++) {
-                        messages[index] = Message.createObjWithString(lines[index]);
+                        Message.messages[index] = Message.createObjWithString(lines[index]);
                     }
                 });
             }
@@ -53,7 +52,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                 return __awaiter(this, void 0, void 0, function* () {
                     const currentIndex = MessageID.getID();
                     if (currentIndex === 0) {
-                        while (!Drama.clickOnceContains(messages[MessageID.getID()])) {
+                        while (!Drama.clickOnceContains(Message.messages[MessageID.getID()])) {
                             yield processMessage();
                         }
                         yield processMessage();
@@ -61,7 +60,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                     }
                     let startIndex = -1;
                     for (let i = currentIndex; i >= 0; i--) {
-                        if (messages[i].type === DramaType.Ball) {
+                        if (Message.messages[i].type === DramaType.Ball) {
                             startIndex = i;
                             break;
                         }
@@ -69,10 +68,10 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                     if (startIndex === -1) {
                         throw new Error("No message with type DramaType.Ball found");
                     }
-                    const message = messages[startIndex];
+                    const message = Message.messages[startIndex];
                     MessageID.addOne();
                     for (let i = startIndex; i < currentIndex; i++) {
-                        const currentMessage = messages[i];
+                        const currentMessage = Message.messages[i];
                         if (currentMessage.type === DramaType.Function) {
                             yield currentMessage.obj();
                         }
@@ -84,18 +83,18 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
                         KeyAnimation.setObjAnimation2(message.obj, () => __awaiter(this, void 0, void 0, function* () { }));
                     }
                     else {
-                        const nextMessage = messages[MessageID.getID()];
+                        const nextMessage = Message.messages[MessageID.getID()];
                         const finalCallBack = () => __awaiter(this, void 0, void 0, function* () {
                             yield message.obj();
                             if (!Drama.clickOnceContains(nextMessage)) {
                                 yield processMessage();
                             }
                         });
-                        if (messages[startIndex].type === DramaType.Ball) {
-                            KeyAnimation.setObjAnimation(messages[startIndex].obj, createNewTextLine(), finalCallBack);
+                        if (Message.messages[startIndex].type === DramaType.Ball) {
+                            KeyAnimation.setObjAnimation(Message.messages[startIndex].obj, createNewTextLine(), finalCallBack);
                         }
                         else {
-                            KeyAnimation.setObjAnimation2(messages[startIndex].obj, finalCallBack);
+                            KeyAnimation.setObjAnimation2(Message.messages[startIndex].obj, finalCallBack);
                         }
                     }
                 });
@@ -103,6 +102,7 @@ import Drama, { DramaType } from './classes/drama/Dramas.js';
             static initAll() {
                 return __awaiter(this, void 0, void 0, function* () {
                     yield this.getDrama();
+                    yield Message.initialize();
                     this.restoreState();
                     this.eventHook();
                     DirectoryManager.initializeDirectory();

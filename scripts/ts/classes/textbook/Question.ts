@@ -1,7 +1,6 @@
-import { messages } from "../constants/Constants.js";
 import Drama, { DramaType } from "../drama/Dramas.js";
 import Left from "../left/Left.js";
-import { processMessage } from "../message/Message.js";
+import Message, { processMessage } from "../message/Message.js";
 import MessageID from "../message/MessageID.js";
 
 export let answer: string[] = [];
@@ -63,7 +62,7 @@ export default class Question {
 
         Question.timeStop = false;
         (Question.question_answer as HTMLInputElement).value = "";
-        while (messages[MessageID.getID()].type !== DramaType.Ball) {
+        while (Message.messages[MessageID.getID()].type !== DramaType.Ball) {
             await processMessage();
         }
         await processMessage();

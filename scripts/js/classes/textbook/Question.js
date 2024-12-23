@@ -7,10 +7,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { messages } from "../constants/Constants.js";
 import { DramaType } from "../drama/Dramas.js";
 import Left from "../left/Left.js";
-import { processMessage } from "../message/Message.js";
+import Message, { processMessage } from "../message/Message.js";
 import MessageID from "../message/MessageID.js";
 export let answer = [];
 class Question {
@@ -49,7 +48,7 @@ class Question {
             Left.clear();
             Question.timeStop = false;
             Question.question_answer.value = "";
-            while (messages[MessageID.getID()].type !== DramaType.Ball) {
+            while (Message.messages[MessageID.getID()].type !== DramaType.Ball) {
                 yield processMessage();
             }
             yield processMessage();

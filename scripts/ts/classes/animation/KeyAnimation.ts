@@ -1,16 +1,16 @@
 export default class KeyAnimation {
-    private static countinue: boolean = true;
+    private static continue: boolean = true;
 
-    public static get canCountinue(): boolean {
-        return KeyAnimation.countinue;
+    public static get canContinue(): boolean {
+        return KeyAnimation.continue;
     }
 
-    private static toggleCountinue(): void {
-        KeyAnimation.countinue = !KeyAnimation.countinue;
+    private static toggleContinue(): void {
+        KeyAnimation.continue = !KeyAnimation.continue;
     }
 
-    public static setObjAnimation(string: string, obj: HTMLElement, runnable?: (() => Promise<any>) | null): void {
-        KeyAnimation.toggleCountinue();
+    public static setObjAnimation(string: string, obj: HTMLElement, runnable?: (() => Promise<any>)): void {
+        KeyAnimation.toggleContinue();
         KeyAnimation.setupObjAnimationStyles(obj);
 
         KeyAnimation.typing(string, obj, 90, () => {
@@ -26,7 +26,7 @@ export default class KeyAnimation {
     private static finalizeAnimation(obj: HTMLElement, runnable?: (() => Promise<any>) | null): void {
         setTimeout(() => {
             obj.style.borderRightColor = 'transparent';
-            KeyAnimation.toggleCountinue();
+            KeyAnimation.toggleContinue();
 
             if (runnable !== undefined && runnable !== null) {
                 runnable();
@@ -66,7 +66,8 @@ export default class KeyAnimation {
     }
 
     public static setObjAnimation2(obj: Function, callback?: (() => Promise<any>)): void {
-        KeyAnimation.toggleCountinue();
+        KeyAnimation.toggleContinue();
+        
         obj();
         
         KeyAnimation.finalizeObjAnimation2(callback);
@@ -74,7 +75,7 @@ export default class KeyAnimation {
 
     private static finalizeObjAnimation2(callback: (() => Promise<any>) | undefined): void {
         setTimeout(() => {
-            KeyAnimation.toggleCountinue();
+            KeyAnimation.toggleContinue();
             callback?.();
         }, 100);
     }
